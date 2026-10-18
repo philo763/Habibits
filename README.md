@@ -2,7 +2,7 @@
 
 Une application de petits défis pour ancrer des habitudes. Chaque jour, on choisit un défi parmi trois, puis on le valide dans un calendrier. L'ambiance visuelle s'inspire du jeu *Blue Prince*.
 
-Les données restent **sur le téléphone** : pas de compte, pas de serveur.
+Les données restent **sur le téléphone**, dans le navigateur : pas de compte, pas de serveur.
 
 ## Fonctionnalités actuelles
 
@@ -10,11 +10,14 @@ Les données restent **sur le téléphone** : pas de compte, pas de serveur.
 - **Tirage de trois défis** parmi la liste, pour n'importe quel jour à venir, puis choix d'un défi.
 - **Validation** : le défi du jour se valide depuis sa case (bouton « Valider le défi »).
 - **Gestion des défis** : liste de départ, ajout et suppression depuis l'appli.
-- **Stockage local** : défis, jours et réglages sont conservés sur l'appareil.
-- **Rappel quotidien** : notification à l'heure choisie dans l'appli (version APK), avec un bouton de notification test.
-- **Menu latéral** dépliable : Calendrier, Mes défis, Rappel.
+- **Stockage local** : défis, jours et réglage du rappel sont conservés dans le navigateur.
+- **Rappel quotidien** : choix de l'heure et téléchargement d'un fichier `.ics` à importer dans l'appli Calendrier du téléphone, qui enverra la notification.
+- **Données protégées** : demande de stockage persistant pour limiter le nettoyage automatique du navigateur.
+- **Sauvegarde automatique** : copie des données dans un fichier choisi par l'utilisateur, avec l'API d'accès aux fichiers lorsqu'elle est disponible.
+- **Export et restauration** : sauvegarde JSON partageable ou téléchargeable, et restauration depuis un fichier.
+- **Menu latéral** dépliable : Calendrier, Mes défis, Paramètres.
 - **Style « blueprint »** : fond bleu nuit, plan quadrillé, tuiles à bordure colorée, titres en majuscules condensées.
-- **Web app installable (PWA)** : manifeste, icônes, service worker pour le fonctionnement hors connexion.
+- **Web app installable (PWA)** : manifeste, icônes et service worker pour le fonctionnement hors connexion.
 
 États d'une case du calendrier : bleu = vide, violet pointillé = trois défis tirés, orange = défi choisi, vert avec ✔ = défi validé.
 
@@ -23,9 +26,9 @@ Les données restent **sur le téléphone** : pas de compte, pas de serveur.
 | Élément | Choix |
 |---|---|
 | Interface | React + Vite |
-| Version Android | Capacitor (APK) |
-| Stockage | `@capacitor/preferences` (stockage du téléphone, ou du navigateur sur le web) |
-| Notifications | `@capacitor/local-notifications` (APK uniquement) |
+| Stockage des données | `localStorage` |
+| Sauvegarde automatique | File System Access API, lien de fichier conservé dans IndexedDB |
+| Rappel | Fichier `.ics`, importé dans l'application Calendrier |
 | Web app installable | `vite-plugin-pwa` |
 | Police | `@fontsource/barlow-condensed` (embarquée, fonctionne hors connexion) |
 
@@ -33,42 +36,41 @@ Les données restent **sur le téléphone** : pas de compte, pas de serveur.
 
 ```
 src/
-  App.jsx               Écran principal, menu latéral, gestion des défis, réglage du rappel
+  App.jsx               Écran principal et navigation
+  Accueil.jsx           Présentation et réglages de première utilisation
   Calendrier.jsx        Calendrier, tirage, choix et validation
+  Parametres.jsx        Rappel, stockage et gestion des sauvegardes
+  Restauration.jsx      Choix et restauration d'une sauvegarde JSON
+  Bandeaux.jsx          Indicateurs et messages de sauvegarde
   storage.js            Lecture et écriture des défis, des jours et du rappel
-  notifications.js      Rappel quotidien et notification test
+  sauvegarde.js         Export, restauration et sauvegarde automatique
+  rappel.js             Création et téléchargement du fichier .ics
   dates.js              Outils de dates et grille du mois
   data/defisDepart.js   Défis chargés au premier lancement
   index.css             Palette, styles et composants
-public/                 Icônes de la web app
-assets/                 Images sources pour l'icône de l'APK (facultatif)
-android/                Projet Android généré par Capacitor
-capacitor.config.json   Configuration Capacitor
+  sauvegarde.css        Styles des sauvegardes et messages associés
+  pwa-assets.config.js  Configuration des icônes PWA
+public/                 Icônes et favicon de la web app
+.github/workflows/
+  deploy.yml            Déploiement automatique sur GitHub Pages
 vite.config.js          Configuration Vite et PWA
+package.json            Dépendances et commandes npm
 ```
 
 ## Format des données
 
-Clés enregistrées sur l'appareil :
+Les données principales sont enregistrées localement dans le navigateur, sous les clés `habibits.defis`, `habibits.jours` et `habibits.rappel` :
 
 - `defis` : liste de défis `{ id, titre, description, image }`
 - `jours` : un objet indexé par date, `"2026-10-16": { propositions: [ids], choisi: id, fait: false }`
 - `rappel` : `{ heure, minute }` (20 h 00 par défaut)
 
-Au premier lancement, `defis` est rempli à partir de `src/data/defisDepart.js`.
+Au premier lancement, `defis` est rempli à partir de `src/data/defisDepart.js`. Le fichier de sauvegarde JSON contient ces données avec le nom de l'application, la version du format et la date d'export.
 
-## Prérequis 
+## Prérequis
 
-- **Node.js** (version LTS)
+- **Node.js 22** (utilisé par le déploiement GitHub Pages)
 - **VS Code** (conseillé)
-- Pour l'APK : **Android Studio**, avec dans le SDK Manager une plateforme Android, *Android SDK Build-Tools* et *Android SDK Platform-Tools*
-
-Points d'attention rencontrés :
-
-- **PowerShell bloque `npm`** (« l'exécution de scripts est désactivée ») : lancer une fois
-  `Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned`, ou utiliser l'Invite de commandes.
-- **Erreur « Incompatible Gradle JVM version »** : dans Android Studio, *Settings > Build, Execution, Deployment > Build Tools > Gradle*, choisir le JDK intégré (jbr-21). Gradle 8.14.3 ne fonctionne pas avec Java 25.
-- **`local.properties`** (chemin du SDK) est propre à chaque ordinateur : Android Studio le recrée, il n'est pas versionné.
 
 ## Installation et développement
 
@@ -79,61 +81,36 @@ npm install
 npm run dev
 ```
 
-L'appli s'ouvre sur `http://localhost:5173`. Penser à enregistrer les fichiers (ou activer l'enregistrement automatique de VS Code) pour voir les changements. Les notifications ne fonctionnent pas dans le navigateur.
+L'appli s'ouvre sur `http://localhost:5173`. Pour vérifier le code avec Oxlint :
 
-## Deux sorties, un seul code
+```
+npm run lint
+```
 
-### 1. Web app (iPhone, Android, ordinateur)
+## Build et publication
 
 ```
 npm run build
 npm run preview
 ```
 
-Le dossier `dist` est destiné à GitHub Pages. L'appli y vit dans un sous-dossier : la compilation doit définir l'adresse de base avec le nom du dépôt.
+Le build crée le dossier `dist`. Le déploiement GitHub Pages est automatique après un push sur `main` : le workflow définit `VITE_BASE=/Habibits/` pour que l'appli fonctionne dans le sous-dossier du dépôt. Pour un hébergement à la racine d'un domaine, la valeur par défaut `/` convient.
 
-```
-npx cross-env VITE_BASE=/<nom-du-depot>/ npm run build
-```
+Sur téléphone, ouvre l'adresse publiée puis ajoute Habibits à l'écran d'accueil depuis le menu du navigateur. Le service worker est servi en HTTPS sur GitHub Pages.
 
-Les utilisateurs ouvrent l'adresse une fois, puis l'ajoutent à l'écran d'accueil (Safari : *Partager > Sur l'écran d'accueil*). Le service worker doit être servi en HTTPS, ce que fait GitHub Pages.
+## Mises à jour et données
 
-### 2. APK Android
-
-```
-npm run build:android
-npx cap open android
-```
-
-Dans Android Studio : *Build > Generate App Bundles or APKs > Generate APKs*. Le fichier se trouve dans `android/app/build/outputs/apk/debug/app-debug.apk`.
-
-`build:android` compile **sans service worker** (variable `VITE_NATIF=1`) puis synchronise le projet Android. Ne pas utiliser `npm run build` pour l'APK.
-
-#### Icône de l'APK (facultatif)
-
-Placer `icon-only.png`, `icon-foreground.png` et `icon-background.png` dans `assets/`, puis :
-
-```
-npm install -D @capacitor/assets
-npx capacitor-assets generate --android
-```
-
-## Mises à jour
-
-- **Web app** : après publication, les utilisateurs récupèrent la nouvelle version automatiquement à leur prochaine ouverture. Le lien ne change pas, leurs données sont conservées.
-- **APK** : aucune mise à jour automatique. Publier un nouvel APK (par exemple dans *Releases* sur GitHub) ; chaque utilisateur l'installe par-dessus l'ancien. Il faut pour cela :
-  - la **même clé de signature** qu'avant (sinon Android refuse la mise à jour) ;
-  - un **`versionCode` plus élevé** dans `android/app/build.gradle`.
-- La web app et l'APK ont **chacune leur stockage** : les données ne se partagent pas entre les deux.
-- Plusieurs versions de l'appli coexistent chez les utilisateurs : toute modification de la structure des données doit prévoir une migration (par exemple une fonction qui complète les anciens défis avec les nouvelles propriétés).
+- Après publication, les utilisateurs récupèrent la nouvelle version à l'ouverture de l'appli. Leurs données locales sont conservées.
+- Chaque navigateur et chaque appareil a son propre stockage. Pour changer de téléphone ou garder une copie, exporte puis restaure un fichier JSON.
+- Le stockage persistant réduit le risque de nettoyage automatique, mais ne protège pas contre l'effacement manuel des données du navigateur. La sauvegarde automatique dans un fichier n'est disponible que dans les navigateurs compatibles avec la File System Access API.
+- Plusieurs versions de l'appli coexistent chez les utilisateurs : toute modification de la structure des données doit prévoir une migration.
 
 ## Règles de collaboration
 
-- Ne pas versionner : `node_modules`, `dist`, `android/local.properties`, ni **aucune clé de signature (keystore)**.
-- La clé de signature est gardée par une seule personne.
-- Ne pas lancer `npm audit fix --force` : les avertissements actuels concernent des outils de développement.
+- Ne pas versionner `node_modules` ni `dist`.
+- Garder les sauvegardes personnelles et autres données privées hors du dépôt.
 
-## Feuille de route (pas à jour)
+## Feuille de route
 
 - [ ] **Propriétés des défis** : catégorie (Sport rouge, Maison orange, Alimentation vert, Hydratation bleu, Esprit violet) et difficulté (facile, moyen, difficile), avec une couleur par catégorie.
 - [ ] **Tirage adaptatif** : choisir deux jours de suite le défi facile augmente les chances de tirer des défis plus difficiles le lendemain.
@@ -142,14 +119,10 @@ npx capacitor-assets generate --android
 - [ ] **Liens visuels** entre les jours consécutifs validés.
 - [ ] **Illustrations** pour chaque défi (génération par IA, style commun, images légères).
 - [ ] **Bonus et malus** façon jeu vidéo (règles à définir).
-- [ ] **Export / import des données** au format JSON versionné (aussi pour changer de téléphone).
-- [ ] **Rappel via le calendrier du téléphone** (fichier `.ics`) pour la web app, où les notifications programmées ne sont pas disponibles.
-- [ ] Message « Nouvelle version disponible » dans la web app.
 
 ## Choix de conception
 
-- Distribution **gratuite** : pas de compte payant Google Play ni Apple. Android via APK, iPhone via la web app.
-- Une entrée dans le catalogue **F-Droid** reste possible : elle demande un dépôt public, une licence libre et des illustrations publiables sous licence libre.
+- Application web gratuite et installable depuis le navigateur, sur téléphone ou ordinateur ; pas de compte payant ni de serveur.
 
 ## Licence
 
