@@ -57,7 +57,7 @@ Clés enregistrées sur l'appareil :
 
 Au premier lancement, `defis` est rempli à partir de `src/data/defisDepart.js`.
 
-## Prérequis (Windows)
+## Prérequis 
 
 - **Node.js** (version LTS)
 - **VS Code** (conseillé)
