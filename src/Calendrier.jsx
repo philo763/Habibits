@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { chargerJours, sauvegarderJours } from "./storage";
 import { cleDate, grilleDuMois } from "./dates";
+import { couleurObjectif } from "./objectifs";
 
 const NOMS_JOURS = ["L", "M", "M", "J", "V", "S", "D"];
 
@@ -8,7 +9,7 @@ function melanger(liste) {
   return [...liste].sort(() => Math.random() - 0.5);
 }
 
-export default function Calendrier({ defis }) {
+export default function Calendrier({ defis, objectifs = [] }) {
   const [jours, setJours] = useState({});
   const [mois, setMois] = useState(() => {
     const n = new Date();
@@ -28,6 +29,8 @@ export default function Calendrier({ defis }) {
   }
 
   const trouver = (id) => defis.find((d) => d.id === id);
+  const couleurDefi = (defi) =>
+    couleurObjectif(objectifs.find((objectif) => objectif.id === defi?.objectifId)?.couleur);
   const cases = grilleDuMois(mois.getFullYear(), mois.getMonth());
   const jour = jours[selection] || {};
   const defiChoisi = jour.choisi ? trouver(jour.choisi) : null;
@@ -83,7 +86,7 @@ export default function Calendrier({ defis }) {
       </h3>
 
       {defiChoisi ? (
-        <div className={`tuile ${jour.fait ? "fait" : "c2"}`}>
+        <div className={`tuile ${jour.fait ? "fait" : "c2"}`} style={{ "--couleur": couleurDefi(defiChoisi) }}>
           <h3>{defiChoisi.titre}</h3>
           <p>{defiChoisi.description}</p>
           {selection === aujourdhui && !jour.fait && (
@@ -101,7 +104,7 @@ export default function Calendrier({ defis }) {
           </button>
         ) : (
           propositions.map((d, i) => (
-            <div key={d.id} className={`tuile c${i}`}>
+            <div key={d.id} className={`tuile c${i}`} style={{ "--couleur": couleurDefi(d) }}>
               <h3>{d.titre}</h3>
               <p>{d.description}</p>
               <button className="btn" onClick={() => maj(selection, { choisi: d.id })}>Choisir</button>

@@ -72,6 +72,20 @@ input {
   border-radius: 4px;
 }
 input:focus { outline: none; border-color: var(--or); }
+textarea {
+  display: block;
+  width: 100%;
+  min-height: 88px;
+  padding: 10px 12px;
+  margin-bottom: 8px;
+  font: inherit;
+  color: var(--papier);
+  background: rgba(10, 22, 49, 0.8);
+  border: 2px solid var(--trait);
+  border-radius: 4px;
+  resize: vertical;
+}
+textarea:focus { outline: none; border-color: var(--or); }
 select {
   display: block;
   width: 100%;
@@ -191,12 +205,79 @@ select:focus { outline: none; border-color: var(--or); }
 .c2 { --couleur: var(--orange); }
 .tuile.fait { --couleur: var(--vert); }
 .accompli { color: #7dffb8; font-weight: 700; }
-.defis-entete { display: flex; flex-direction: column; gap: 4px; }
+.defis-entete, .entete-section { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px; }
 .defis-entete .jour-titre { margin-bottom: 0; }
-.defis-entete .actions { margin-top: 0; }
+.defis-entete > .btn { margin-left: auto; }
 .meta-defi { font-size: 14px; opacity: 0.85; }
-.filtres h3 { margin: 8px 0; }
-.filtres .case-a-cocher { margin: 6px 0; }
+.liste-objectifs { display: grid; gap: 4px; margin: 8px 0 20px; }
+.objectif-tuile, .defi-tuile { border-color: var(--couleur); }
+.objectif-tuile { margin-bottom: 4px; padding: 4px 8px; }
+.objectif-tuile.selectionne { outline: 2px solid var(--or); outline-offset: 2px; }
+.objectif-ligne { display: flex; align-items: center; gap: 8px; }
+.objectif-filtre {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 2px;
+  color: var(--papier);
+  text-align: left;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+.objectif-ligne .actions { flex: none; gap: 6px; margin: 0; }
+.objectif-ligne .btn.petit { padding: 4px 9px; font-size: 15px; }
+.pastille-couleur { width: 13px; height: 13px; flex: none; border-radius: 50%; }
+.objectif-nom {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  font-family: "Barlow Condensed", "Arial Narrow", sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1.15;
+  text-transform: uppercase;
+}
+.objectif-compte { min-width: 28px; padding: 1px 7px; text-align: center; border: 1px solid var(--trait); border-radius: 20px; }
+.defi-corps { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: start; gap: 10px; }
+.defi-contenu { min-width: 0; }
+.defi-contenu h3 { overflow-wrap: anywhere; }
+.defi-contenu p { margin-bottom: 0; }
+.defi-actions { display: flex; flex-direction: column; align-items: flex-end; gap: 5px; }
+.defi-actions .actions { gap: 4px; margin: 0; }
+.action-defi { padding: 3px 7px; font-size: 13px; line-height: 1.1; }
+.defi-difficulte {
+  flex: none;
+  padding: 3px 8px;
+  color: var(--papier);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.2;
+  text-transform: uppercase;
+  border: 1px solid var(--trait);
+  border-radius: 4px;
+}
+.formulaire-objectif { border-color: var(--bleu-clair); }
+.palette-objectifs { display: flex; flex-wrap: wrap; gap: 10px; margin: 8px 0 14px; }
+.choix-couleur {
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  background: var(--couleur);
+  border: 3px solid transparent;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.choix-couleur.selectionne { outline: 2px solid var(--papier); outline-offset: 2px; }
+.filtres-defis { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 8px 0 14px; }
+.filtres-difficulte { display: flex; flex: 1; flex-wrap: wrap; align-items: center; gap: 8px; }
+.filtres-tri { display: flex; flex-wrap: wrap; gap: 8px; margin-left: auto; }
+.filtre-difficulte { text-transform: capitalize; }
+.filtre-difficulte.actif { border-color: var(--or); box-shadow: 0 0 0 2px rgba(245, 197, 66, 0.25); }
+.defi-tuile .actions { margin-bottom: 0; }
+.apropos p { line-height: 1.6; }
 .completion-defi {
   position: fixed;
   inset: 0;
