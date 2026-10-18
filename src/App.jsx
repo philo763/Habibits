@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { chargerDefis, sauvegarderDefis, chargerRappel, sauvegarderRappel } from "./storage";
-import { programmerRappel, notificationTest } from "./notifications";
+import { telechargerRappel } from "./rappel";
 import Calendrier from "./Calendrier";
 
 const SECTIONS = [
@@ -18,14 +18,10 @@ export default function App() {
   const [titre, setTitre] = useState("");
   const [description, setDescription] = useState("");
   const [rappel, setRappel] = useState(null);
-  const [message, setMessage] = useState("");
 
   useEffect(() => {
     chargerDefis().then(setDefis);
-    chargerRappel().then((r) => {
-      setRappel(r);
-      programmerRappel(r.heure, r.minute);
-    });
+    chargerRappel().then(setRappel);
   }, []);
 
   function aller(id) {
@@ -55,13 +51,6 @@ export default function App() {
     const nouveau = { heure, minute };
     setRappel(nouveau);
     await sauvegarderRappel(nouveau);
-    const ok = await programmerRappel(heure, minute);
-    setMessage(ok ? `Rappel programmé chaque jour à ${pad(heure)}:${pad(minute)}.` : "Notifications indisponibles (navigateur ou permission refusée).");
-  }
-
-  async function lancerTest() {
-    const ok = await notificationTest();
-    setMessage(ok ? "Notification test envoyée dans 5 secondes. Vous pouvez quitter l'appli." : "Notifications indisponibles (navigateur ou permission refusée).");
   }
 
   return (
@@ -88,7 +77,7 @@ export default function App() {
 
         {onglet === "defis" && (
           <div>
-            <div className="tuile c1">
+            <div className="tuile">
               <h2>Ajouter un défi</h2>
               <input placeholder="Titre" value={titre} onChange={(e) => setTitre(e.target.value)} />
               <input placeholder="Description (facultatif)" value={description} onChange={(e) => setDescription(e.target.value)} />
@@ -107,8 +96,12 @@ export default function App() {
         )}
 
         {onglet === "rappel" && (
-          <div className="tuile c1">
+          <div className="tuile">
             <h2>Rappel quotidien</h2>
+            <p>
+              Choisissez une heure, puis ajoutez le rappel à l'application Calendrier de votre
+              téléphone : c'est elle qui vous enverra la notification chaque jour.
+            </p>
             {rappel && (
               <label>
                 Heure du rappel
@@ -119,8 +112,11 @@ export default function App() {
                 />
               </label>
             )}
-            <button className="btn" onClick={lancerTest}>Notification test (5 s)</button>
-            {message && <p>{message}</p>}
+            {rappel && (
+              <button className="btn" onClick={() => telechargerRappel(rappel.heure, rappel.minute)}>
+                Ajouter à mon calendrier
+              </button>
+            )}
           </div>
         )}
       </main>

@@ -1,36 +1,61 @@
-import { Preferences } from "@capacitor/preferences";
 import { DEFIS_DEPART } from "./data/defisDepart";
 
+const PREFIXE = "habibits.";
+const ANCIEN_PREFIXE = "CapacitorStorage.";
+
 const CLE_DEFIS = "defis";
+const CLE_JOURS = "jours";
+const CLE_RAPPEL = "rappel";
+
+function lire(cle) {
+  try {
+    let valeur = localStorage.getItem(PREFIXE + cle);
+    if (valeur === null) {
+      // Reprise des données enregistrées avant le passage à la web app seule
+      const ancienne = localStorage.getItem(ANCIEN_PREFIXE + cle);
+      if (ancienne !== null) {
+        localStorage.setItem(PREFIXE + cle, ancienne);
+        valeur = ancienne;
+      }
+    }
+    return valeur === null ? null : JSON.parse(valeur);
+  } catch {
+    return null;
+  }
+}
+
+function ecrire(cle, valeur) {
+  try {
+    localStorage.setItem(PREFIXE + cle, JSON.stringify(valeur));
+  } catch {
+    // stockage plein ou indisponible : on ignore
+  }
+}
 
 export async function sauvegarderDefis(defis) {
-  await Preferences.set({ key: CLE_DEFIS, value: JSON.stringify(defis) });
+  ecrire(CLE_DEFIS, defis);
 }
 
 export async function chargerDefis() {
-  const { value } = await Preferences.get({ key: CLE_DEFIS });
-  if (value) return JSON.parse(value);
+  const defis = lire(CLE_DEFIS);
+  if (defis) return defis;
   // Premier lancement : on part des défis de départ
-  await sauvegarderDefis(DEFIS_DEPART);
+  ecrire(CLE_DEFIS, DEFIS_DEPART);
   return DEFIS_DEPART;
 }
-const CLE_JOURS = "jours";
 
 export async function chargerJours() {
-  const { value } = await Preferences.get({ key: CLE_JOURS });
-  return value ? JSON.parse(value) : {};
+  return lire(CLE_JOURS) || {};
 }
 
 export async function sauvegarderJours(jours) {
-  await Preferences.set({ key: CLE_JOURS, value: JSON.stringify(jours) });
+  ecrire(CLE_JOURS, jours);
 }
-const CLE_RAPPEL = "rappel";
 
 export async function chargerRappel() {
-  const { value } = await Preferences.get({ key: CLE_RAPPEL });
-  return value ? JSON.parse(value) : { heure: 20, minute: 0 };
+  return lire(CLE_RAPPEL) || { heure: 20, minute: 0 };
 }
 
 export async function sauvegarderRappel(rappel) {
-  await Preferences.set({ key: CLE_RAPPEL, value: JSON.stringify(rappel) });
+  ecrire(CLE_RAPPEL, rappel);
 }

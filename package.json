@@ -7,8 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "oxlint",
-    "preview": "vite preview",
-    "build:android": "cross-env VITE_NATIF=1 vite build && cap sync android"
+    "preview": "vite preview"
   },
   "dependencies": {
     "@fontsource/barlow-condensed": "^5.3.0",
