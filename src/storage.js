@@ -29,21 +29,37 @@ function ecrire(cle, valeur) {
     localStorage.setItem(PREFIXE + cle, JSON.stringify(valeur));
     // Prévient le reste de l'appli : la sauvegarde automatique écoute ce signal
     window.dispatchEvent(new Event("habibits:donnees-modifiees"));
+    return true;
   } catch {
-    // stockage plein ou indisponible : on ignore
+    return false;
   }
 }
 
 export async function sauvegarderDefis(defis) {
-  ecrire(CLE_DEFIS, defis);
+  if (!ecrire(CLE_DEFIS, defis)) {
+    throw new Error("Les défis n'ont pas pu être enregistrés dans le stockage local.");
+  }
 }
 
 export async function chargerDefis() {
   const defis = lire(CLE_DEFIS);
-  if (defis) return defis;
+  if (defis) {
+    const maintenant = new Date().toISOString();
+    let migre = false;
+    const defisMigres = defis.map((defi) => {
+      const dateCreationValide =
+        typeof defi.dateCreation === "string" && Number.isFinite(Date.parse(defi.dateCreation));
+      if (dateCreationValide) return defi;
+      migre = true;
+      return { ...defi, dateCreation: maintenant };
+    });
+    if (migre) await sauvegarderDefis(defisMigres);
+    return defisMigres;
+  }
   // Premier lancement : on part des défis de départ
-  ecrire(CLE_DEFIS, DEFIS_DEPART);
-  return DEFIS_DEPART;
+  const defisInitiaux = DEFIS_DEPART.map((defi) => ({ ...defi, dateCreation: new Date().toISOString() }));
+  await sauvegarderDefis(defisInitiaux);
+  return defisInitiaux;
 }
 
 export async function chargerJours() {

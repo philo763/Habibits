@@ -9,7 +9,7 @@ Les données restent **sur le téléphone**, dans le navigateur : pas de compte,
 - **Calendrier** mensuel : une case par jour, avec le titre du défi choisi.
 - **Tirage de trois défis** parmi la liste, pour n'importe quel jour à venir, puis choix d'un défi.
 - **Validation** : le défi du jour se valide depuis sa case (bouton « Valider le défi »).
-- **Gestion des défis** : liste de départ, ajout et suppression depuis l'appli.
+- **Gestion des défis** : ajout de défis avec catégorie, difficulté et date de création, suppression, tri par date et filtres multiples dans « Mes défis ».
 - **Stockage local** : défis, jours et réglage du rappel sont conservés dans le navigateur.
 - **Rappel quotidien** : choix de l'heure et téléchargement d'un fichier `.ics` à importer dans l'appli Calendrier du téléphone, qui enverra la notification.
 - **Données protégées** : demande de stockage persistant pour limiter le nettoyage automatique du navigateur.
@@ -61,7 +61,7 @@ package.json            Dépendances et commandes npm
 
 Les données principales sont enregistrées localement dans le navigateur, sous les clés `habibits.defis`, `habibits.jours` et `habibits.rappel` :
 
-- `defis` : liste de défis `{ id, titre, description, image }`
+- `defis` : liste de défis `{ id, titre, description, image, categorie, difficulte, dateCreation }`
 - `jours` : un objet indexé par date, `"2026-10-16": { propositions: [ids], choisi: id, fait: false }`
 - `rappel` : `{ heure, minute }` (20 h 00 par défaut)
 
@@ -104,6 +104,7 @@ Sur téléphone, ouvre l'adresse publiée puis ajoute Habibits à l'écran d'acc
 - Chaque navigateur et chaque appareil a son propre stockage. Pour changer de téléphone ou garder une copie, exporte puis restaure un fichier JSON.
 - Le stockage persistant réduit le risque de nettoyage automatique, mais ne protège pas contre l'effacement manuel des données du navigateur. La sauvegarde automatique dans un fichier n'est disponible que dans les navigateurs compatibles avec la File System Access API.
 - Plusieurs versions de l'appli coexistent chez les utilisateurs : toute modification de la structure des données doit prévoir une migration.
+- À la première ouverture après l'ajout des propriétés des défis, les dates absentes sont fixées à la date et l'heure de migration. Les catégories et difficultés manquantes sont demandées à l'utilisateur avant qu'il puisse poursuivre ; les autres données existantes sont conservées.
 
 ## Règles de collaboration
 
@@ -112,7 +113,7 @@ Sur téléphone, ouvre l'adresse publiée puis ajoute Habibits à l'écran d'acc
 
 ## Feuille de route
 
-- [ ] **Propriétés des défis** : catégorie (Sport rouge, Maison orange, Alimentation vert, Hydratation bleu, Esprit violet) et difficulté (facile, moyen, difficile), avec une couleur par catégorie.
+- [x] **Propriétés des défis** : catégorie personnalisable, difficulté (facile, moyen, difficile), date de création, tri et filtres multiples.
 - [ ] **Tirage adaptatif** : choisir deux jours de suite le défi facile augmente les chances de tirer des défis plus difficiles le lendemain.
 - [ ] **Défi doré** : une fois complété, il valide le défi du jour J+5.
 - [ ] **Arc-en-ciel** : valider chaque catégorie sur autant de jours consécutifs qu'il y a de catégories donne un prochain tirage entièrement doré.
