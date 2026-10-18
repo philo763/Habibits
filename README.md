@@ -9,7 +9,9 @@ Les données restent **sur le téléphone**, dans le navigateur : pas de compte,
 - **Calendrier** mensuel : une case par jour, avec le titre du défi choisi.
 - **Tirage de trois défis** parmi la liste, pour n'importe quel jour à venir, puis choix d'un défi.
 - **Validation** : le défi du jour se valide depuis sa case (bouton « Valider le défi »).
-- **Gestion des défis** : ajout de défis avec catégorie, difficulté et date de création, suppression, tri par date et filtres multiples dans « Mes défis ».
+- **Gestion des objectifs et des défis** : objectifs indépendants avec couleur, renommage et suppression sécurisée ; défis modifiables avec difficulté et date de création.
+- **Tri et filtres** dans « Mes défis » : par date de création, par objectifs et par difficultés, avec sélection multiple.
+- **À propos** : présentation de l'approche de Habibits et de sa raison d'être.
 - **Stockage local** : défis, jours et réglage du rappel sont conservés dans le navigateur.
 - **Rappel quotidien** : choix de l'heure et téléchargement d'un fichier `.ics` à importer dans l'appli Calendrier du téléphone, qui enverra la notification.
 - **Données protégées** : demande de stockage persistant pour limiter le nettoyage automatique du navigateur.
@@ -42,6 +44,7 @@ src/
   Parametres.jsx        Rappel, stockage et gestion des sauvegardes
   Restauration.jsx      Choix et restauration d'une sauvegarde JSON
   Bandeaux.jsx          Indicateurs et messages de sauvegarde
+  objectifs.js          Palette des objectifs et migration des données de défis
   storage.js            Lecture et écriture des défis, des jours et du rappel
   sauvegarde.js         Export, restauration et sauvegarde automatique
   rappel.js             Création et téléchargement du fichier .ics
@@ -59,9 +62,10 @@ package.json            Dépendances et commandes npm
 
 ## Format des données
 
-Les données principales sont enregistrées localement dans le navigateur, sous les clés `habibits.defis`, `habibits.jours` et `habibits.rappel` :
+Les données principales sont enregistrées localement dans le navigateur, sous les clés `habibits.objectifs`, `habibits.defis`, `habibits.jours` et `habibits.rappel` :
 
-- `defis` : liste de défis `{ id, titre, description, image, categorie, difficulte, dateCreation }`
+- `objectifs` : liste indépendante `{ id, nom, couleur }`, permettant notamment les objectifs sans défi.
+- `defis` : liste de défis `{ id, titre, description, image, objectifId, difficulte, dateCreation }`
 - `jours` : un objet indexé par date, `"2026-10-16": { propositions: [ids], choisi: id, fait: false }`
 - `rappel` : `{ heure, minute }` (20 h 00 par défaut)
 
@@ -104,7 +108,7 @@ Sur téléphone, ouvre l'adresse publiée puis ajoute Habibits à l'écran d'acc
 - Chaque navigateur et chaque appareil a son propre stockage. Pour changer de téléphone ou garder une copie, exporte puis restaure un fichier JSON.
 - Le stockage persistant réduit le risque de nettoyage automatique, mais ne protège pas contre l'effacement manuel des données du navigateur. La sauvegarde automatique dans un fichier n'est disponible que dans les navigateurs compatibles avec la File System Access API.
 - Plusieurs versions de l'appli coexistent chez les utilisateurs : toute modification de la structure des données doit prévoir une migration.
-- À la première ouverture après l'ajout des propriétés des défis, les dates absentes sont fixées à la date et l'heure de migration. Les catégories et difficultés manquantes sont demandées à l'utilisateur avant qu'il puisse poursuivre ; les autres données existantes sont conservées.
+- À la première ouverture après l'ajout des propriétés des défis, les dates absentes sont fixées à la date et l'heure de migration. Les catégories existantes deviennent des objectifs bleus et les défis leur sont associés ; une difficulté ou un objectif manquant est demandé à l'utilisateur avant qu'il puisse poursuivre. Les sauvegardes antérieures sont converties à leur restauration.
 
 ## Règles de collaboration
 
@@ -113,10 +117,10 @@ Sur téléphone, ouvre l'adresse publiée puis ajoute Habibits à l'écran d'acc
 
 ## Feuille de route
 
-- [x] **Propriétés des défis** : catégorie personnalisable, difficulté (facile, moyen, difficile), date de création, tri et filtres multiples.
+- [x] **Objectifs et défis** : objectifs personnalisables, difficulté (facile, moyen, difficile), date de création, tri et filtres multiples.
 - [ ] **Tirage adaptatif** : choisir deux jours de suite le défi facile augmente les chances de tirer des défis plus difficiles le lendemain.
 - [ ] **Défi doré** : une fois complété, il valide le défi du jour J+5.
-- [ ] **Arc-en-ciel** : valider chaque catégorie sur autant de jours consécutifs qu'il y a de catégories donne un prochain tirage entièrement doré.
+- [ ] **Arc-en-ciel** : valider chaque objectif sur autant de jours consécutifs qu'il y a d'objectifs donne un prochain tirage entièrement doré.
 - [ ] **Liens visuels** entre les jours consécutifs validés.
 - [ ] **Illustrations** pour chaque défi (génération par IA, style commun, images légères).
 - [ ] **Bonus et malus** façon jeu vidéo (règles à définir).

@@ -1,9 +1,11 @@
 import { DEFIS_DEPART } from "./data/defisDepart";
+import { normaliserDonneesDefis } from "./objectifs";
 
 const PREFIXE = "habibits.";
 const ANCIEN_PREFIXE = "CapacitorStorage.";
 
 const CLE_DEFIS = "defis";
+const CLE_OBJECTIFS = "objectifs";
 const CLE_JOURS = "jours";
 const CLE_RAPPEL = "rappel";
 
@@ -41,25 +43,30 @@ export async function sauvegarderDefis(defis) {
   }
 }
 
-export async function chargerDefis() {
-  const defis = lire(CLE_DEFIS);
-  if (defis) {
-    const maintenant = new Date().toISOString();
-    let migre = false;
-    const defisMigres = defis.map((defi) => {
-      const dateCreationValide =
-        typeof defi.dateCreation === "string" && Number.isFinite(Date.parse(defi.dateCreation));
-      if (dateCreationValide) return defi;
-      migre = true;
-      return { ...defi, dateCreation: maintenant };
-    });
-    if (migre) await sauvegarderDefis(defisMigres);
-    return defisMigres;
+export async function sauvegarderObjectifs(objectifs) {
+  if (!ecrire(CLE_OBJECTIFS, objectifs)) {
+    throw new Error("Les objectifs n'ont pas pu être enregistrés dans le stockage local.");
   }
-  // Premier lancement : on part des défis de départ
-  const defisInitiaux = DEFIS_DEPART.map((defi) => ({ ...defi, dateCreation: new Date().toISOString() }));
-  await sauvegarderDefis(defisInitiaux);
-  return defisInitiaux;
+}
+
+export async function chargerDonneesDefis() {
+  const donneeStockee = lire(CLE_DEFIS);
+  const defisBruts = Array.isArray(donneeStockee)
+    ? donneeStockee
+    : DEFIS_DEPART.map((defi) => ({ ...defi, dateCreation: new Date().toISOString() }));
+  const objectifsBruts = lire(CLE_OBJECTIFS);
+  const { defis, objectifs } = normaliserDonneesDefis(defisBruts, objectifsBruts);
+  if (JSON.stringify(objectifsBruts) !== JSON.stringify(objectifs)) await sauvegarderObjectifs(objectifs);
+  if (JSON.stringify(donneeStockee) !== JSON.stringify(defis)) await sauvegarderDefis(defis);
+  return { defis, objectifs };
+}
+
+export async function chargerDefis() {
+  return (await chargerDonneesDefis()).defis;
+}
+
+export async function chargerObjectifs() {
+  return (await chargerDonneesDefis()).objectifs;
 }
 
 export async function chargerJours() {

@@ -7,17 +7,19 @@
 // ---------------------------------------------------------------------------
 import { useSyncExternalStore } from "react";
 import {
-  chargerDefis,
   chargerJours,
   chargerRappel,
   sauvegarderDefis,
+  sauvegarderObjectifs,
+  chargerDonneesDefis,
   sauvegarderJours,
   sauvegarderRappel,
 } from "./storage";
 import { cleDate } from "./dates";
+import { normaliserDonneesDefis } from "./objectifs";
 
 const APP = "habibits";
-const VERSION_FORMAT = 1; // à augmenter si la structure du fichier change
+const VERSION_FORMAT = 2;
 
 const CLE_META = "habibits.sauvegarde";
 const CLE_ACCUEIL = "habibits.accueil";
@@ -124,7 +126,7 @@ async function construireSauvegarde() {
     version: VERSION_FORMAT,
     exporteLe: new Date().toISOString(),
     donnees: {
-      defis: await chargerDefis(),
+      ...await chargerDonneesDefis(),
       jours: await chargerJours(),
       rappel: await chargerRappel(),
     },
@@ -148,19 +150,26 @@ function verifierSauvegarde(texte) {
   if (typeof objet.version !== "number" || objet.version > VERSION_FORMAT) {
     return { ok: false, erreur: "Ce fichier vient d'une version plus récente d'Habibits. Mets l'appli à jour, puis réessaie." };
   }
-  // Ici, on migrera les anciens formats le jour où VERSION_FORMAT changera.
-
   const d = objet.donnees;
   const defisOk =
     Array.isArray(d?.defis) && d.defis.every((x) => x && typeof x.id === "string" && typeof x.titre === "string");
+  const objectifsOk =
+    d?.objectifs === undefined ||
+    (Array.isArray(d.objectifs) &&
+      d.objectifs.every((x) => x && typeof x.id === "string" && typeof x.nom === "string"));
   const joursOk = d?.jours && typeof d.jours === "object" && !Array.isArray(d.jours);
   const rappelOk = d?.rappel && Number.isInteger(d.rappel.heure) && Number.isInteger(d.rappel.minute);
-  if (!defisOk || !joursOk || !rappelOk) {
+  if (!defisOk || !objectifsOk || !joursOk || !rappelOk) {
     return { ok: false, erreur: "Le contenu du fichier est incomplet ou abîmé. Essaie une autre sauvegarde." };
   }
+  const donneesNormalisees = normaliserDonneesDefis(d.defis, d.objectifs);
   return {
     ok: true,
-    sauvegarde: objet,
+    sauvegarde: {
+      ...objet,
+      version: VERSION_FORMAT,
+      donnees: { ...d, ...donneesNormalisees },
+    },
     resume: {
       nbDefis: d.defis.length,
       nbValides: compterValides(d.jours),
@@ -178,6 +187,7 @@ async function appliquerSauvegarde(sauvegarde) {
     // pas de copie de secours possible : on continue
   }
   const d = sauvegarde.donnees;
+  await sauvegarderObjectifs(d.objectifs);
   await sauvegarderDefis(d.defis);
   await sauvegarderJours(d.jours);
   await sauvegarderRappel(d.rappel);
