@@ -27,6 +27,8 @@ function lire(cle) {
 function ecrire(cle, valeur) {
   try {
     localStorage.setItem(PREFIXE + cle, JSON.stringify(valeur));
+    // Prévient le reste de l'appli : la sauvegarde automatique écoute ce signal
+    window.dispatchEvent(new Event("habibits:donnees-modifiees"));
   } catch {
     // stockage plein ou indisponible : on ignore
   }
