@@ -117,7 +117,20 @@ export default function App() {
 
   async function majJour(cle, patch) {
     const aujourdhui = cleDate(new Date());
-    if (cle < aujourdhui || cle > cleDeDemain()) return;
+    if (cle > cleDeDemain()) throw new Error("Le calendrier ne peut être modifié que jusqu’à demain.");
+    if (cle < aujourdhui) {
+      const jourExistant = jours[cle];
+      const propositionsExistantes = Array.isArray(jourExistant?.propositions) ? jourExistant.propositions : [];
+      if (!jourExistant || (!jourExistant.choisi && propositionsExistantes.length === 0)) {
+        throw new Error("Un jour passé sans tirage existant ne peut pas être modifié.");
+      }
+      if ("propositions" in patch) {
+        throw new Error("Il n’est pas possible de tirer des défis pour un jour passé.");
+      }
+      if (patch.choisi && !propositionsExistantes.includes(patch.choisi)) {
+        throw new Error("Pour un jour passé, tu peux uniquement choisir une carte déjà tirée.");
+      }
+    }
     const nouveau = { ...jours, [cle]: { ...jours[cle], ...patch } };
     await sauvegarderJours(nouveau);
     setJours(nouveau);
