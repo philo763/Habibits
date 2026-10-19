@@ -5,12 +5,18 @@ import { couleurObjectif } from "./objectifs";
 import IndicateurDifficulte from "./IndicateurDifficulte";
 
 const NOMS_JOURS = ["L", "M", "M", "J", "V", "S", "D"];
+const DIFFICULTES = ["facile", "moyen", "difficile"];
 
 function melanger(liste) {
-  return [...liste].sort(() => Math.random() - 0.5);
+  const melangee = [...liste];
+  for (let i = melangee.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [melangee[i], melangee[j]] = [melangee[j], melangee[i]];
+  }
+  return melangee;
 }
 
-export default function Calendrier({ defis, objectifs = [] }) {
+export default function Calendrier({ defis, objectifs = [], onAllerDefis }) {
   const [jours, setJours] = useState({});
   const [mois, setMois] = useState(() => {
     const n = new Date();
@@ -18,6 +24,8 @@ export default function Calendrier({ defis, objectifs = [] }) {
   });
   const [aujourdhui] = useState(() => cleDate(new Date()));
   const [selection, setSelection] = useState(aujourdhui);
+  const [alerteTirage, setAlerteTirage] = useState(false);
+  const [erreurTirage, setErreurTirage] = useState("");
 
   useEffect(() => {
     chargerJours().then(setJours);
@@ -37,9 +45,38 @@ export default function Calendrier({ defis, objectifs = [] }) {
   const defiChoisi = jour.choisi ? trouver(jour.choisi) : null;
   const propositions = (jour.propositions || []).map(trouver).filter(Boolean);
   const modifiable = selection >= aujourdhui;
+  const difficultesManquantes = DIFFICULTES.filter(
+    (difficulte) => !defis.some((defi) => defi.difficulte === difficulte)
+  );
 
   function changerMois(delta) {
     setMois(new Date(mois.getFullYear(), mois.getMonth() + delta, 1));
+  }
+
+  function preparerTirage(continuerSansToutesLesDifficultes = false) {
+    if (difficultesManquantes.length && !continuerSansToutesLesDifficultes) {
+      setAlerteTirage(true);
+      setErreurTirage("");
+      return;
+    }
+
+    setAlerteTirage(false);
+    const tirage = DIFFICULTES.flatMap((difficulte) => {
+      const defi = melanger(defis.filter((element) => element.difficulte === difficulte))[0];
+      return defi ? [defi] : [];
+    });
+    while (tirage.length < 3) {
+      const disponibles = defis.filter((defi) => !tirage.some((selectionne) => selectionne.id === defi.id));
+      if (disponibles.length === 0) break;
+      tirage.push(melanger(disponibles)[0]);
+    }
+    if (tirage.length < 3) {
+      setErreurTirage("Il faut au moins trois défis distincts pour tirer trois cartes.");
+      return;
+    }
+
+    setErreurTirage("");
+    maj(selection, { propositions: tirage.map((defi) => defi.id) });
   }
 
   return (
@@ -73,7 +110,11 @@ export default function Calendrier({ defis, objectifs = [] }) {
             cle < aujourdhui ? "passe" : "",
           ].join(" ");
           return (
-            <button key={i} className={classes} onClick={() => setSelection(cle)}>
+            <button key={i} className={classes} onClick={() => {
+              setSelection(cle);
+              setAlerteTirage(false);
+              setErreurTirage("");
+            }}>
               <span className="num">{date.getDate()}</span>
               {j.fait && <span className="coche">✔</span>}
               <span className="titre-case">{defi ? defi.titre : ""}</span>
@@ -97,12 +138,34 @@ export default function Calendrier({ defis, objectifs = [] }) {
         </div>
       ) : modifiable ? (
         propositions.length === 0 ? (
-          <button
-            className="btn grand"
-            onClick={() => maj(selection, { propositions: melanger(defis).slice(0, 3).map((d) => d.id) })}
-          >
-            Tirer 3 défis
-          </button>
+          <>
+            {alerteTirage && difficultesManquantes.length > 0 ? (
+              <div className="alerte-tirage" role="alert">
+                <p>
+                  Il manque des défis de difficulté {difficultesManquantes.join(", ")}. Il est conseillé de créer
+                  au moins un défi de chaque difficulté pour profiter du tirage complet.
+                </p>
+                {defis.length < 3 && (
+                  <p>Il faut au moins trois défis distincts pour tirer trois cartes.</p>
+                )}
+                <div className="actions">
+                  <button className="btn" onClick={onAllerDefis}>Créer les défis manquants</button>
+                  <button
+                    className="btn discret"
+                    onClick={() => preparerTirage(true)}
+                    disabled={defis.length < 3}
+                  >
+                    Continuer quand même
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <button className="btn grand" onClick={() => preparerTirage()}>
+                Tirer 3 défis
+              </button>
+            )}
+            {erreurTirage && <p className="alerte-tirage" role="alert">{erreurTirage}</p>}
+          </>
         ) : (
           <div className="tirage-defis">
             {propositions.map((d, i) => {

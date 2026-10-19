@@ -118,6 +118,7 @@ select:focus { outline: none; border-color: var(--or); }
   display: flex;
   flex-direction: column;
   gap: 8px;
+  overflow-y: auto;
 }
 .panneau.ouvert { transform: none; }
 .panneau-titre { color: var(--bleu-clair); font-size: 14px; }
@@ -135,6 +136,21 @@ select:focus { outline: none; border-color: var(--or); }
   cursor: pointer;
 }
 .lien.actif { border-color: var(--bleu-clair); background: rgba(21, 83, 199, 0.4); }
+.page-regles h3 { margin: 16px 0 6px; color: var(--bleu-clair); }
+.page-regles ul { margin: 0; padding-left: 22px; line-height: 1.55; }
+.page-regles li { margin-bottom: 6px; }
+.regles-resume { border-color: var(--or); }
+.regles-resume p { margin: 4px 0 0; font-size: 18px; }
+.alerte-tirage {
+  margin: 0 0 12px;
+  padding: 12px;
+  border: 2px solid var(--or);
+  border-radius: 4px;
+  background: rgba(245, 197, 66, 0.1);
+}
+.alerte-tirage p { margin: 0 0 10px; line-height: 1.5; }
+.alerte-tirage .actions { flex-wrap: wrap; margin: 0; }
+.alerte-tirage .btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
 /* Plan (blueprint) */
 .blueprint {
