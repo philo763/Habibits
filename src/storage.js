@@ -74,7 +74,9 @@ export async function chargerJours() {
 }
 
 export async function sauvegarderJours(jours) {
-  ecrire(CLE_JOURS, jours);
+  if (!ecrire(CLE_JOURS, jours)) {
+    throw new Error("Les données du calendrier n'ont pas pu être enregistrées dans le stockage local.");
+  }
 }
 
 export async function chargerRappel() {

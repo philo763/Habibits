@@ -14,6 +14,8 @@ import Regles from "./Regles";
 import { Bandeaux, Indicateur } from "./Bandeaux";
 import { COULEURS_OBJECTIF, couleurObjectif } from "./objectifs";
 import IndicateurDifficulte from "./IndicateurDifficulte";
+import { cleDate } from "./dates";
+import { chargerJours, sauvegarderJours } from "./storage";
 import "./sauvegarde.css";
 
 const SECTIONS = [
@@ -28,11 +30,32 @@ const defiIncomplet = (defi, objectifs) =>
   !objectifs.some((objectif) => objectif.id === defi.objectifId) || !DIFFICULTES.includes(defi.difficulte);
 const dateActuelleISO = () => new Date().toISOString();
 
+function cleDeDemain() {
+  const demain = new Date();
+  demain.setDate(demain.getDate() + 1);
+  return cleDate(demain);
+}
+
+function datesAvecTirageInterdit(jours, dateLimite) {
+  return Object.entries(jours)
+    .filter(([date, jour]) =>
+      /^\d{4}-\d{2}-\d{2}$/.test(date) &&
+      date > dateLimite &&
+      ((Array.isArray(jour?.propositions) && jour.propositions.length > 0) || Boolean(jour?.choisi))
+    )
+    .map(([date]) => date)
+    .sort();
+}
+
 export default function App() {
   const [onglet, setOnglet] = useState("calendrier");
   const [menuOuvert, setMenuOuvert] = useState(false);
   const [defis, setDefis] = useState([]);
   const [objectifs, setObjectifs] = useState([]);
+  const [jours, setJours] = useState({});
+  const [datesTiragesAConfirmer, setDatesTiragesAConfirmer] = useState([]);
+  const [erreurNettoyage, setErreurNettoyage] = useState("");
+  const [nettoyageEnCours, setNettoyageEnCours] = useState(false);
   const [titre, setTitre] = useState("");
   const [description, setDescription] = useState("");
   const [objectifId, setObjectifId] = useState("");
@@ -61,8 +84,11 @@ export default function App() {
         if (lireAccueil().persistantDemande) await demanderPersistant(false);
         else await rafraichirPersistant();
         const donnees = await chargerDonneesDefis();
+        const joursCharges = await chargerJours();
         setDefis(donnees.defis);
         setObjectifs(donnees.objectifs);
+        setJours(joursCharges);
+        setDatesTiragesAConfirmer(datesAvecTirageInterdit(joursCharges, cleDeDemain()));
         setDonneesChargees(true);
       } catch (erreur) {
         console.error("Impossible de charger les défis.", erreur);
@@ -83,6 +109,31 @@ export default function App() {
   function terminerAccueil() {
     ecrireAccueil({ termine: true });
     setAccueilOuvert(false);
+  }
+
+  async function majJour(cle, patch) {
+    const aujourdhui = cleDate(new Date());
+    if (cle < aujourdhui || cle > cleDeDemain()) return;
+    const nouveau = { ...jours, [cle]: { ...jours[cle], ...patch } };
+    await sauvegarderJours(nouveau);
+    setJours(nouveau);
+  }
+
+  async function confirmerNettoyageTirages() {
+    setNettoyageEnCours(true);
+    setErreurNettoyage("");
+    const nouveauxJours = { ...jours };
+    for (const date of datesTiragesAConfirmer) delete nouveauxJours[date];
+    try {
+      await sauvegarderJours(nouveauxJours);
+      setJours(nouveauxJours);
+      setDatesTiragesAConfirmer([]);
+    } catch (erreur) {
+      console.error("Impossible de nettoyer les anciens tirages.", erreur);
+      setErreurNettoyage(erreur.message);
+    } finally {
+      setNettoyageEnCours(false);
+    }
   }
 
   async function ajouterDefi() {
@@ -263,7 +314,7 @@ export default function App() {
 
   return (
     <div>
-      <header className="entete">
+      <header className="entete" inert={datesTiragesAConfirmer.length > 0}>
         <button className="btn icone" onClick={() => setMenuOuvert(true)} aria-label="Menu">
           ☰
         </button>
@@ -275,7 +326,7 @@ export default function App() {
 
       {menuOuvert && <div className="voile" onClick={() => setMenuOuvert(false)} />}
 
-      <nav className={`panneau ${menuOuvert ? "ouvert" : ""}`}>
+      <nav className={`panneau ${menuOuvert ? "ouvert" : ""}`} inert={datesTiragesAConfirmer.length > 0}>
         <button className="btn icone fermer" onClick={() => setMenuOuvert(false)}>
           ✕
         </button>
@@ -298,11 +349,17 @@ export default function App() {
         </div>
       </nav>
 
-      <main className="contenu">
+      <main className="contenu" inert={datesTiragesAConfirmer.length > 0}>
         <Bandeaux />
 
         {onglet === "calendrier" && (
-          <Calendrier defis={defis} objectifs={objectifs} onAllerDefis={() => aller("defis")} />
+          <Calendrier
+            defis={defis}
+            objectifs={objectifs}
+            jours={jours}
+            onMajJour={majJour}
+            onAllerDefis={() => aller("defis")}
+          />
         )}
 
         {onglet === "regles" && <Regles />}
@@ -546,8 +603,8 @@ export default function App() {
         )}
       </main>
 
-      {accueilOuvert && <Accueil onTermine={terminerAccueil} />}
-      {defiACompleter && !completionSuspendue && (
+      {accueilOuvert && datesTiragesAConfirmer.length === 0 && <Accueil onTermine={terminerAccueil} />}
+      {defiACompleter && !completionSuspendue && datesTiragesAConfirmer.length === 0 && (
         <div className="completion-defi" role="dialog" aria-modal="true" aria-labelledby="titre-completion">
           <div className="tuile">
             <h2 id="titre-completion">Compléter tes défis</h2>
@@ -593,12 +650,29 @@ export default function App() {
           </div>
         </div>
       )}
-      {!donneesChargees && !erreurChargement && (
+      {datesTiragesAConfirmer.length > 0 && (
+        <div className="nettoyage-tirages" role="dialog" aria-modal="true" aria-labelledby="titre-nettoyage-tirages">
+          <div className="tuile">
+            <h2 id="titre-nettoyage-tirages">Mise à jour des règles du calendrier</h2>
+            <p>
+              À partir de maintenant, un tirage ne sera possible que pour aujourd’hui ou demain. Les tirages et défis
+              choisis à partir d’après-demain ({datesTiragesAConfirmer.length} jour{datesTiragesAConfirmer.length > 1 ? "s" : ""})
+              seront supprimés pour appliquer cette règle.
+            </p>
+            <p>Si tu souhaites en garder une trace, fais une capture d’écran maintenant. Rien ne sera supprimé avant ta confirmation.</p>
+            {erreurNettoyage && <p className="attention" role="alert">{erreurNettoyage}</p>}
+            <button className="btn" onClick={confirmerNettoyageTirages} disabled={nettoyageEnCours}>
+              {nettoyageEnCours ? "Nettoyage en cours…" : "J’ai fait ma capture d’écran, supprimer ces tirages"}
+            </button>
+          </div>
+        </div>
+      )}
+      {!donneesChargees && !erreurChargement && datesTiragesAConfirmer.length === 0 && (
         <div className="completion-defi" role="status">
           <div className="tuile"><p>Chargement et préparation de tes données…</p></div>
         </div>
       )}
-      {erreurChargement && (
+      {erreurChargement && datesTiragesAConfirmer.length === 0 && (
         <div className="completion-defi" role="alert">
           <div className="tuile">
             <p>{erreurChargement}</p>

@@ -9,7 +9,7 @@ export default function Regles() {
       <section aria-labelledby="titre-regles-tirage">
         <h3 id="titre-regles-tirage">Le tirage</h3>
         <ul>
-          <li>Un seul tirage par jour ; les cartes tirées restent disponibles.</li>
+          <li>Un seul tirage par jour, pour aujourd’hui ou demain ; les cartes tirées restent disponibles.</li>
           <li>Le tirage propose un défi facile, un moyen et un difficile.</li>
           <li>
             Un niveau manque ? Crée un défi de ce niveau ou continue : les cartes manquantes sont tirées au hasard

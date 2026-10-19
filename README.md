@@ -7,7 +7,7 @@ Les données restent **sur le téléphone**, dans le navigateur : pas de compte,
 ## Fonctionnalités actuelles
 
 - **Calendrier** mensuel : une case par jour, avec le titre du défi choisi.
-- **Tirage quotidien** en un clic : une carte facile, une moyenne et une difficile, puis choix d'un défi.
+- **Tirage quotidien** en un clic, pour aujourd’hui ou demain : une carte facile, une moyenne et une difficile, puis choix d'un défi.
 - **Tirage de secours** : si une difficulté manque dans la liste, l'application recommande de créer un défi de ce niveau. On peut continuer ; les cartes manquantes sont alors tirées au hasard parmi les défis existants, en conservant leur difficulté réelle. Il faut au moins trois défis distincts pour tirer trois cartes.
 - **Validation** : le défi du jour se valide depuis sa case (bouton « Valider le défi »).
 - **Gestion des objectifs et des défis** : objectifs indépendants avec couleur, renommage et suppression sécurisée ; défis modifiables avec difficulté et date de création.
@@ -26,9 +26,10 @@ Les données restent **sur le téléphone**, dans le navigateur : pas de compte,
 
 ## Règles du calendrier
 
-- Un tirage par jour propose un défi facile, un moyen et un difficile ; les cartes restent disponibles après le tirage.
+- Un tirage par jour, pour aujourd’hui ou demain, propose un défi facile, un moyen et un difficile ; les cartes restent disponibles après le tirage. Les autres dates ne créent aucune donnée de tirage.
 - Si un niveau n'est pas représenté, un message conseille de créer un défi de cette difficulté et donne accès à « Mes défis ». Il est aussi possible de continuer : chaque carte manquante est alors tirée au hasard parmi les défis encore disponibles, sans modifier sa difficulté enregistrée.
 - Trois défis distincts au minimum sont nécessaires. On choisit une seule carte par jour et on valide le défi le jour même ; les jours passés ne sont pas modifiables.
+- À la première ouverture de cette version, si des tirages ou défis choisis existent après demain, l’application explique leur suppression et attend une confirmation. L’utilisateur peut faire une capture d’écran avant de confirmer.
 
 ## Stack technique
 

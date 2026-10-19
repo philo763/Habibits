@@ -1,5 +1,4 @@
-import { useState, useEffect } from "react";
-import { chargerJours, sauvegarderJours } from "./storage";
+import { useState } from "react";
 import { cleDate, grilleDuMois } from "./dates";
 import { couleurObjectif } from "./objectifs";
 import IndicateurDifficulte from "./IndicateurDifficulte";
@@ -16,25 +15,28 @@ function melanger(liste) {
   return melangee;
 }
 
-export default function Calendrier({ defis, objectifs = [], onAllerDefis }) {
-  const [jours, setJours] = useState({});
+export default function Calendrier({ defis, objectifs = [], jours, onMajJour, onAllerDefis }) {
   const [mois, setMois] = useState(() => {
     const n = new Date();
     return new Date(n.getFullYear(), n.getMonth(), 1);
   });
   const [aujourdhui] = useState(() => cleDate(new Date()));
+  const [demain] = useState(() => {
+    const date = new Date();
+    date.setDate(date.getDate() + 1);
+    return cleDate(date);
+  });
   const [selection, setSelection] = useState(aujourdhui);
   const [alerteTirage, setAlerteTirage] = useState(false);
   const [erreurTirage, setErreurTirage] = useState("");
 
-  useEffect(() => {
-    chargerJours().then(setJours);
-  }, []);
-
   async function maj(cle, patch) {
-    const nouveau = { ...jours, [cle]: { ...jours[cle], ...patch } };
-    setJours(nouveau);
-    await sauvegarderJours(nouveau);
+    try {
+      await onMajJour(cle, patch);
+      setErreurTirage("");
+    } catch (erreur) {
+      setErreurTirage(erreur.message);
+    }
   }
 
   const trouver = (id) => defis.find((d) => d.id === id);
@@ -44,7 +46,7 @@ export default function Calendrier({ defis, objectifs = [], onAllerDefis }) {
   const jour = jours[selection] || {};
   const defiChoisi = jour.choisi ? trouver(jour.choisi) : null;
   const propositions = (jour.propositions || []).map(trouver).filter(Boolean);
-  const modifiable = selection >= aujourdhui;
+  const modifiable = selection >= aujourdhui && selection <= demain;
   const difficultesManquantes = DIFFICULTES.filter(
     (difficulte) => !defis.some((defi) => defi.difficulte === difficulte)
   );
@@ -127,6 +129,8 @@ export default function Calendrier({ defis, objectifs = [], onAllerDefis }) {
         {new Date(selection + "T00:00").toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long" })}
       </h3>
 
+      {erreurTirage && <p className="alerte-tirage" role="alert">{erreurTirage}</p>}
+
       {defiChoisi ? (
         <div className={`tuile ${jour.fait ? "fait" : "c2"}`} style={{ "--couleur": couleurDefi(defiChoisi) }}>
           <h3>{defiChoisi.titre}</h3>
@@ -164,7 +168,6 @@ export default function Calendrier({ defis, objectifs = [], onAllerDefis }) {
                 Tirer 3 défis
               </button>
             )}
-            {erreurTirage && <p className="alerte-tirage" role="alert">{erreurTirage}</p>}
           </>
         ) : (
           <div className="tirage-defis">
@@ -194,6 +197,8 @@ export default function Calendrier({ defis, objectifs = [], onAllerDefis }) {
             })}
           </div>
         )
+      ) : selection > demain ? (
+        <p>Le tirage est possible uniquement pour aujourd’hui ou demain.</p>
       ) : (
         <p>Aucun défi ce jour-là.</p>
       )}
