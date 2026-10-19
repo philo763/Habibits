@@ -37,13 +37,71 @@ export default function Calendrier({
   const [selection, setSelection] = useState(aujourdhui);
   const [alerteTirage, setAlerteTirage] = useState(false);
   const [erreurTirage, setErreurTirage] = useState("");
+  const [confirmation, setConfirmation] = useState(null);
+  const [noteEchec, setNoteEchec] = useState("");
 
   async function maj(cle, patch) {
     try {
       await onMajJour(cle, patch);
       setErreurTirage("");
+      return true;
     } catch (erreur) {
       setErreurTirage(erreur.message);
+      return false;
+    }
+  }
+
+  async function confirmerAction() {
+    if (confirmation.type === "choisir") {
+      if (await maj(selection, { choisi: confirmation.defi.id })) setConfirmation(null);
+    } else if (confirmation.type === "modifier") {
+      const collectionHistorique = Array.isArray(jour.collectionHistorique) ? [...jour.collectionHistorique] : [];
+      if (jour.collectionne && jour.choisi) {
+        collectionHistorique.push({
+          id: jour.choisi,
+          defiCopie: jour.defiCopie || defiChoisi,
+          objectifCopie: jour.objectifCopie || objectifs.find((item) => item.id === defiChoisi?.objectifId) || null,
+        });
+      }
+      if (await maj(selection, {
+        choisi: null,
+        fait: false,
+        nonReussi: false,
+        note: "",
+        collectionProposable: false,
+        collectionne: false,
+        defiCopie: null,
+        objectifCopie: null,
+        collectionHistorique,
+      })) {
+        setConfirmation(null);
+      }
+    } else if (confirmation.type === "valider") {
+      const objectif = objectifs.find((item) => item.id === defiChoisi.objectifId);
+      if (await maj(selection, {
+        fait: true,
+        collectionProposable: true,
+        nonReussi: false,
+        note: "",
+        defiCopie: { ...defiChoisi },
+        objectifCopie: objectif ? { ...objectif } : null,
+      })) {
+        setConfirmation(null);
+      }
+    } else if (confirmation.type === "echec") {
+      const objectif = objectifs.find((item) => item.id === defiChoisi.objectifId);
+      if (await maj(selection, {
+        fait: false,
+        nonReussi: true,
+        note: noteEchec.trim(),
+        collectionProposable: false,
+        collectionne: false,
+        defiCopie: { ...defiChoisi },
+        objectifCopie: objectif ? { ...objectif } : null,
+      })) {
+        setConfirmation(null);
+        setNoteEchec("");
+      }
     }
   }
 
@@ -111,6 +169,7 @@ export default function Calendrier({
           const defi = j.choisi ? trouver(j.choisi) : null;
           let etat = "vide";
           if (j.fait) etat = "fait";
+          else if (j.nonReussi) etat = "non-reussi";
           else if (j.choisi) etat = "choisi";
           else if ((j.propositions || []).length) etat = "propose";
           const classes = [
@@ -128,6 +187,7 @@ export default function Calendrier({
             }}>
               <span className="num">{date.getDate()}</span>
               {j.fait && <span className="coche">✔</span>}
+              {j.nonReussi && <span className="coche">×</span>}
               <span className="titre-case">{defi ? defi.titre : ""}</span>
             </button>
           );
@@ -141,13 +201,37 @@ export default function Calendrier({
       {erreurTirage && <p className="alerte-tirage" role="alert">{erreurTirage}</p>}
 
       {defiChoisi ? (
-        <div className={`tuile ${jour.fait ? "fait" : "c2"}`} style={{ "--couleur": couleurDefi(defiChoisi) }}>
+        <div className={`tuile ${jour.fait ? "fait" : jour.nonReussi ? "non-reussi" : "c2"}`} style={{ "--couleur": couleurDefi(defiChoisi) }}>
           <h3>{defiChoisi.titre}</h3>
           <p>{defiChoisi.description}</p>
-          {selection === aujourdhui && !jour.fait && !lectureSeule && (
-            <button className="btn" onClick={() => maj(selection, { fait: true })}>Valider le défi ✔</button>
+          {selection === aujourdhui && !jour.fait && !jour.nonReussi && !lectureSeule && (
+            <div className="actions actions-validation">
+              <button className="btn" onClick={() => setConfirmation({ type: "valider" })}>Valider le défi ✔</button>
+              <button className="btn discret" onClick={() => {
+                setNoteEchec("");
+                setConfirmation({ type: "echec" });
+              }}>
+                Je n’ai pas réussi
+              </button>
+            </div>
           )}
-          {jour.fait && <p className="accompli">Défi accompli !</p>}
+          {jour.fait && (
+            <>
+              <p className="accompli">Bravo, défi accompli !</p>
+              {jour.collectionProposable && !jour.collectionne && !lectureSeule && (
+                <button className="btn" onClick={() => maj(selection, { collectionne: true })}>
+                  Ajouter ma carte à la collection
+                </button>
+              )}
+              {jour.collectionne && <p>Cette carte est dans ta collection.</p>}
+            </>
+          )}
+          {jour.nonReussi && (
+            <>
+              <p className="attention">Ce défi n’a pas été réussi.</p>
+              {jour.note && <p className="note-personnelle">{jour.note}</p>}
+            </>
+          )}
           {lectureSeule && <p>Consultation uniquement pendant la mise à jour du calendrier.</p>}
         </div>
       ) : propositions.length > 0 ? (
@@ -171,7 +255,7 @@ export default function Calendrier({
                   <IndicateurDifficulte difficulte={d.difficulte} />
                 </div>
                 {!lectureSeule && (
-                  <button className="btn bouton-choix-tirage" onClick={() => maj(selection, { choisi: d.id })}>
+                  <button className="btn bouton-choix-tirage" onClick={() => setConfirmation({ type: "choisir", defi: d })}>
                     Choisir
                   </button>
                 )}
@@ -211,6 +295,60 @@ export default function Calendrier({
         <p>Le tirage est possible uniquement pour aujourd’hui ou demain.</p>
       ) : (
         <p>Aucun défi ce jour-là.</p>
+      )}
+      {jour.choisi && !jour.fait && !jour.nonReussi && modifiable && (
+        <div className="actions actions-modifier-choix">
+          <button className="btn discret" onClick={() => setConfirmation({ type: "modifier" })}>
+            Modifier mon choix
+          </button>
+        </div>
+      )}
+      {confirmation && (
+        <div className="completion-defi" role="dialog" aria-modal="true" aria-labelledby="titre-confirmation-defi">
+          <div className="tuile">
+            {confirmation.type === "choisir" ? (
+              <>
+                <h2 id="titre-confirmation-defi">Confirmer ton choix</h2>
+                <p>Choisir le défi « {confirmation.defi.titre} » pour cette journée ?</p>
+              </>
+            ) : confirmation.type === "valider" ? (
+              <>
+                <h2 id="titre-confirmation-defi">Confirmer la réussite</h2>
+                <p>As-tu bien réalisé « {defiChoisi?.titre} » aujourd’hui ?</p>
+              </>
+            ) : confirmation.type === "modifier" ? (
+              <>
+                <h2 id="titre-confirmation-defi">Attention, c’est de la triche 😉</h2>
+                <p>Tu vas pouvoir revenir au tirage et choisir une autre carte pour aujourd’hui.</p>
+              </>
+            ) : (
+              <>
+                <h2 id="titre-confirmation-defi">Confirmer l’échec</h2>
+                <p>Confirmer que tu n’as pas réussi « {defiChoisi?.titre} » ? Tu peux ajouter une note pour toi-même.</p>
+                <label className="champ-label" htmlFor="note-echec">Note (facultative)</label>
+                <textarea
+                  id="note-echec"
+                  value={noteEchec}
+                  onChange={(event) => setNoteEchec(event.target.value)}
+                  placeholder="Qu’est-ce qui t’a empêché de réaliser ce défi ?"
+                />
+              </>
+            )}
+            {erreurTirage && <p className="attention" role="alert">{erreurTirage}</p>}
+            <div className="actions">
+              <button className="btn" onClick={confirmerAction}>
+                {confirmation.type === "choisir"
+                  ? "Confirmer mon choix"
+                  : confirmation.type === "valider"
+                    ? "Oui, j’ai réussi"
+                    : confirmation.type === "modifier"
+                      ? "Oui, je sais…"
+                      : "Confirmer"}
+              </button>
+              <button className="btn discret" onClick={() => setConfirmation(null)}>Annuler</button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
