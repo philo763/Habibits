@@ -43,7 +43,7 @@ export default function Calendrier({ defis, objectifs = [], jours, onMajJour, on
   const couleurDefi = (defi) =>
     couleurObjectif(objectifs.find((objectif) => objectif.id === defi?.objectifId)?.couleur);
   const cases = grilleDuMois(mois.getFullYear(), mois.getMonth());
-  const jour = jours[selection] || {};
+  const jour = selection <= demain ? jours[selection] || {} : {};
   const defiChoisi = jour.choisi ? trouver(jour.choisi) : null;
   const propositions = (jour.propositions || []).map(trouver).filter(Boolean);
   const modifiable = selection >= aujourdhui && selection <= demain;
@@ -98,7 +98,7 @@ export default function Calendrier({ defis, objectifs = [], jours, onMajJour, on
         {cases.map((date, i) => {
           if (!date) return <div key={i} />;
           const cle = cleDate(date);
-          const j = jours[cle] || {};
+          const j = cle <= demain ? jours[cle] || {} : {};
           const defi = j.choisi ? trouver(j.choisi) : null;
           let etat = "vide";
           if (j.fait) etat = "fait";
@@ -175,19 +175,19 @@ export default function Calendrier({ defis, objectifs = [], jours, onMajJour, on
               const objectif = objectifs.find((element) => element.id === d.objectifId);
               return (
                 <div key={d.id} className="tirage-colonne">
-                  <div className="tirage-meta">
-                    <IndicateurDifficulte difficulte={d.difficulte} />
-                    {objectif && (
-                      <span className="defi-difficulte defi-objectif" style={{ "--couleur": couleurDefi(d) }}>
-                        {objectif.nom}
-                      </span>
-                    )}
-                  </div>
                   <div className={`tuile c${i} carte-tirage`} style={{ "--couleur": couleurDefi(d) }}>
                     <div className="tirage-contenu">
                       <h3>{d.titre}</h3>
                       {d.description && <p>{d.description}</p>}
                     </div>
+                  </div>
+                  <div className="tirage-meta">
+                    {objectif && (
+                      <span className="defi-difficulte defi-objectif" style={{ "--couleur": couleurDefi(d) }}>
+                        {objectif.nom}
+                      </span>
+                    )}
+                    <IndicateurDifficulte difficulte={d.difficulte} />
                   </div>
                   <button className="btn bouton-choix-tirage" onClick={() => maj(selection, { choisi: d.id })}>
                     Choisir
