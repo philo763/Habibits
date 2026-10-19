@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { chargerJours, sauvegarderJours } from "./storage";
 import { cleDate, grilleDuMois } from "./dates";
 import { couleurObjectif } from "./objectifs";
+import IndicateurDifficulte from "./IndicateurDifficulte";
 
 const NOMS_JOURS = ["L", "M", "M", "J", "V", "S", "D"];
 
@@ -15,7 +16,7 @@ export default function Calendrier({ defis, objectifs = [] }) {
     const n = new Date();
     return new Date(n.getFullYear(), n.getMonth(), 1);
   });
-  const aujourdhui = cleDate(new Date());
+  const [aujourdhui] = useState(() => cleDate(new Date()));
   const [selection, setSelection] = useState(aujourdhui);
 
   useEffect(() => {
@@ -103,13 +104,32 @@ export default function Calendrier({ defis, objectifs = [] }) {
             Tirer 3 défis
           </button>
         ) : (
-          propositions.map((d, i) => (
-            <div key={d.id} className={`tuile c${i}`} style={{ "--couleur": couleurDefi(d) }}>
-              <h3>{d.titre}</h3>
-              <p>{d.description}</p>
-              <button className="btn" onClick={() => maj(selection, { choisi: d.id })}>Choisir</button>
-            </div>
-          ))
+          <div className="tirage-defis">
+            {propositions.map((d, i) => {
+              const objectif = objectifs.find((element) => element.id === d.objectifId);
+              return (
+                <div key={d.id} className="tirage-colonne">
+                  <div className="tirage-indicateur">
+                    <IndicateurDifficulte difficulte={d.difficulte} />
+                  </div>
+                  <div className={`tuile c${i} carte-tirage`} style={{ "--couleur": couleurDefi(d) }}>
+                    <div className="tirage-badges">
+                      {objectif && (
+                        <span className="defi-difficulte defi-objectif" style={{ "--couleur": couleurDefi(d) }}>
+                          {objectif.nom}
+                        </span>
+                      )}
+                    </div>
+                    <div className="tirage-contenu">
+                      <h3>{d.titre}</h3>
+                      {d.description && <p>{d.description}</p>}
+                      <button className="btn" onClick={() => maj(selection, { choisi: d.id })}>Choisir</button>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         )
       ) : (
         <p>Aucun défi ce jour-là.</p>
