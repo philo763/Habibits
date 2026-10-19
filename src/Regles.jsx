@@ -24,8 +24,8 @@ export default function Regles() {
         <ul>
           <li>Choisis une seule carte pour la journée.</li>
           <li>Confirme ton choix et confirme aussi la validation du défi pour éviter les clics involontaires.</li>
-          <li>Valide le défi le jour même ; les jours passés ne sont pas modifiables.</li>
-          <li>Avant de valider ou de marquer le défi du jour comme non réussi, tu peux revenir au tirage et modifier ton choix après confirmation. Une fois l’un de ces statuts enregistré, le choix ne peut plus être modifié.</li>
+          <li>Tu peux valider ou indiquer que tu n’as pas réussi un défi déjà choisi, y compris pour un jour passé.</li>
+          <li>Il est impossible de tirer un défi pour un jour passé. Si un tirage existe déjà, tu peux modifier le choix parmi ses cartes après avoir confirmé l’avertissement « Attention, c’est de la triche 😉 ». Une fois le défi validé ou marqué comme non réussi, le choix ne peut plus être modifié.</li>
           <li>Après validation, tu peux ajouter la carte à ta collection. Les défis déjà validés avant cette fonctionnalité n’y sont pas ajoutés automatiquement.</li>
           <li>Si tu n’as pas réussi, signale-le et rédige éventuellement une note à toi-même ; tes notes sont réunies dans la page dédiée.</li>
         </ul>

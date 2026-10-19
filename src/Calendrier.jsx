@@ -114,6 +114,11 @@ export default function Calendrier({
   const defiChoisi = jour.choisi ? trouver(jour.choisi) : null;
   const propositions = (jour.propositions || []).map(trouver).filter(Boolean);
   const modifiable = !lectureSeule && selection >= aujourdhui && selection <= demain;
+  const jourPasseAvecTirage = !lectureSeule && selection < aujourdhui &&
+    Boolean(jour.choisi || propositions.length > 0);
+  const peutModifierChoix = !jour.fait && !jour.nonReussi &&
+    (modifiable || (jourPasseAvecTirage && propositions.length > 0));
+  const peutModifierEtat = !lectureSeule && selection <= aujourdhui && Boolean(jour.choisi);
   const difficultesManquantes = DIFFICULTES.filter(
     (difficulte) => !defis.some((defi) => defi.difficulte === difficulte)
   );
@@ -204,7 +209,7 @@ export default function Calendrier({
         <div className={`tuile ${jour.fait ? "fait" : jour.nonReussi ? "non-reussi" : "c2"}`} style={{ "--couleur": couleurDefi(defiChoisi) }}>
           <h3>{defiChoisi.titre}</h3>
           <p>{defiChoisi.description}</p>
-          {selection === aujourdhui && !jour.fait && !jour.nonReussi && !lectureSeule && (
+          {peutModifierEtat && !jour.fait && !jour.nonReussi && (
             <div className="actions actions-validation">
               <button className="btn" onClick={() => setConfirmation({ type: "valider" })}>Valider le défi ✔</button>
               <button className="btn discret" onClick={() => {
@@ -224,12 +229,25 @@ export default function Calendrier({
                 </button>
               )}
               {jour.collectionne && <p>Cette carte est dans ta collection.</p>}
+              {peutModifierEtat && (
+                <button className="btn discret" onClick={() => {
+                  setNoteEchec("");
+                  setConfirmation({ type: "echec" });
+                }}>
+                  Invalider : je n’ai pas réussi
+                </button>
+              )}
             </>
           )}
           {jour.nonReussi && (
             <>
               <p className="attention">Ce défi n’a pas été réussi.</p>
               {jour.note && <p className="note-personnelle">{jour.note}</p>}
+              {peutModifierEtat && (
+                <button className="btn" onClick={() => setConfirmation({ type: "valider" })}>
+                  Valider le défi ✔
+                </button>
+              )}
             </>
           )}
           {lectureSeule && <p>Consultation uniquement pendant la mise à jour du calendrier.</p>}
@@ -254,7 +272,7 @@ export default function Calendrier({
                   )}
                   <IndicateurDifficulte difficulte={d.difficulte} />
                 </div>
-                {!lectureSeule && (
+                {(modifiable || jourPasseAvecTirage) && !jour.fait && !jour.nonReussi && (
                   <button className="btn bouton-choix-tirage" onClick={() => setConfirmation({ type: "choisir", defi: d })}>
                     Choisir
                   </button>
@@ -296,7 +314,7 @@ export default function Calendrier({
       ) : (
         <p>Aucun défi ce jour-là.</p>
       )}
-      {jour.choisi && !jour.fait && !jour.nonReussi && modifiable && (
+      {jour.choisi && peutModifierChoix && (
         <div className="actions actions-modifier-choix">
           <button className="btn discret" onClick={() => setConfirmation({ type: "modifier" })}>
             Modifier mon choix
@@ -319,7 +337,7 @@ export default function Calendrier({
             ) : confirmation.type === "modifier" ? (
               <>
                 <h2 id="titre-confirmation-defi">Attention, c’est de la triche 😉</h2>
-                <p>Tu vas pouvoir revenir au tirage et choisir une autre carte pour aujourd’hui.</p>
+                <p>Tu vas pouvoir revenir au tirage et choisir une autre carte pour cette journée.</p>
               </>
             ) : (
               <>
