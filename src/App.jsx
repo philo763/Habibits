@@ -11,6 +11,8 @@ import Calendrier from "./Calendrier";
 import Parametres from "./Parametres";
 import Accueil from "./Accueil";
 import Regles from "./Regles";
+import Collection from "./Collection";
+import Notes from "./Notes";
 import { Bandeaux, Indicateur } from "./Bandeaux";
 import { COULEURS_OBJECTIF, couleurObjectif } from "./objectifs";
 import IndicateurDifficulte from "./IndicateurDifficulte";
@@ -21,6 +23,8 @@ import "./sauvegarde.css";
 const SECTIONS = [
   { id: "calendrier", label: "📅 Calendrier" },
   { id: "defis", label: "🎯 Mes défis" },
+  { id: "collection", label: "🃏 Collection" },
+  { id: "notes", label: "📝 Notes à moi-même" },
   { id: "regles", label: "📖 Règles du jeu" },
   { id: "parametres", label: "⚙️ Paramètres" },
 ];
@@ -365,6 +369,8 @@ export default function App() {
         )}
 
         {onglet === "regles" && <Regles />}
+        {onglet === "collection" && <Collection defis={defis} objectifs={objectifs} jours={jours} />}
+        {onglet === "notes" && <Notes defis={defis} objectifs={objectifs} jours={jours} />}
 
         {onglet === "defis" && (
           <div>

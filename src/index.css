@@ -190,6 +190,7 @@ select:focus { outline: none; border-color: var(--or); }
 .case.propose { --couleur: var(--violet); }
 .case.choisi { --couleur: var(--orange); background: rgba(224, 138, 45, 0.2); }
 .case.fait { --couleur: var(--vert); background: rgba(63, 174, 116, 0.25); }
+.case.non-reussi { --couleur: var(--rouge); background: rgba(208, 72, 63, 0.18); }
 .case.passe:not(.fait) { opacity: 0.55; }
 .case.aujourdhui .num { color: var(--or); }
 .case.selection { outline: 3px solid var(--or); outline-offset: 1px; }
@@ -221,6 +222,7 @@ select:focus { outline: none; border-color: var(--or); }
 .c1 { --couleur: var(--bleu-clair); }
 .c2 { --couleur: var(--orange); }
 .tuile.fait { --couleur: var(--vert); }
+.tuile.non-reussi { --couleur: var(--rouge); }
 .accompli { color: #7dffb8; font-weight: 700; }
 .defis-entete, .entete-section { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px; }
 .defis-entete .jour-titre { margin-bottom: 0; }
@@ -413,6 +415,27 @@ select:focus { outline: none; border-color: var(--or); }
   .filtres-tri .filtre-difficulte { padding-right: 3px; padding-left: 3px; }
 }
 .defi-tuile .actions { margin-bottom: 0; }
+.actions-validation { margin-top: 14px; }
+.panneau-chantier {
+  margin: 0 0 14px;
+  padding: 12px 14px;
+  border: 2px dashed var(--or);
+  border-radius: 4px;
+  background: rgba(245, 197, 66, 0.1);
+}
+.panneau-chantier h3 { margin: 0 0 4px; color: var(--or); font-size: 20px; }
+.panneau-chantier p { margin: 0; line-height: 1.45; }
+.actions-modifier-choix { justify-content: center; margin-top: 28px; }
+.filtres-collection { flex-wrap: wrap; }
+.filtres-collection .filtres-tri { margin-left: 0; }
+.carte-collection-entete { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+.carte-collection-entete h3 { min-width: 0; }
+.compteur-collection { flex: none; color: var(--or); font-size: 20px; font-weight: 700; text-transform: lowercase; }
+.id-defi-collection { margin-top: 8px !important; color: var(--bleu-clair); font-size: 12px; overflow-wrap: anywhere; }
+.id-defi-collection code { font: inherit; }
+.carte-collection-objectif { display: inline-block; margin-top: 8px; }
+.note-date { color: var(--bleu-clair); font-size: 14px; font-weight: 700; text-transform: capitalize; }
+.note-personnelle { margin-top: 10px !important; padding-top: 10px; border-top: 1px solid var(--trait); white-space: pre-wrap; overflow-wrap: anywhere; }
 .apropos p { line-height: 1.6; }
 .completion-defi {
   position: fixed;
