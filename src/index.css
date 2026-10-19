@@ -278,7 +278,7 @@ select:focus { outline: none; border-color: var(--or); }
   border: 1px solid var(--trait);
   border-radius: 4px;
 }
-.defi-objectif { color: var(--couleur); }
+.defi-objectif { color: var(--couleur); border-color: var(--couleur); }
 .indicateur-difficulte {
   display: inline-flex;
   flex: none;
@@ -320,9 +320,9 @@ select:focus { outline: none; border-color: var(--or); }
   min-height: 48px;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: center;
   gap: 4px;
-  margin: 0 4px 6px;
+  margin: 6px 4px 0;
   text-align: center;
 }
 .tirage-meta .defi-difficulte {
