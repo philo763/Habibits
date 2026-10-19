@@ -349,7 +349,7 @@ export default function App() {
         </div>
       </nav>
 
-      <main className="contenu" inert={datesTiragesAConfirmer.length > 0}>
+      <main className="contenu">
         <Bandeaux />
 
         {onglet === "calendrier" && (
@@ -357,6 +357,8 @@ export default function App() {
             defis={defis}
             objectifs={objectifs}
             jours={jours}
+            datesTiragesAConfirmer={datesTiragesAConfirmer}
+            lectureSeule={datesTiragesAConfirmer.length > 0}
             onMajJour={majJour}
             onAllerDefis={() => aller("defis")}
           />
@@ -651,7 +653,7 @@ export default function App() {
         </div>
       )}
       {datesTiragesAConfirmer.length > 0 && (
-        <div className="nettoyage-tirages" role="dialog" aria-modal="true" aria-labelledby="titre-nettoyage-tirages">
+        <section className="nettoyage-tirages" role="alert" aria-labelledby="titre-nettoyage-tirages">
           <div className="tuile">
             <h2 id="titre-nettoyage-tirages">Mise à jour des règles du calendrier</h2>
             <p>
@@ -665,7 +667,7 @@ export default function App() {
               {nettoyageEnCours ? "Nettoyage en cours…" : "J’ai fait ma capture d’écran, supprimer ces tirages"}
             </button>
           </div>
-        </div>
+        </section>
       )}
       {!donneesChargees && !erreurChargement && datesTiragesAConfirmer.length === 0 && (
         <div className="completion-defi" role="status">
