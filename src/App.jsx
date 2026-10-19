@@ -10,6 +10,7 @@ import {
 import Calendrier from "./Calendrier";
 import Parametres from "./Parametres";
 import Accueil from "./Accueil";
+import Regles from "./Regles";
 import { Bandeaux, Indicateur } from "./Bandeaux";
 import { COULEURS_OBJECTIF, couleurObjectif } from "./objectifs";
 import IndicateurDifficulte from "./IndicateurDifficulte";
@@ -18,6 +19,7 @@ import "./sauvegarde.css";
 const SECTIONS = [
   { id: "calendrier", label: "📅 Calendrier" },
   { id: "defis", label: "🎯 Mes défis" },
+  { id: "regles", label: "📖 Règles du jeu" },
   { id: "parametres", label: "⚙️ Paramètres" },
 ];
 const A_PROPOS = { id: "apropos", label: "ℹ️ À propos" };
@@ -278,12 +280,15 @@ export default function App() {
           ✕
         </button>
         <div className="panneau-titre">Menu</div>
-        {SECTIONS.filter((s) => s.id !== "parametres").map((s) => (
+        {SECTIONS.filter((s) => !["regles", "parametres"].includes(s.id)).map((s) => (
           <button key={s.id} className={`lien ${onglet === s.id ? "actif" : ""}`} onClick={() => aller(s.id)}>
             {s.label}
           </button>
         ))}
         <div className="menu-bas">
+          <button className={`lien ${onglet === "regles" ? "actif" : ""}`} onClick={() => aller("regles")}>
+            {SECTIONS.find((s) => s.id === "regles").label}
+          </button>
           <button className={`lien ${onglet === "parametres" ? "actif" : ""}`} onClick={() => aller("parametres")}>
             {SECTIONS.find((s) => s.id === "parametres").label}
           </button>
@@ -296,7 +301,11 @@ export default function App() {
       <main className="contenu">
         <Bandeaux />
 
-        {onglet === "calendrier" && <Calendrier defis={defis} objectifs={objectifs} />}
+        {onglet === "calendrier" && (
+          <Calendrier defis={defis} objectifs={objectifs} onAllerDefis={() => aller("defis")} />
+        )}
+
+        {onglet === "regles" && <Regles />}
 
         {onglet === "defis" && (
           <div>

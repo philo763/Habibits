@@ -7,7 +7,8 @@ Les données restent **sur le téléphone**, dans le navigateur : pas de compte,
 ## Fonctionnalités actuelles
 
 - **Calendrier** mensuel : une case par jour, avec le titre du défi choisi.
-- **Tirage de trois défis** parmi la liste, pour n'importe quel jour à venir, puis choix d'un défi.
+- **Tirage quotidien** en un clic : une carte facile, une moyenne et une difficile, puis choix d'un défi.
+- **Tirage de secours** : si une difficulté manque dans la liste, l'application recommande de créer un défi de ce niveau. On peut continuer ; les cartes manquantes sont alors tirées au hasard parmi les défis existants, en conservant leur difficulté réelle. Il faut au moins trois défis distincts pour tirer trois cartes.
 - **Validation** : le défi du jour se valide depuis sa case (bouton « Valider le défi »).
 - **Gestion des objectifs et des défis** : objectifs indépendants avec couleur, renommage et suppression sécurisée ; défis modifiables avec difficulté et date de création.
 - **Tri et filtres** dans « Mes défis » : par date de création, par objectifs et par difficultés, avec sélection multiple.
@@ -17,11 +18,17 @@ Les données restent **sur le téléphone**, dans le navigateur : pas de compte,
 - **Données protégées** : demande de stockage persistant pour limiter le nettoyage automatique du navigateur.
 - **Sauvegarde automatique** : copie des données dans un fichier choisi par l'utilisateur, avec l'API d'accès aux fichiers lorsqu'elle est disponible.
 - **Export et restauration** : sauvegarde JSON partageable ou téléchargeable, et restauration depuis un fichier.
-- **Menu latéral** dépliable : Calendrier, Mes défis, Paramètres.
+- **Menu latéral** dépliable : Calendrier, Mes défis, Règles du jeu juste au-dessus des Paramètres.
 - **Style « blueprint »** : fond bleu nuit, plan quadrillé, tuiles à bordure colorée, titres en majuscules condensées.
 - **Web app installable (PWA)** : manifeste, icônes et service worker pour le fonctionnement hors connexion.
 
-États d'une case du calendrier : bleu = vide, violet pointillé = trois défis tirés, orange = défi choisi, vert avec ✔ = défi validé.
+États d'une case du calendrier : bleu = vide, violet pointillé = trois défis tirés, orange = défi choisi, vert avec ✔ = défi validé. Un seul tirage est possible par jour ; les propositions sont conservées et ne sont pas retirées à chaque visite.
+
+## Règles du calendrier
+
+- Un tirage par jour propose un défi facile, un moyen et un difficile ; les cartes restent disponibles après le tirage.
+- Si un niveau n'est pas représenté, un message conseille de créer un défi de cette difficulté et donne accès à « Mes défis ». Il est aussi possible de continuer : chaque carte manquante est alors tirée au hasard parmi les défis encore disponibles, sans modifier sa difficulté enregistrée.
+- Trois défis distincts au minimum sont nécessaires. On choisit une seule carte par jour et on valide le défi le jour même ; les jours passés ne sont pas modifiables.
 
 ## Stack technique
 
@@ -69,7 +76,7 @@ Les données principales sont enregistrées localement dans le navigateur, sous 
 - `jours` : un objet indexé par date, `"2026-10-16": { propositions: [ids], choisi: id, fait: false }`
 - `rappel` : `{ heure, minute }` (20 h 00 par défaut)
 
-Au premier lancement, `defis` est rempli à partir de `src/data/defisDepart.js`. Le fichier de sauvegarde JSON contient ces données avec le nom de l'application, la version du format et la date d'export.
+Au premier lancement, `defis` est rempli à partir de `src/data/defisDepart.js`, qui comprend des défis faciles, moyens et difficiles afin de permettre le tirage complet dès le départ. Les trois objectifs initiaux Hydratation, Sport et Maison ont chacun une couleur distincte. Cette initialisation ne remplace pas les défis déjà enregistrés dans le navigateur. Le fichier de sauvegarde JSON contient ces données avec le nom de l'application, la version du format et la date d'export.
 
 ## Prérequis
 
