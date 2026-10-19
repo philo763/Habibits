@@ -280,6 +280,9 @@ select:focus { outline: none; border-color: var(--or); }
 .indicateur-difficulte-barre:nth-child(2) { height: 9px; }
 .indicateur-difficulte-barre:nth-child(3) { height: 13px; }
 .indicateur-difficulte-barre.active { background: currentColor; }
+.indicateur-difficulte.difficulte-facile { color: var(--vert); }
+.indicateur-difficulte.difficulte-moyen { color: var(--orange); }
+.indicateur-difficulte.difficulte-difficile { color: var(--rouge); }
 .filtre-difficulte {
   display: inline-flex;
   align-items: center;
@@ -296,12 +299,20 @@ select:focus { outline: none; border-color: var(--or); }
   min-width: 0;
   flex-direction: column;
 }
-.tirage-indicateur {
+.tirage-meta {
   display: flex;
-  min-height: 20px;
+  min-height: 48px;
+  flex-direction: column;
+  align-items: center;
   justify-content: flex-end;
-  margin: 0 8px 4px;
-  color: var(--papier);
+  gap: 4px;
+  margin: 0 4px 6px;
+  text-align: center;
+}
+.tirage-meta .defi-difficulte {
+  max-width: 100%;
+  padding: 2px 5px;
+  font-size: 11px;
 }
 .carte-tirage {
   display: flex;
@@ -343,9 +354,9 @@ select:focus { outline: none; border-color: var(--or); }
   font-size: 13px;
   overflow-wrap: anywhere;
 }
-.tirage-contenu .btn {
+.bouton-choix-tirage {
   width: 100%;
-  margin-top: auto;
+  margin-top: 8px;
   padding: 6px 4px;
   font-size: 16px;
 }
@@ -361,11 +372,30 @@ select:focus { outline: none; border-color: var(--or); }
   cursor: pointer;
 }
 .choix-couleur.selectionne { outline: 2px solid var(--papier); outline-offset: 2px; }
-.filtres-defis { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 8px 0 14px; }
-.filtres-difficulte { display: flex; flex: 1; flex-wrap: wrap; align-items: center; gap: 8px; }
-.filtres-tri { display: flex; flex-wrap: wrap; gap: 8px; margin-left: auto; }
-.filtre-difficulte { text-transform: capitalize; }
+.filtres-defis { display: flex; align-items: center; margin: 8px 0 14px; }
+.filtres-difficulte { display: flex; flex: 1; min-width: 0; flex-wrap: nowrap; align-items: center; gap: 4px; }
+.filtres-tri { display: flex; flex: none; flex-wrap: nowrap; gap: 4px; margin-left: auto; }
+.filtre-difficulte {
+  flex: 0 1 auto;
+  min-width: 0;
+  justify-content: center;
+  gap: 4px;
+  padding: 5px 6px;
+  font-size: 14px;
+  white-space: nowrap;
+  text-transform: capitalize;
+}
+.filtre-difficulte .indicateur-difficulte { gap: 1px; }
+.filtre-difficulte .indicateur-difficulte-barre { width: 3px; }
+.filtres-tri .filtre-difficulte { padding-right: 5px; padding-left: 5px; }
+.filtres-tri .filtre-difficulte.actif { box-shadow: 0 0 0 1px rgba(245, 197, 66, 0.25); }
 .filtre-difficulte.actif { border-color: var(--or); box-shadow: 0 0 0 2px rgba(245, 197, 66, 0.25); }
+@media (max-width: 380px) {
+  .filtres-difficulte { gap: 2px; }
+  .filtres-tri { gap: 2px; }
+  .filtre-difficulte { gap: 2px; padding: 4px 2px; font-size: 12px; }
+  .filtres-tri .filtre-difficulte { padding-right: 3px; padding-left: 3px; }
+}
 .defi-tuile .actions { margin-bottom: 0; }
 .apropos p { line-height: 1.6; }
 .completion-defi {

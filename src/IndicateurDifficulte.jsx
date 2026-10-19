@@ -9,7 +9,7 @@ export default function IndicateurDifficulte({ difficulte, decoratif = false }) 
 
   return (
     <span
-      className="indicateur-difficulte"
+      className={`indicateur-difficulte difficulte-${difficulte}`}
       role={decoratif ? undefined : "img"}
       aria-label={decoratif ? undefined : `Difficulté ${difficulte}`}
       aria-hidden={decoratif ? "true" : undefined}

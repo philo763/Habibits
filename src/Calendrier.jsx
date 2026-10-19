@@ -109,23 +109,23 @@ export default function Calendrier({ defis, objectifs = [] }) {
               const objectif = objectifs.find((element) => element.id === d.objectifId);
               return (
                 <div key={d.id} className="tirage-colonne">
-                  <div className="tirage-indicateur">
+                  <div className="tirage-meta">
                     <IndicateurDifficulte difficulte={d.difficulte} />
+                    {objectif && (
+                      <span className="defi-difficulte defi-objectif" style={{ "--couleur": couleurDefi(d) }}>
+                        {objectif.nom}
+                      </span>
+                    )}
                   </div>
                   <div className={`tuile c${i} carte-tirage`} style={{ "--couleur": couleurDefi(d) }}>
-                    <div className="tirage-badges">
-                      {objectif && (
-                        <span className="defi-difficulte defi-objectif" style={{ "--couleur": couleurDefi(d) }}>
-                          {objectif.nom}
-                        </span>
-                      )}
-                    </div>
                     <div className="tirage-contenu">
                       <h3>{d.titre}</h3>
                       {d.description && <p>{d.description}</p>}
-                      <button className="btn" onClick={() => maj(selection, { choisi: d.id })}>Choisir</button>
                     </div>
                   </div>
+                  <button className="btn bouton-choix-tirage" onClick={() => maj(selection, { choisi: d.id })}>
+                    Choisir
+                  </button>
                 </div>
               );
             })}

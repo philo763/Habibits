@@ -302,7 +302,7 @@ export default function App() {
           <div>
             <section aria-labelledby="titre-objectifs">
               <div className="entete-section">
-                <h2 id="titre-objectifs" className="jour-titre">Mes objectifs</h2>
+                <h2 id="titre-objectifs" className="jour-titre">Mes objectifs ({objectifs.length})</h2>
                 <button className="btn petit" onClick={ouvrirCreationObjectif}>+ Créer un objectif</button>
               </div>
               {objectifErreur && <p className="attention" role="alert">{objectifErreur}</p>}
@@ -326,7 +326,8 @@ export default function App() {
                           <span className="objectif-compte">{nombre}</span>
                         </button>
                         <div className="actions">
-                          <button className="btn petit discret" onClick={() => ouvrirEditionObjectif(objectif)}>Modifier</button>
+                          <button className="btn petit discret" onClick={() => ouvrirEditionObjectif(objectif)}
+                            aria-label={`Modifier l’objectif ${objectif.nom}`} title="Modifier">✏️</button>
                           <button className="btn petit danger" onClick={() => supprimerObjectif(objectif)}
                             aria-label={`Supprimer l’objectif ${objectif.nom}`} title="Supprimer">🗑️</button>
                         </div>
@@ -478,9 +479,12 @@ export default function App() {
                               {defi.description && <p>{defi.description}</p>}
                             </div>
                             <div className="defi-actions">
-                              <span className="defi-difficulte">{defi.difficulte}</span>
+                              <span className="defi-difficulte" aria-label={`Difficulté ${defi.difficulte}`} title={`Difficulté ${defi.difficulte}`}>
+                                <IndicateurDifficulte difficulte={defi.difficulte} />
+                              </span>
                               <div className="actions">
-                                <button className="btn discret action-defi" onClick={() => commencerEditionDefi(defi)}>Modifier</button>
+                                <button className="btn discret action-defi" onClick={() => commencerEditionDefi(defi)}
+                                  aria-label={`Modifier le défi ${defi.titre}`} title="Modifier">✏️</button>
                                 <button className="btn danger action-defi" onClick={() => supprimerDefi(defi.id)}
                                   aria-label={`Supprimer le défi ${defi.titre}`} title="Supprimer">🗑️</button>
                               </div>
