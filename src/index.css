@@ -122,6 +122,7 @@ select:focus { outline: none; border-color: var(--or); }
 .panneau.ouvert { transform: none; }
 .panneau-titre { color: var(--bleu-clair); font-size: 14px; }
 .fermer { align-self: flex-end; }
+.menu-bas { display: flex; flex-direction: column; gap: 8px; margin-top: auto; }
 .lien {
   background: none;
   border: 2px solid transparent;
@@ -250,6 +251,8 @@ select:focus { outline: none; border-color: var(--or); }
 .action-defi { padding: 3px 7px; font-size: 13px; line-height: 1.1; }
 .defi-difficulte {
   flex: none;
+  max-width: 130px;
+  overflow-wrap: anywhere;
   padding: 3px 8px;
   color: var(--papier);
   font-size: 13px;
@@ -258,6 +261,93 @@ select:focus { outline: none; border-color: var(--or); }
   text-transform: uppercase;
   border: 1px solid var(--trait);
   border-radius: 4px;
+}
+.defi-objectif { color: var(--couleur); }
+.indicateur-difficulte {
+  display: inline-flex;
+  flex: none;
+  align-items: flex-end;
+  gap: 2px;
+  height: 14px;
+  color: currentColor;
+}
+.indicateur-difficulte-barre {
+  width: 4px;
+  border: 1px solid currentColor;
+  border-radius: 1px 1px 0 0;
+}
+.indicateur-difficulte-barre:nth-child(1) { height: 5px; }
+.indicateur-difficulte-barre:nth-child(2) { height: 9px; }
+.indicateur-difficulte-barre:nth-child(3) { height: 13px; }
+.indicateur-difficulte-barre.active { background: currentColor; }
+.filtre-difficulte {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.tirage-defis {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: stretch;
+  gap: 8px;
+}
+.tirage-colonne {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+}
+.tirage-indicateur {
+  display: flex;
+  min-height: 20px;
+  justify-content: flex-end;
+  margin: 0 8px 4px;
+  color: var(--papier);
+}
+.carte-tirage {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  margin-bottom: 0;
+  padding: 8px;
+}
+.tirage-badges {
+  display: flex;
+  min-height: 48px;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 3px;
+  margin-bottom: 6px;
+}
+.tirage-badges .defi-difficulte {
+  max-width: 100%;
+  padding: 2px 5px;
+  font-size: 11px;
+  text-align: right;
+}
+.tirage-contenu {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.tirage-contenu h3 {
+  width: 100%;
+  font-size: 19px;
+  overflow-wrap: anywhere;
+}
+.tirage-contenu p {
+  width: 100%;
+  flex: 1;
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+.tirage-contenu .btn {
+  width: 100%;
+  margin-top: auto;
+  padding: 6px 4px;
+  font-size: 16px;
 }
 .formulaire-objectif { border-color: var(--bleu-clair); }
 .palette-objectifs { display: flex; flex-wrap: wrap; gap: 10px; margin: 8px 0 14px; }

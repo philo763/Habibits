@@ -12,6 +12,7 @@ import Parametres from "./Parametres";
 import Accueil from "./Accueil";
 import { Bandeaux, Indicateur } from "./Bandeaux";
 import { COULEURS_OBJECTIF, couleurObjectif } from "./objectifs";
+import IndicateurDifficulte from "./IndicateurDifficulte";
 import "./sauvegarde.css";
 
 const SECTIONS = [
@@ -19,7 +20,7 @@ const SECTIONS = [
   { id: "defis", label: "🎯 Mes défis" },
   { id: "parametres", label: "⚙️ Paramètres" },
 ];
-const A_PROPOS = { id: "apropos", label: "ℹ️ La vision Habibits" };
+const A_PROPOS = { id: "apropos", label: "ℹ️ À propos" };
 const DIFFICULTES = ["facile", "moyen", "difficile"];
 const defiIncomplet = (defi, objectifs) =>
   !objectifs.some((objectif) => objectif.id === defi.objectifId) || !DIFFICULTES.includes(defi.difficulte);
@@ -277,14 +278,19 @@ export default function App() {
           ✕
         </button>
         <div className="panneau-titre">Menu</div>
-        <button className={`lien ${onglet === A_PROPOS.id ? "actif" : ""}`} onClick={() => aller(A_PROPOS.id)}>
-          {A_PROPOS.label}
-        </button>
-        {SECTIONS.map((s) => (
+        {SECTIONS.filter((s) => s.id !== "parametres").map((s) => (
           <button key={s.id} className={`lien ${onglet === s.id ? "actif" : ""}`} onClick={() => aller(s.id)}>
             {s.label}
           </button>
         ))}
+        <div className="menu-bas">
+          <button className={`lien ${onglet === "parametres" ? "actif" : ""}`} onClick={() => aller("parametres")}>
+            {SECTIONS.find((s) => s.id === "parametres").label}
+          </button>
+          <button className={`lien ${onglet === A_PROPOS.id ? "actif" : ""}`} onClick={() => aller(A_PROPOS.id)}>
+            {A_PROPOS.label}
+          </button>
+        </div>
       </nav>
 
       <main className="contenu">
@@ -378,6 +384,7 @@ export default function App() {
                     onClick={() => basculerDifficulteFiltre(niveau)}
                   >
                     {niveau[0].toUpperCase() + niveau.slice(1)}
+                    <IndicateurDifficulte difficulte={niveau} decoratif />
                   </button>
                 ))}
                 <div className="filtres-tri" aria-label="Trier les défis par date">
