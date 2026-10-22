@@ -8,6 +8,7 @@ const CLE_DEFIS = "defis";
 const CLE_OBJECTIFS = "objectifs";
 const CLE_JOURS = "jours";
 const CLE_RAPPEL = "rappel";
+const CLE_GESTION_DEFIS = "gestion-defis";
 
 function lire(cle) {
   try {
@@ -85,4 +86,28 @@ export async function chargerRappel() {
 
 export async function sauvegarderRappel(rappel) {
   ecrire(CLE_RAPPEL, rappel);
+}
+
+export async function chargerGestionDefis() {
+  const gestion = lire(CLE_GESTION_DEFIS);
+  const defiDuMomentId = typeof gestion?.defiDuMomentId === "string" ? gestion.defiDuMomentId : "";
+  const frequencesHebdo = {};
+  if (gestion?.frequencesHebdo && typeof gestion.frequencesHebdo === "object") {
+    Object.entries(gestion.frequencesHebdo).forEach(([id, frequence]) => {
+      if (Number.isInteger(frequence) && frequence >= 1 && frequence <= 7) {
+        frequencesHebdo[id] = frequence;
+      }
+    });
+  }
+  return {
+    defiDuMomentId,
+    defiDuMomentActif: Boolean(defiDuMomentId) && gestion?.defiDuMomentActif === true,
+    frequencesHebdo,
+  };
+}
+
+export async function sauvegarderGestionDefis(gestion) {
+  if (!ecrire(CLE_GESTION_DEFIS, gestion)) {
+    throw new Error("Les réglages de gestion des défis n'ont pas pu être enregistrés dans le stockage local.");
+  }
 }

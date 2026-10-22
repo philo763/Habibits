@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { cleDate, grilleDuMois } from "./dates";
 import { couleurObjectif } from "./objectifs";
+import { calculerRecompenses, recompensePourDifficulte } from "./recompenses";
 import IndicateurDifficulte from "./IndicateurDifficulte";
 
 const NOMS_JOURS = ["L", "M", "M", "J", "V", "S", "D"];
@@ -19,6 +20,9 @@ export default function Calendrier({
   defis,
   objectifs = [],
   jours,
+  recompenses,
+  defiDuMoment = null,
+  frequenceHebdoDefiMoment = 3,
   datesTiragesAConfirmer = [],
   lectureSeule = false,
   onMajJour,
@@ -38,6 +42,7 @@ export default function Calendrier({
   const [alerteTirage, setAlerteTirage] = useState(false);
   const [erreurTirage, setErreurTirage] = useState("");
   const [confirmation, setConfirmation] = useState(null);
+  const [gain, setGain] = useState(null);
   const [noteEchec, setNoteEchec] = useState("");
 
   async function maj(cle, patch) {
@@ -78,19 +83,30 @@ export default function Calendrier({
       }
     } else if (confirmation.type === "valider") {
       const objectif = objectifs.find((item) => item.id === defiChoisi.objectifId);
-      if (await maj(selection, {
+      const patch = {
         fait: true,
         collectionProposable: true,
         nonReussi: false,
         note: "",
         defiCopie: { ...defiChoisi },
         objectifCopie: objectif ? { ...objectif } : null,
-      })) {
+        recompenseCaca: recompensePourDifficulte(defiChoisi.difficulte),
+        defiDuMomentIdLorsValidation: defiDuMoment?.id === defiChoisi.id ? defiChoisi.id : null,
+        objectifHebdoDefiMoment: defiDuMoment?.id === defiChoisi.id ? frequenceHebdoDefiMoment : null,
+      };
+      const recompensesAvant = calculerRecompenses(jours);
+      const recompensesApres = calculerRecompenses({
+        ...jours,
+        [selection]: { ...jours[selection], ...patch },
+      });
+      if (await maj(selection, patch)) {
         setConfirmation(null);
+        const montant = recompensesApres.solde - recompensesAvant.solde;
+        if (montant > 0) setGain({ type: "cacas", montant });
       }
     } else if (confirmation.type === "echec") {
       const objectif = objectifs.find((item) => item.id === defiChoisi.objectifId);
-      if (await maj(selection, {
+      const patch = {
         fait: false,
         nonReussi: true,
         note: noteEchec.trim(),
@@ -98,9 +114,20 @@ export default function Calendrier({
         collectionne: false,
         defiCopie: { ...defiChoisi },
         objectifCopie: objectif ? { ...objectif } : null,
-      })) {
+        recompenseCaca: 0,
+        defiDuMomentIdLorsValidation: null,
+        objectifHebdoDefiMoment: null,
+      };
+      const recompensesAvant = calculerRecompenses(jours);
+      const recompensesApres = calculerRecompenses({
+        ...jours,
+        [selection]: { ...jours[selection], ...patch },
+      });
+      if (await maj(selection, patch)) {
         setConfirmation(null);
         setNoteEchec("");
+        const montant = recompensesApres.coeurs - recompensesAvant.coeurs;
+        if (montant > 0) setGain({ type: "coeur", montant });
       }
     }
   }
@@ -136,6 +163,7 @@ export default function Calendrier({
 
     setAlerteTirage(false);
     const tirage = DIFFICULTES.flatMap((difficulte) => {
+      if (defiDuMoment?.difficulte === difficulte) return [defiDuMoment];
       const defi = melanger(defis.filter((element) => element.difficulte === difficulte))[0];
       return defi ? [defi] : [];
     });
@@ -198,6 +226,16 @@ export default function Calendrier({
           );
         })}
       </div>
+      <div className="comptes-recompenses" aria-label={`Solde : ${recompenses?.solde || 0} cacas et ${recompenses?.coeurs || 0} cœurs bandés`}>
+        <span className="compte-recompense">
+          <span aria-hidden="true">💩</span>
+          <strong>{recompenses?.solde || 0}</strong>
+        </span>
+        <span className="compte-recompense">
+          <span aria-hidden="true">❤️‍🩹</span>
+          <strong>{recompenses?.coeurs || 0}</strong>
+        </span>
+      </div>
 
       <h3 className="jour-titre">
         {new Date(selection + "T00:00").toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long" })}
@@ -229,25 +267,12 @@ export default function Calendrier({
                 </button>
               )}
               {jour.collectionne && <p>Cette carte est dans ta collection.</p>}
-              {peutModifierEtat && (
-                <button className="btn discret" onClick={() => {
-                  setNoteEchec("");
-                  setConfirmation({ type: "echec" });
-                }}>
-                  Invalider : je n’ai pas réussi
-                </button>
-              )}
             </>
           )}
           {jour.nonReussi && (
             <>
               <p className="attention">Ce défi n’a pas été réussi.</p>
               {jour.note && <p className="note-personnelle">{jour.note}</p>}
-              {peutModifierEtat && (
-                <button className="btn" onClick={() => setConfirmation({ type: "valider" })}>
-                  Valider le défi ✔
-                </button>
-              )}
             </>
           )}
           {lectureSeule && <p>Consultation uniquement pendant la mise à jour du calendrier.</p>}
@@ -260,6 +285,7 @@ export default function Calendrier({
               <div key={d.id} className="tirage-colonne">
                 <div className={`tuile c${i} carte-tirage`} style={{ "--couleur": couleurDefi(d) }}>
                   <div className="tirage-contenu">
+                    {d.id === defiDuMoment?.id && <span className="badge-defi-moment">Défi du moment</span>}
                     <h3>{d.titre}</h3>
                     {d.description && <p>{d.description}</p>}
                   </div>
@@ -317,7 +343,24 @@ export default function Calendrier({
       {jour.choisi && peutModifierChoix && (
         <div className="actions actions-modifier-choix">
           <button className="btn discret" onClick={() => setConfirmation({ type: "modifier" })}>
-            Modifier mon choix
+            Je me suis trompée
+          </button>
+        </div>
+      )}
+      {peutModifierEtat && (jour.fait || jour.nonReussi) && (
+        <div className="actions actions-modifier-choix">
+          <button
+            className="btn petit discret bouton-correction-defi"
+            onClick={() => {
+              if (jour.fait) {
+                setNoteEchec("");
+                setConfirmation({ type: "echec" });
+              } else {
+                setConfirmation({ type: "valider" });
+              }
+            }}
+          >
+            Je me suis trompée
           </button>
         </div>
       )}
@@ -365,6 +408,23 @@ export default function Calendrier({
               </button>
               <button className="btn discret" onClick={() => setConfirmation(null)}>Annuler</button>
             </div>
+          </div>
+        </div>
+      )}
+      {gain && (
+        <div className="completion-defi" role="dialog" aria-modal="true" aria-labelledby="titre-gain">
+          <div className={`tuile notification-gain ${gain.type === "coeur" ? "gain-coeur" : "gain-cacas"}`}>
+            {gain.type === "cacas" ? (
+              <>
+                <h2 id="titre-gain">+ {gain.montant} caca{gain.montant > 1 ? "s" : ""} 💩</h2>
+                <button className="btn" onClick={() => setGain(null)}>Miam 😋</button>
+              </>
+            ) : (
+              <>
+                <h2 id="titre-gain">+ {gain.montant} cœur{gain.montant > 1 ? "s" : ""} ❤️‍🩹</h2>
+                <button className="btn" onClick={() => setGain(null)}>I Love myself</button>
+              </>
+            )}
           </div>
         </div>
       )}
