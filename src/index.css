@@ -485,6 +485,12 @@ select:focus { outline: none; border-color: var(--or); }
 .notification-gain h2 { margin-bottom: 18px; font-size: 30px; }
 .gain-cacas { --couleur: var(--or); }
 .gain-coeur { --couleur: #ff7794; }
+.notification-gain .gain-bonus-hebdo { margin: 0 0 16px; line-height: 1.45; }
+.notification-gain .bouton-fermer-gain {
+  background: rgba(10, 22, 49, 0.8);
+  border-color: var(--couleur);
+}
+.notification-gain .bouton-fermer-gain:active { background: rgba(10, 22, 49, 0.95); }
 .nettoyage-tirages {
   width: min(100% - 32px, 480px);
   margin: 0 auto 32px;
