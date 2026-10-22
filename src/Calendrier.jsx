@@ -101,8 +101,9 @@ export default function Calendrier({
       });
       if (await maj(selection, patch)) {
         setConfirmation(null);
-        const montant = recompensesApres.solde - recompensesAvant.solde;
-        if (montant > 0) setGain({ type: "cacas", montant });
+        const montant = recompensesApres.recompenses - recompensesAvant.recompenses;
+        const bonus = recompensesApres.bonus - recompensesAvant.bonus;
+        if (montant > 0) setGain({ type: "cacas", montant, bonus: Math.max(0, bonus) });
       }
     } else if (confirmation.type === "echec") {
       const objectif = objectifs.find((item) => item.id === defiChoisi.objectifId);
@@ -417,12 +418,18 @@ export default function Calendrier({
             {gain.type === "cacas" ? (
               <>
                 <h2 id="titre-gain">+ {gain.montant} caca{gain.montant > 1 ? "s" : ""} 💩</h2>
-                <button className="btn" onClick={() => setGain(null)}>Miam 😋</button>
+                {gain.bonus > 0 && (
+                  <p className="gain-bonus-hebdo">
+                    Engagement hebdomadaire réussi ! Tu as doublé tes gains du défi du moment cette semaine :
+                    {" "}+ {gain.bonus} caca{gain.bonus > 1 ? "s" : ""} de bonus 💩
+                  </p>
+                )}
+                <button className="btn bouton-fermer-gain" onClick={() => setGain(null)}>Miam 😋</button>
               </>
             ) : (
               <>
                 <h2 id="titre-gain">+ {gain.montant} cœur{gain.montant > 1 ? "s" : ""} ❤️‍🩹</h2>
-                <button className="btn" onClick={() => setGain(null)}>I Love myself</button>
+                <button className="btn bouton-fermer-gain" onClick={() => setGain(null)}>I Love myself</button>
               </>
             )}
           </div>
