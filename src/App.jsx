@@ -1,5 +1,13 @@
 import { useState, useEffect } from "react";
-import { chargerDonneesDefis, sauvegarderDefis, sauvegarderObjectifs } from "./storage";
+import {
+  chargerDonneesDefis,
+  sauvegarderDefis,
+  sauvegarderObjectifs,
+  chargerJours,
+  sauvegarderJours,
+  chargerGestionDefis,
+  sauvegarderGestionDefis,
+} from "./storage";
 import {
   initialiserSauvegarde,
   demanderPersistant,
@@ -17,7 +25,7 @@ import { Bandeaux, Indicateur } from "./Bandeaux";
 import { COULEURS_OBJECTIF, couleurObjectif } from "./objectifs";
 import IndicateurDifficulte from "./IndicateurDifficulte";
 import { cleDate } from "./dates";
-import { chargerJours, sauvegarderJours } from "./storage";
+import { calculerRecompenses } from "./recompenses";
 import "./sauvegarde.css";
 
 const SECTIONS = [
@@ -57,6 +65,11 @@ export default function App() {
   const [defis, setDefis] = useState([]);
   const [objectifs, setObjectifs] = useState([]);
   const [jours, setJours] = useState({});
+  const [gestionDefis, setGestionDefis] = useState({
+    defiDuMomentId: "",
+    defiDuMomentActif: false,
+    frequencesHebdo: {},
+  });
   const [datesTiragesAConfirmer, setDatesTiragesAConfirmer] = useState([]);
   const [erreurNettoyage, setErreurNettoyage] = useState("");
   const [nettoyageEnCours, setNettoyageEnCours] = useState(false);
@@ -65,6 +78,7 @@ export default function App() {
   const [objectifId, setObjectifId] = useState("");
   const [difficulte, setDifficulte] = useState("facile");
   const [formulaireDefiOuvert, setFormulaireDefiOuvert] = useState(false);
+  const [defiMomentOuvert, setDefiMomentOuvert] = useState(false);
   const [triRecent, setTriRecent] = useState(true);
   const [objectifsFiltres, setObjectifsFiltres] = useState([]);
   const [difficultesFiltrees, setDifficultesFiltrees] = useState([]);
@@ -78,6 +92,7 @@ export default function App() {
   const [donneesChargees, setDonneesChargees] = useState(false);
   const [erreurChargement, setErreurChargement] = useState("");
   const [erreurSauvegarde, setErreurSauvegarde] = useState("");
+  const [erreurGestionDefis, setErreurGestionDefis] = useState("");
   const [accueilOuvert, setAccueilOuvert] = useState(() => !lireAccueil().termine);
 
   useEffect(() => {
@@ -89,9 +104,11 @@ export default function App() {
         else await rafraichirPersistant();
         const donnees = await chargerDonneesDefis();
         const joursCharges = await chargerJours();
+        const gestionDefisChargee = await chargerGestionDefis();
         setDefis(donnees.defis);
         setObjectifs(donnees.objectifs);
         setJours(joursCharges);
+        setGestionDefis(gestionDefisChargee);
         setDatesTiragesAConfirmer(datesAvecTirageInterdit(joursCharges, cleDeDemain()));
         setDonneesChargees(true);
       } catch (erreur) {
@@ -104,6 +121,7 @@ export default function App() {
 
   const defisManquants = defis.filter((defi) => defiIncomplet(defi, objectifs));
   const defiACompleter = donneesChargees ? defisManquants[0] || null : null;
+  const recompenses = calculerRecompenses(jours);
 
   function aller(id) {
     setOnglet(id);
@@ -134,6 +152,20 @@ export default function App() {
     const nouveau = { ...jours, [cle]: { ...jours[cle], ...patch } };
     await sauvegarderJours(nouveau);
     setJours(nouveau);
+  }
+
+  async function enregistrerGestionDefis(nouvelleGestion) {
+    await sauvegarderGestionDefis(nouvelleGestion);
+    setGestionDefis(nouvelleGestion);
+  }
+
+  async function modifierGestionDefis(patch) {
+    setErreurGestionDefis("");
+    try {
+      await enregistrerGestionDefis({ ...gestionDefis, ...patch });
+    } catch (erreur) {
+      setErreurGestionDefis(erreur.message);
+    }
   }
 
   async function confirmerNettoyageTirages() {
@@ -213,6 +245,15 @@ export default function App() {
     try {
       await sauvegarderDefis(liste);
       setDefis(liste);
+      if (gestionDefis.defiDuMomentId === id) {
+        const gestionReinitialisee = { ...gestionDefis, defiDuMomentId: "", defiDuMomentActif: false };
+        try {
+          await enregistrerGestionDefis(gestionReinitialisee);
+        } catch (erreur) {
+          setErreurSauvegarde(erreur.message);
+          return;
+        }
+      }
       setErreurSauvegarde("");
     } catch (erreur) {
       setErreurSauvegarde(erreur.message);
@@ -374,6 +415,11 @@ export default function App() {
             defis={defis}
             objectifs={objectifs}
             jours={jours}
+            recompenses={recompenses}
+            defiDuMoment={gestionDefis.defiDuMomentActif
+              ? defis.find((defi) => defi.id === gestionDefis.defiDuMomentId) || null
+              : null}
+            frequenceHebdoDefiMoment={gestionDefis.frequencesHebdo?.[gestionDefis.defiDuMomentId] || 3}
             datesTiragesAConfirmer={datesTiragesAConfirmer}
             lectureSeule={datesTiragesAConfirmer.length > 0}
             onMajJour={majJour}
@@ -382,11 +428,24 @@ export default function App() {
         )}
 
         {onglet === "regles" && <Regles />}
-        {onglet === "collection" && <Collection defis={defis} objectifs={objectifs} jours={jours} />}
-        {onglet === "notes" && <Notes defis={defis} objectifs={objectifs} jours={jours} />}
+        {onglet === "collection" && (
+          <Collection
+            defis={defis}
+            objectifs={objectifs}
+            jours={jours}
+            recompenses={recompenses}
+            gestionDefis={gestionDefis}
+          />
+        )}
+        {onglet === "notes" && (
+          <Notes defis={defis} objectifs={objectifs} jours={jours} recompenses={recompenses} />
+        )}
 
         {onglet === "defis" && (
           <div>
+            <p className="jour-titre description-mes-defis">
+              Relève tes <span>défis</span> pour atteindre tes <span>objectifs</span>
+            </p>
             <section aria-labelledby="titre-objectifs">
               <div className="entete-section">
                 <h2 id="titre-objectifs" className="jour-titre">Mes objectifs ({objectifs.length})</h2>
@@ -456,12 +515,94 @@ export default function App() {
             <section aria-labelledby="titre-defis">
               <div className="defis-entete">
                 <h2 id="titre-defis" className="jour-titre">Mes défis ({defis.length})</h2>
+                <button
+                  className="btn petit bouton-defi-moment"
+                  aria-expanded={defiMomentOuvert}
+                  aria-controls="panneau-defi-moment"
+                  onClick={() => setDefiMomentOuvert((ouvert) => !ouvert)}
+                >
+                  {defiMomentOuvert ? "Fermer" : "Défi du moment"}
+                </button>
                 {objectifs.length > 0 && (
                   <button className="btn petit" onClick={() => setFormulaireDefiOuvert(!formulaireDefiOuvert)}>
                     {formulaireDefiOuvert ? "Annuler" : "+ Créer un défi"}
                   </button>
                 )}
               </div>
+              {defiMomentOuvert && (
+                <div id="panneau-defi-moment" className="tuile panneau-defi-moment">
+                  <h3>Défi du moment</h3>
+                  <p>
+                    Choisis un défi qui apparaîtra à chaque tirage tant que l’option est activée. Il remplacera la carte
+                    aléatoire de sa difficulté : le tirage conservera trois cartes.
+                  </p>
+                  <p>Chaque réussite rapporte 💩 1 (facile), 💩 3 (moyen) ou 💩 5 (difficile).</p>
+                  <label className="champ-label" htmlFor="defi-du-moment">Défi à mettre en avant</label>
+                  <select
+                    id="defi-du-moment"
+                    value={gestionDefis.defiDuMomentId}
+                    onChange={(event) => {
+                      const defiId = event.target.value;
+                      modifierGestionDefis({
+                        defiDuMomentId: defiId,
+                        defiDuMomentActif: defiId ? gestionDefis.defiDuMomentActif : false,
+                        frequencesHebdo: defiId
+                          ? {
+                            ...gestionDefis.frequencesHebdo,
+                            [defiId]: gestionDefis.frequencesHebdo?.[defiId] || 3,
+                          }
+                          : gestionDefis.frequencesHebdo,
+                      });
+                    }}
+                  >
+                    <option value="">Choisir un défi</option>
+                    {defis.map((defi) => (
+                      <option key={defi.id} value={defi.id}>
+                        {defi.titre} — {defi.difficulte}
+                      </option>
+                    ))}
+                  </select>
+                  {gestionDefis.defiDuMomentId && (
+                    <>
+                      <label className="champ-label" htmlFor="frequence-defi-moment">
+                        Objectif hebdomadaire
+                      </label>
+                      <select
+                        id="frequence-defi-moment"
+                        value={gestionDefis.frequencesHebdo?.[gestionDefis.defiDuMomentId] || 3}
+                        onChange={(event) => modifierGestionDefis({
+                          frequencesHebdo: {
+                            ...gestionDefis.frequencesHebdo,
+                            [gestionDefis.defiDuMomentId]: Number(event.target.value),
+                          },
+                        })}
+                      >
+                        {Array.from({ length: 7 }, (_, index) => index + 1).map((nombre) => (
+                          <option key={nombre} value={nombre}>
+                            {nombre} fois par semaine
+                          </option>
+                        ))}
+                      </select>
+                      <p className="note">
+                        Une fois cet objectif atteint entre lundi et dimanche, tu reçois en bonus autant de cacas que ce défi
+                        t’en a rapportés cette semaine. Le seuil est fixé à la première validation du défi chaque semaine ;
+                        si tu le changes ensuite, le nouveau seuil s’appliquera la semaine suivante.
+                      </p>
+                    </>
+                  )}
+                  <label className="case-a-cocher">
+                    <input
+                      type="checkbox"
+                      checked={gestionDefis.defiDuMomentActif}
+                      disabled={!gestionDefis.defiDuMomentId}
+                      onChange={(event) => modifierGestionDefis({ defiDuMomentActif: event.target.checked })}
+                    />
+                    Activer le défi du moment
+                  </label>
+                  {erreurGestionDefis && <p className="attention" role="alert">{erreurGestionDefis}</p>}
+                  {!defis.length && <p className="note">Crée d’abord un défi dans la liste ci-dessous.</p>}
+                </div>
+              )}
               <div className="filtres-defis">
                 <div className="filtres-difficulte" aria-label="Filtrer par difficulté">
                 {DIFFICULTES.map((niveau) => (

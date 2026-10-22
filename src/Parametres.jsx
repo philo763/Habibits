@@ -33,11 +33,19 @@ const TEXTE_PERSISTANT = {
   indisponible: "Pas disponible sur ce navigateur",
 };
 
-export default function Parametres({ onRevoirAccueil }) {
+const SOUS_MENUS = [
+  { id: "rappel", nom: "Rappel" },
+  { id: "donnees", nom: "Mes données" },
+];
+
+export default function Parametres({
+  onRevoirAccueil,
+}) {
   const s = useSauvegarde();
+  const [sousMenu, setSousMenu] = useState("rappel");
   const [rappel, setRappel] = useState(null);
   const [restaurer, setRestaurer] = useState(false);
-  const [message, setMessage] = useState(null); // { texte, erreur }
+  const [message, setMessage] = useState(null);
 
   useEffect(() => {
     chargerRappel().then(setRappel);
@@ -89,132 +97,138 @@ export default function Parametres({ onRevoirAccueil }) {
 
   return (
     <div>
-      <div className="tuile">
-        <h2>Rappel quotidien</h2>
-        <p>
-          Choisis une heure, puis ajoute le rappel à l'appli Calendrier de ton téléphone : c'est elle qui t'enverra la
-          notification chaque jour.
-        </p>
-        {rappel && (
-          <>
-            <label>
-              Heure du rappel
-              <input
-                type="time"
-                value={`${pad(rappel.heure)}:${pad(rappel.minute)}`}
-                onChange={(e) => changerHeure(e.target.value)}
-              />
-            </label>
-            <button className="btn" onClick={() => telechargerRappel(rappel.heure, rappel.minute)}>
-              Ajouter à mon calendrier
-            </button>
-          </>
-        )}
-      </div>
+      <nav className="sous-menu-parametres" aria-label="Sous-menus des paramètres">
+        {SOUS_MENUS.map(({ id, nom }) => (
+          <button
+            key={id}
+            className={`btn petit ${sousMenu === id ? "actif" : "discret"}`}
+            aria-current={sousMenu === id ? "page" : undefined}
+            onClick={() => {
+              setSousMenu(id);
+              setMessage(null);
+            }}
+          >
+            {nom}
+          </button>
+        ))}
+      </nav>
 
-      <div className="tuile">
-        <h2>Mes données</h2>
-        <p>Tes défis et ton avancement sont enregistrés sur ce téléphone, dans ton navigateur. Voici comment les protéger.</p>
+      {message && <p className={message.erreur ? "attention" : "ok-msg"} role={message.erreur ? "alert" : undefined}>{message.texte}</p>}
 
-        <h3 className="sous-titre">Sauvegarde automatique</h3>
-        <p>Habibits copie tes données dans un fichier que tu choisis, et le met à jour tout seul à chaque changement.</p>
-        {s.supporte ? (
-          <>
-            <p className="statut">État : {TEXTE_STATUT[s.statut]}</p>
-            {s.nom && (
+      {sousMenu === "rappel" && (
+        <section aria-labelledby="titre-rappel">
+          <div className="tuile">
+            <h2 id="titre-rappel">Rappel quotidien</h2>
+            <p>
+              Choisis une heure, puis ajoute le rappel à l'appli Calendrier de ton téléphone : c'est elle qui t'enverra la
+              notification chaque jour.
+            </p>
+            {rappel && (
+              <>
+                <label>
+                  Heure du rappel
+                  <input
+                    type="time"
+                    value={`${pad(rappel.heure)}:${pad(rappel.minute)}`}
+                    onChange={(e) => changerHeure(e.target.value)}
+                  />
+                </label>
+                <button className="btn" onClick={() => telechargerRappel(rappel.heure, rappel.minute)}>
+                  Ajouter à mon calendrier
+                </button>
+              </>
+            )}
+          </div>
+        </section>
+      )}
+
+      {sousMenu === "donnees" && (
+        <section aria-labelledby="titre-donnees">
+          <h2 id="titre-donnees" className="jour-titre">Mes données</h2>
+          <p>Tes défis et ton avancement sont enregistrés sur ce téléphone, dans ton navigateur. Voici comment les protéger.</p>
+
+          <div className="tuile donnees-categorie">
+            <h3>Sauvegarde automatique</h3>
+            <p>Habibits copie tes données dans un fichier que tu choisis, et le met à jour tout seul à chaque changement.</p>
+            {s.supporte ? (
+              <>
+                <p className="statut">État : {TEXTE_STATUT[s.statut]}</p>
+                {s.nom && <p>Fichier : <strong>{s.nom}</strong></p>}
+                {s.derniere && <p>Dernière sauvegarde : {formaterDateHeure(s.derniere)}</p>}
+                <p className="note">
+                  Pour ta vie privée, le navigateur ne donne que le nom du fichier, pas son emplacement. Si tu le déplaces,
+                  le renommes ou le supprimes, Habibits te prévient.
+                </p>
+                <div className="actions">
+                  {s.statut === "inactive" && (
+                    <button className="btn" onClick={activer}>Activer la sauvegarde automatique</button>
+                  )}
+                  {s.statut === "reconnecter" && <button className="btn" onClick={surReconnecter}>Reconnecter</button>}
+                  {(s.statut === "ok" || s.statut === "erreur" || s.statut === "introuvable") && (
+                    <button className="btn" onClick={activer}>
+                      {s.statut === "introuvable" ? "Choisir un nouvel emplacement" : "Changer d'emplacement"}
+                    </button>
+                  )}
+                  {s.statut !== "inactive" && <button className="btn discret" onClick={arreter}>Arrêter</button>}
+                </div>
+              </>
+            ) : (
               <p>
-                Fichier : <strong>{s.nom}</strong>
+                Ton navigateur ne sait pas faire ça (c'est le cas de Firefox et de Safari, par exemple). Pas grave :
+                utilise l'export ci-dessous de temps en temps.
               </p>
             )}
-            {s.derniere && <p>Dernière sauvegarde : {formaterDateHeure(s.derniere)}</p>}
+          </div>
+
+          <div className="tuile donnees-categorie">
+            <h3>Protection contre le nettoyage</h3>
+            <p>
+              Quand le téléphone manque de place, il peut supprimer les données des sites sans prévenir. On lui demande de ne
+              pas toucher à celles d'Habibits.
+            </p>
+            <p className="statut">État : {TEXTE_PERSISTANT[s.persistant]}</p>
+            {s.persistant !== "accorde" && s.persistant !== "indisponible" && (
+              <div className="actions">
+                <button className="btn" onClick={() => demanderPersistant()}>Demander la protection</button>
+              </div>
+            )}
             <p className="note">
-              Pour ta vie privée, le navigateur ne donne que le nom du fichier, pas son emplacement. Si tu le déplaces,
-              le renommes ou le supprimes, Habibits te prévient.
+              Ça ne protège pas si tu effaces toi-même les données du navigateur : pour ça, il y a la sauvegarde automatique.
+            </p>
+          </div>
+
+          <div className="tuile donnees-categorie">
+            <h3>Exporter mes données</h3>
+            <p>
+              Tu récupères un fichier à envoyer où tu veux : Drive, mail, ordinateur… Pratique pour changer de téléphone ou
+              garder une copie.
             </p>
             <div className="actions">
-              {s.statut === "inactive" && (
-                <button className="btn" onClick={activer}>
-                  Activer la sauvegarde automatique
-                </button>
-              )}
-              {s.statut === "reconnecter" && (
-                <button className="btn" onClick={surReconnecter}>
-                  Reconnecter
-                </button>
-              )}
-              {(s.statut === "ok" || s.statut === "erreur" || s.statut === "introuvable") && (
-                <button className="btn" onClick={activer}>
-                  {s.statut === "introuvable" ? "Choisir un nouvel emplacement" : "Changer d'emplacement"}
-                </button>
-              )}
-              {s.statut !== "inactive" && (
-                <button className="btn discret" onClick={arreter}>
-                  Arrêter
-                </button>
-              )}
+              <button className="btn" onClick={exporter}>Exporter mes données</button>
             </div>
-          </>
-        ) : (
-          <p>
-            Ton navigateur ne sait pas faire ça (c'est le cas de Firefox et de Safari, par exemple). Pas grave :
-            utilise l'export ci-dessous de temps en temps.
-          </p>
-        )}
-
-        <h3 className="sous-titre">Protection contre le nettoyage</h3>
-        <p>
-          Quand le téléphone manque de place, il peut supprimer les données des sites sans prévenir. On lui demande de ne
-          pas toucher à celles d'Habibits.
-        </p>
-        <p className="statut">État : {TEXTE_PERSISTANT[s.persistant]}</p>
-        {s.persistant !== "accorde" && s.persistant !== "indisponible" && (
-          <div className="actions">
-            <button className="btn" onClick={() => demanderPersistant()}>
-              Demander la protection
-            </button>
+            {s.dernierExport && <p className="note">Dernier export : {formaterDateHeure(s.dernierExport)}</p>}
           </div>
-        )}
-        <p className="note">
-          Ça ne protège pas si tu effaces toi-même les données du navigateur : pour ça, il y a la sauvegarde
-          automatique.
-        </p>
 
-        <h3 className="sous-titre">Exporter mes données</h3>
-        <p>
-          Tu récupères un fichier à envoyer où tu veux : Drive, mail, ordinateur… Pratique pour changer de téléphone ou
-          garder une copie.
-        </p>
-        <div className="actions">
-          <button className="btn" onClick={exporter}>
-            Exporter mes données
-          </button>
-        </div>
-        {s.dernierExport && <p className="note">Dernier export : {formaterDateHeure(s.dernierExport)}</p>}
-
-        <h3 className="sous-titre">Restaurer</h3>
-        {restaurer ? (
-          <Restauration onFermer={() => setRestaurer(false)} />
-        ) : (
-          <div className="actions">
-            <button className="btn" onClick={() => setRestaurer(true)}>
-              Restaurer depuis un fichier
-            </button>
-            {existeCopieAvantImport() && (
-              <button className="btn discret" onClick={annulerRestauration}>
-                Annuler la dernière restauration
-              </button>
+          <div className="tuile donnees-categorie">
+            <h3>Restaurer</h3>
+            {restaurer ? (
+              <Restauration onFermer={() => setRestaurer(false)} />
+            ) : (
+              <div className="actions">
+                <button className="btn" onClick={() => setRestaurer(true)}>Restaurer depuis un fichier</button>
+                {existeCopieAvantImport() && (
+                  <button className="btn discret" onClick={annulerRestauration}>Annuler la dernière restauration</button>
+                )}
+              </div>
             )}
           </div>
-        )}
 
-        {message && <p className={message.erreur ? "attention" : "ok-msg"}>{message.texte}</p>}
+          <div className="actions">
+            <button className="btn discret" onClick={onRevoirAccueil}>Revoir l'explication de départ</button>
+          </div>
+        </section>
+      )}
 
-        <div className="actions">
-          <button className="btn discret" onClick={onRevoirAccueil}>
-            Revoir l'explication de départ
-          </button>
-        </div>
-      </div>
     </div>
   );
 }

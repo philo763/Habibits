@@ -8,16 +8,19 @@ Les données restent **sur le téléphone**, dans le navigateur : pas de compte,
 
 - **Calendrier** mensuel : une case par jour, avec le titre du défi choisi.
 - **Tirage quotidien** en un clic, pour aujourd’hui ou demain : une carte facile, une moyenne et une difficile, puis choix d'un défi.
-- **Collection** : après avoir validé un défi, on peut ajouter sa carte à sa collection. Les validations passées avant cette fonctionnalité ne sont pas ajoutées rétroactivement ; les doublons sont comptés, les cartes utilisent les informations actuelles du défi tant qu’il existe et conservent leur copie si le défi est supprimé. Chaque carte affiche son ID ; le tri par ID est sélectionné par défaut, avec des tris par date et difficulté et des filtres par difficulté.
+- **Collection** : après avoir validé un défi, on peut ajouter sa carte à sa collection. Les validations passées avant cette fonctionnalité ne sont pas ajoutées rétroactivement ; les doublons sont comptés, les cartes utilisent les informations actuelles du défi tant qu’il existe et conservent leur copie si le défi est supprimé. Chaque carte affiche son ID ; les filtres par difficulté et les tris récent/ancien reprennent ceux de « Mes défis ».
 - **Notes à moi-même** : après un défi non réussi, une note facultative peut être enregistrée et retrouvée avec la carte du défi.
 - **Confirmations** : l'application demande de confirmer le choix d'une carte et la validation d'un défi.
 - **Tirage de secours** : si une difficulté manque dans la liste, l'application recommande de créer un défi de ce niveau. On peut continuer ; les cartes manquantes sont alors tirées au hasard parmi les défis existants, en conservant leur difficulté réelle. Il faut au moins trois défis distincts pour tirer trois cartes.
 - **Validation** : le défi du jour se valide depuis sa case (bouton « Valider le défi »).
 - **Gestion des objectifs et des défis** : objectifs indépendants avec couleur, renommage et suppression sécurisée ; défis modifiables avec difficulté et date de création.
+- **Défi du moment** : depuis « Mes défis », un défi peut être épinglé à chaque tirage ; il remplace la carte aléatoire de sa difficulté et permet de régler un objectif hebdomadaire.
+- **Récompenses** : une validation rapporte 💩 1 (facile), 💩 3 (moyen) ou 💩 5 (difficile) ; un défi non réussi rapporte un cœur bandé ❤️‍🩹. Chaque gain doit être confirmé dans une petite fenêtre. Les soldes apparaissent sous le calendrier. Le défi du moment a une section dédiée dans la collection et un objectif hebdomadaire de 1 à 7 validations qui, s’il est atteint, double ses gains de la semaine sous forme de bonus.
 - **Tri et filtres** dans « Mes défis » : par date de création, par objectifs et par difficultés, avec sélection multiple.
 - **À propos** : présentation de l'approche de Habibits et de sa raison d'être.
 - **Stockage local** : défis, jours et réglage du rappel sont conservés dans le navigateur.
 - **Rappel quotidien** : choix de l'heure et téléchargement d'un fichier `.ics` à importer dans l'appli Calendrier du téléphone, qui enverra la notification.
+- **Paramètres séparés en pages** : Rappel et Mes données.
 - **Données protégées** : demande de stockage persistant pour limiter le nettoyage automatique du navigateur.
 - **Sauvegarde automatique** : copie des données dans un fichier choisi par l'utilisateur, avec l'API d'accès aux fichiers lorsqu'elle est disponible.
 - **Export et restauration** : sauvegarde JSON partageable ou téléchargeable, et restauration depuis un fichier.
@@ -29,7 +32,8 @@ Les données restent **sur le téléphone**, dans le navigateur : pas de compte,
 
 ## Règles du calendrier
 
-- Un tirage par jour, pour aujourd’hui ou demain, propose un défi facile, un moyen et un difficile ; les cartes restent disponibles après le tirage. Les autres dates ne créent aucune donnée de tirage.
+- Un tirage par jour, pour aujourd’hui ou demain, propose un défi facile, un moyen et un difficile ; les cartes restent disponibles après le tirage. Si le défi du moment est activé, il remplace la carte aléatoire de sa difficulté. Les autres dates ne créent aucune donnée de tirage.
+- Chaque validation rapporte 1, 3 ou 5 cacas selon la difficulté. Le bonus du défi du moment est attribué une fois par semaine calendaire (lundi-dimanche), dès que l’objectif défini est atteint ; il équivaut à la somme des gains de ce défi pour la semaine. Le seuil est celui enregistré à la première validation du défi dans la semaine.
 - Si un niveau n'est pas représenté, un message conseille de créer un défi de cette difficulté et donne accès à « Mes défis ». Il est aussi possible de continuer : chaque carte manquante est alors tirée au hasard parmi les défis encore disponibles, sans modifier sa difficulté enregistrée.
 - Trois défis distincts au minimum sont nécessaires. On choisit une seule carte par jour ; une confirmation est demandée avant chaque choix et validation. Un défi déjà choisi peut être validé ou marqué comme non réussi, y compris pour un jour passé.
 - Il est impossible de tirer un défi pour un jour passé. Si un tirage existe déjà, on peut modifier le choix parmi les cartes tirées après avoir confirmé l’avertissement « Attention, c’est de la triche 😉 ». Une fois le défi validé ou marqué comme non réussi, le choix ne peut plus être modifié.
@@ -55,10 +59,11 @@ src/
   App.jsx               Écran principal et navigation
   Accueil.jsx           Présentation et réglages de première utilisation
   Calendrier.jsx        Calendrier, tirage, choix et validation
+  recompenses.js        Calcul des cacas et des bonus hebdomadaires
   Collection.jsx        Collection des cartes de défis validés
   Notes.jsx             Notes à soi-même associées aux défis non réussis
   CarteDefiCollection.jsx Carte en lecture seule réutilisée par la collection et les notes
-  Parametres.jsx        Rappel, stockage et gestion des sauvegardes
+  Parametres.jsx        Sous-pages Rappel et Mes données
   Restauration.jsx      Choix et restauration d'une sauvegarde JSON
   Bandeaux.jsx          Indicateurs et messages de sauvegarde
   objectifs.js          Palette des objectifs et migration des données de défis
@@ -79,12 +84,14 @@ package.json            Dépendances et commandes npm
 
 ## Format des données
 
-Les données principales sont enregistrées localement dans le navigateur, sous les clés `habibits.objectifs`, `habibits.defis`, `habibits.jours` et `habibits.rappel` :
+Les données principales sont enregistrées localement dans le navigateur, sous les clés `habibits.objectifs`, `habibits.defis`, `habibits.jours`, `habibits.rappel` et `habibits.gestion-defis` :
 
 - `objectifs` : liste indépendante `{ id, nom, couleur }`, permettant notamment les objectifs sans défi.
 - `defis` : liste de défis `{ id, titre, description, image, objectifId, difficulte, dateCreation }`
 - `jours` : un objet indexé par date, `"2026-10-16": { propositions: [ids], choisi: id, fait: false }`. Les nouvelles validations enregistrent `collectionProposable`, `collectionne`, `defiCopie` et `objectifCopie` ; les échecs enregistrent `nonReussi`, `note` et une copie du défi et de son objectif. Si le choix validé est modifié après confirmation, une carte déjà ajoutée à la collection est conservée dans `collectionHistorique`. Les anciens jours validés restent hors de la collection.
 - `rappel` : `{ heure, minute }` (20 h 00 par défaut)
+- `gestion-defis` : `{ defiDuMomentId, defiDuMomentActif, frequencesHebdo }`, configuration du défi garanti dans les tirages et de son objectif hebdomadaire. Cette configuration est incluse dans les sauvegardes et restaurations.
+- Les jours validés après l’ajout des récompenses enregistrent leur gain `recompenseCaca`, ainsi que l’identifiant du défi du moment et l’objectif hebdomadaire utilisés pour calculer le bonus. Les anciens jours validés ne rapportent pas de cacas rétroactivement. Un jour marqué ensuite comme non réussi perd son gain et le bonus de sa semaine est recalculé.
 
 Au premier lancement, `defis` est rempli à partir de `src/data/defisDepart.js`, qui comprend des défis faciles, moyens et difficiles afin de permettre le tirage complet dès le départ. Les trois objectifs initiaux Hydratation, Sport et Maison ont chacun une couleur distincte. Cette initialisation ne remplace pas les défis déjà enregistrés dans le navigateur. Le fichier de sauvegarde JSON contient ces données avec le nom de l'application, la version du format et la date d'export.
 

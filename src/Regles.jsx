@@ -3,7 +3,7 @@ export default function Regles() {
     <article className="page-regles">
       <h2 className="jour-titre">Règles du jeu</h2>
       <div className="tuile regles-resume">
-        <p>Tire tes défis, choisis-en un et réalise-le aujourd’hui.</p>
+        <p className="resume-regles-texte">Tire tes défis, choisis-en un et réalise-le aujourd’hui.</p>
       </div>
 
       <section aria-labelledby="titre-regles-tirage">
@@ -11,6 +11,9 @@ export default function Regles() {
         <ul>
           <li>Un seul tirage par jour, pour aujourd’hui ou demain ; les cartes tirées restent disponibles.</li>
           <li>Le tirage propose un défi facile, un moyen et un difficile.</li>
+          <li>Le défi du moment, s’il est activé depuis « Mes défis », remplace le défi aléatoire de sa difficulté à chaque tirage.</li>
+          <li>Chaque défi réussi rapporte des cacas : 1 pour un défi facile, 3 pour un moyen et 5 pour un difficile. Chaque défi non réussi rapporte un cœur bandé ❤️‍🩹. Confirme chaque gain avec le bouton affiché ; les soldes s’affichent sous le calendrier.</li>
+          <li>Les défis du moment réussis apparaissent dans leur section dédiée de la collection. Atteindre l’objectif hebdomadaire choisi donne un bonus égal aux cacas rapportés par ce défi dans la semaine, du lundi au dimanche.</li>
           <li>
             Un niveau manque ? Crée un défi de ce niveau ou continue : les cartes manquantes sont tirées au hasard
             parmi les défis restants et gardent leur difficulté réelle.

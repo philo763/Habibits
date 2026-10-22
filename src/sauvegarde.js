@@ -14,6 +14,8 @@ import {
   chargerDonneesDefis,
   sauvegarderJours,
   sauvegarderRappel,
+  chargerGestionDefis,
+  sauvegarderGestionDefis,
 } from "./storage";
 import { cleDate } from "./dates";
 import { normaliserDonneesDefis } from "./objectifs";
@@ -129,6 +131,7 @@ async function construireSauvegarde() {
       ...await chargerDonneesDefis(),
       jours: await chargerJours(),
       rappel: await chargerRappel(),
+      gestionDefis: await chargerGestionDefis(),
     },
   };
 }
@@ -159,7 +162,15 @@ function verifierSauvegarde(texte) {
       d.objectifs.every((x) => x && typeof x.id === "string" && typeof x.nom === "string"));
   const joursOk = d?.jours && typeof d.jours === "object" && !Array.isArray(d.jours);
   const rappelOk = d?.rappel && Number.isInteger(d.rappel.heure) && Number.isInteger(d.rappel.minute);
-  if (!defisOk || !objectifsOk || !joursOk || !rappelOk) {
+  const gestionDefisOk = d?.gestionDefis === undefined ||
+    (d.gestionDefis && typeof d.gestionDefis.defiDuMomentId === "string" &&
+      typeof d.gestionDefis.defiDuMomentActif === "boolean" &&
+      (d.gestionDefis.frequencesHebdo === undefined ||
+        (d.gestionDefis.frequencesHebdo && typeof d.gestionDefis.frequencesHebdo === "object" &&
+          !Array.isArray(d.gestionDefis.frequencesHebdo) &&
+          Object.values(d.gestionDefis.frequencesHebdo).every((frequence) =>
+            Number.isInteger(frequence) && frequence >= 1 && frequence <= 7))));
+  if (!defisOk || !objectifsOk || !joursOk || !rappelOk || !gestionDefisOk) {
     return { ok: false, erreur: "Le contenu du fichier est incomplet ou abîmé. Essaie une autre sauvegarde." };
   }
   const donneesNormalisees = normaliserDonneesDefis(d.defis, d.objectifs);
@@ -168,7 +179,16 @@ function verifierSauvegarde(texte) {
     sauvegarde: {
       ...objet,
       version: VERSION_FORMAT,
-      donnees: { ...d, ...donneesNormalisees },
+      donnees: {
+        ...d,
+        ...donneesNormalisees,
+        gestionDefis: {
+          defiDuMomentId: d.gestionDefis?.defiDuMomentId || "",
+          defiDuMomentActif: Boolean(d.gestionDefis?.defiDuMomentId) &&
+            d.gestionDefis?.defiDuMomentActif === true,
+          frequencesHebdo: d.gestionDefis?.frequencesHebdo || {},
+        },
+      },
     },
     resume: {
       nbDefis: d.defis.length,
@@ -191,6 +211,11 @@ async function appliquerSauvegarde(sauvegarde) {
   await sauvegarderDefis(d.defis);
   await sauvegarderJours(d.jours);
   await sauvegarderRappel(d.rappel);
+  await sauvegarderGestionDefis(d.gestionDefis || {
+    defiDuMomentId: "",
+    defiDuMomentActif: false,
+    frequencesHebdo: {},
+  });
 }
 
 export function existeCopieAvantImport() {
