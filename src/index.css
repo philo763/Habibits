@@ -264,6 +264,9 @@ select:focus { outline: none; border-color: var(--or); }
 .meta-defi { font-size: 14px; opacity: 0.85; }
 .liste-objectifs { display: grid; gap: 4px; margin: 8px 0 20px; }
 .objectif-tuile, .defi-tuile { border-color: var(--couleur); }
+.objectif-tuile, .defi-tuile, .carte-tirage {
+  background-color: color-mix(in srgb, var(--couleur) 22%, rgba(10, 22, 49, 0.8));
+}
 .objectif-tuile { margin-bottom: 4px; padding: 4px 8px; }
 .objectif-tuile.selectionne { outline: 2px solid var(--or); outline-offset: 2px; }
 .objectif-ligne { display: flex; align-items: center; gap: 8px; }
@@ -365,6 +368,12 @@ select:focus { outline: none; border-color: var(--or); }
   max-width: 100%;
   padding: 2px 5px;
   font-size: 11px;
+}
+.tirage-meta .objectif-tirage {
+  font-family: "Barlow Condensed", "Arial Narrow", sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  border-color: transparent;
 }
 .carte-tirage {
   display: flex;
