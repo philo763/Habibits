@@ -135,11 +135,13 @@ export default function Calendrier({
 
   const trouver = (id) => defis.find((d) => d.id === id);
   const donneesAnciennesVisibles = (cle) => datesTiragesAConfirmer.includes(cle);
-  const couleurDefi = (defi) =>
-    couleurObjectif(objectifs.find((objectif) => objectif.id === defi?.objectifId)?.couleur);
+  const couleurDefi = (defi, objectifCopie = null) =>
+    couleurObjectif(
+      objectifs.find((objectif) => objectif.id === defi?.objectifId)?.couleur || objectifCopie?.couleur
+    );
   const cases = grilleDuMois(mois.getFullYear(), mois.getMonth());
   const jour = selection <= demain || donneesAnciennesVisibles(selection) ? jours[selection] || {} : {};
-  const defiChoisi = jour.choisi ? trouver(jour.choisi) : null;
+  const defiChoisi = jour.choisi ? trouver(jour.choisi) || jour.defiCopie : null;
   const propositions = (jour.propositions || []).map(trouver).filter(Boolean);
   const modifiable = !lectureSeule && selection >= aujourdhui && selection <= demain;
   const jourPasseAvecTirage = !lectureSeule && selection < aujourdhui &&
@@ -245,7 +247,10 @@ export default function Calendrier({
       {erreurTirage && <p className="alerte-tirage" role="alert">{erreurTirage}</p>}
 
       {defiChoisi ? (
-        <div className={`tuile ${jour.fait ? "fait" : jour.nonReussi ? "non-reussi" : "c2"}`} style={{ "--couleur": couleurDefi(defiChoisi) }}>
+        <div
+          className={`tuile ${jour.fait ? "fait" : jour.nonReussi ? "non-reussi" : "c2"}`}
+          style={{ "--couleur": couleurDefi(defiChoisi, jour.objectifCopie) }}
+        >
           <h3>{defiChoisi.titre}</h3>
           <p>{defiChoisi.description}</p>
           {peutModifierEtat && !jour.fait && !jour.nonReussi && (
@@ -262,7 +267,7 @@ export default function Calendrier({
           {jour.fait && (
             <>
               <p className="accompli">Bravo, défi accompli !</p>
-              {jour.collectionProposable && !jour.collectionne && !lectureSeule && (
+              {!jour.collectionne && jour.defiDuMomentIdLorsValidation !== jour.choisi && !lectureSeule && (
                 <button className="btn" onClick={() => maj(selection, { collectionne: true })}>
                   Ajouter ma carte à la collection
                 </button>

@@ -29,7 +29,7 @@ export default function Regles() {
           <li>Confirme ton choix et confirme aussi la validation du défi pour éviter les clics involontaires.</li>
           <li>Tu peux valider ou indiquer que tu n’as pas réussi un défi déjà choisi, y compris pour un jour passé.</li>
           <li>Il est impossible de tirer un défi pour un jour passé. Si un tirage existe déjà, tu peux modifier le choix parmi ses cartes après avoir confirmé l’avertissement « Attention, c’est de la triche 😉 ». Une fois le défi validé ou marqué comme non réussi, le choix ne peut plus être modifié.</li>
-          <li>Après validation, tu peux ajouter la carte à ta collection. Les défis déjà validés avant cette fonctionnalité n’y sont pas ajoutés automatiquement.</li>
+          <li>Après validation, tu peux ajouter la carte à ta collection depuis le calendrier, y compris après coup pour un ancien défi validé. Chaque validation apparaît séparément avec sa date ; les défis du moment réussis sont rangés dans une section dédiée.</li>
           <li>Si tu n’as pas réussi, signale-le et rédige éventuellement une note à toi-même ; tes notes sont réunies dans la page dédiée.</li>
         </ul>
       </section>
