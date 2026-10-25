@@ -248,7 +248,7 @@ export default function Calendrier({
 
       {defiChoisi ? (
         <div
-          className={`tuile ${jour.fait ? "fait" : jour.nonReussi ? "non-reussi" : "c2"}`}
+          className={`tuile defi-tuile ${jour.fait ? "fait" : jour.nonReussi ? "non-reussi" : "c2"}`}
           style={{ "--couleur": couleurDefi(defiChoisi, jour.objectifCopie) }}
         >
           <h3>{defiChoisi.titre}</h3>
@@ -298,7 +298,7 @@ export default function Calendrier({
                 </div>
                 <div className="tirage-meta">
                   {objectif && (
-                    <span className="defi-difficulte defi-objectif" style={{ "--couleur": couleurDefi(d) }}>
+                    <span className="defi-difficulte defi-objectif objectif-tirage" style={{ "--couleur": couleurDefi(d) }}>
                       {objectif.nom}
                     </span>
                   )}
