@@ -157,6 +157,13 @@ select:focus { outline: none; border-color: var(--or); }
 .suivi-bonus-hebdo h3 { margin: 0 0 6px; color: var(--bleu-clair); }
 .suivi-bonus-hebdo p { margin: 0 0 6px; line-height: 1.45; }
 .suivi-bonus-hebdo p:last-child { margin-bottom: 0; }
+.jour-titre.titre-defis-moment-collection { color: #ffad55; }
+.tuile.suivi-defi-moment {
+  --couleur: #ffad55;
+  background: #4a2b17;
+}
+.suivi-bonus-hebdo.suivi-defi-moment { border-color: #ffad55; }
+.suivi-defi-moment h3 { color: #fff; }
 .page-regles h3 { margin: 16px 0 6px; color: var(--bleu-clair); }
 .page-regles ul { margin: 0; padding-left: 22px; line-height: 1.55; }
 .page-regles li { margin-bottom: 6px; }
@@ -458,9 +465,6 @@ select:focus { outline: none; border-color: var(--or); }
 .bouton-correction-defi { width: auto; max-width: 320px; }
 .carte-collection-entete { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
 .carte-collection-entete h3 { min-width: 0; }
-.compteur-collection { flex: none; color: var(--or); font-size: 20px; font-weight: 700; text-transform: lowercase; }
-.id-defi-collection { margin-top: 8px !important; color: var(--bleu-clair); font-size: 12px; overflow-wrap: anywhere; }
-.id-defi-collection code { font: inherit; }
 .carte-collection-objectif { display: inline-block; margin-top: 8px; }
 .note-date { color: var(--bleu-clair); font-size: 14px; font-weight: 700; text-transform: capitalize; }
 .note-personnelle { margin-top: 10px !important; padding-top: 10px; border-top: 1px solid var(--trait); white-space: pre-wrap; overflow-wrap: anywhere; }

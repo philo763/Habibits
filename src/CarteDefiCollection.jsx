@@ -1,7 +1,7 @@
 import { couleurObjectif } from "./objectifs";
 import IndicateurDifficulte from "./IndicateurDifficulte";
 
-export default function CarteDefiCollection({ defi, objectif, nombre, note, date, afficherId = false }) {
+export default function CarteDefiCollection({ defi, objectif, note, date }) {
   const couleur = couleurObjectif(objectif?.couleur);
 
   return (
@@ -10,7 +10,6 @@ export default function CarteDefiCollection({ defi, objectif, nombre, note, date
         <div className="defi-contenu">
           <div className="carte-collection-entete">
             <h3>{defi.titre}</h3>
-            {nombre > 1 && <span className="compteur-collection">(x{nombre})</span>}
           </div>
           {defi.description && <p>{defi.description}</p>}
           {objectif && (
@@ -25,7 +24,6 @@ export default function CarteDefiCollection({ defi, objectif, nombre, note, date
           </span>
         </div>
       </div>
-      {afficherId && <p className="id-defi-collection">ID : <code>{defi.id}</code></p>}
       {date && <p className="note-date">{date}</p>}
       {note && <p className="note-personnelle">{note}</p>}
     </article>
