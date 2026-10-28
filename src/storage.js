@@ -1,4 +1,5 @@
 import { DEFIS_DEPART } from "./data/defisDepart";
+import { ETAT_BIBIT_INITIAL, normaliserBibit } from "./data/bibitBoutique";
 import { normaliserDonneesDefis } from "./objectifs";
 
 const PREFIXE = "habibits.";
@@ -9,6 +10,7 @@ const CLE_OBJECTIFS = "objectifs";
 const CLE_JOURS = "jours";
 const CLE_RAPPEL = "rappel";
 const CLE_GESTION_DEFIS = "gestion-defis";
+const CLE_BIBIT = "bibit";
 
 function lire(cle) {
   try {
@@ -109,5 +111,18 @@ export async function chargerGestionDefis() {
 export async function sauvegarderGestionDefis(gestion) {
   if (!ecrire(CLE_GESTION_DEFIS, gestion)) {
     throw new Error("Les réglages de gestion des défis n'ont pas pu être enregistrés dans le stockage local.");
+  }
+}
+
+export async function chargerBibit() {
+  const bibitStocke = lire(CLE_BIBIT);
+  const bibit = normaliserBibit(bibitStocke || ETAT_BIBIT_INITIAL);
+  if (JSON.stringify(bibitStocke) !== JSON.stringify(bibit)) await sauvegarderBibit(bibit);
+  return bibit;
+}
+
+export async function sauvegarderBibit(bibit) {
+  if (!ecrire(CLE_BIBIT, normaliserBibit(bibit))) {
+    throw new Error("Les données de Mon Bibit n'ont pas pu être enregistrées dans le stockage local.");
   }
 }

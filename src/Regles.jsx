@@ -37,6 +37,17 @@ export default function Regles() {
         </ul>
       </section>
 
+      <section aria-labelledby="titre-regles-bibit">
+        <h3 id="titre-regles-bibit">Mon Bibit et SHOSHOP</h3>
+        <ul>
+          <li>Le look de base de ton Bibit est inclus. Les couleurs et les yeux (dans la catégorie Corps) coûtent 5 et 10 cacas ; les accessoires coûtent 15 cacas. Les habits, dans la section Habibits, arrivent plus tard. SHOSHOP est accessible depuis Mon Bibit.</li>
+          <li>Chaque article disponible ne peut être acheté qu’une fois ; l’achat est définitif et une confirmation affiche le prix et le solde restant.</li>
+          <li>Un achat débloque l’article sans l’équiper automatiquement. Dans Mon Bibit, tu peux choisir une option par catégorie et les combiner ; les articles débloqués restent disponibles pour toujours. Les anciens articles déjà achetés restent dans ton dressing même s’ils ne sont plus proposés au Shop.</li>
+          <li>SHOSHOP affiche le solde disponible après les achats. La Collection affiche le total cumulé gagné, qui ne diminue pas quand tu dépenses des cacas.</li>
+          <li>Si une validation qui avait rapporté des cacas est ensuite corrigée, le solde du Shop est recalculé et peut devenir négatif. Les gains suivants le feront remonter ; aucun achat n’est possible tant que le solde ne couvre pas son prix.</li>
+        </ul>
+      </section>
+
       <section aria-labelledby="titre-regles-choix">
         <h3 id="titre-regles-choix">Collectionne tes défis réussis</h3>
         <ul>

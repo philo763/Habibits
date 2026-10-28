@@ -102,10 +102,14 @@ export default function Collection({ defis, objectifs, jours, recompenses, gesti
   return (
     <section aria-labelledby="titre-collection">
       <h2 id="titre-collection" className="jour-titre">Ma collection ({collection.length + defisMoment.length})</h2>
-      <div className="comptes-recompenses" aria-label={`Solde : ${recompenses?.solde || 0} cacas`}>
+      <div
+        className="comptes-recompenses total-gagne-collection"
+        aria-label={`Total gagné depuis le début : ${recompenses?.totalGagne || 0} cacas`}
+      >
         <span className="compte-recompense">
           <span aria-hidden="true">💩</span>
-          <strong>{recompenses?.solde || 0}</strong>
+          <strong>{recompenses?.totalGagne || 0}</strong>
+          <span className="libelle-total-gagne">gagnés depuis le début</span>
         </span>
       </div>
       <section aria-labelledby="titre-defis-moment-collection">
