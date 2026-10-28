@@ -478,6 +478,75 @@ select:focus { outline: none; border-color: var(--or); }
 .note-date { color: var(--bleu-clair); font-size: 14px; font-weight: 700; text-transform: capitalize; }
 .note-personnelle { margin-top: 10px !important; padding-top: 10px; border-top: 1px solid var(--trait); white-space: pre-wrap; overflow-wrap: anywhere; }
 .apropos p { line-height: 1.6; }
+.total-gagne-collection .compte-recompense { flex-wrap: wrap; justify-content: flex-end; }
+.libelle-total-gagne { color: #c9d8f6; font-size: 13px !important; }
+.entete-bibit, .entete-shop { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.entete-bibit .jour-titre, .entete-shop .jour-titre { margin-top: 0; }
+.entete-bibit p, .intro-shop { margin: 0 0 10px; line-height: 1.45; }
+.bouton-shop { flex: none; margin-top: 4px; white-space: nowrap; }
+.scene-bibit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-color: #bca4f4;
+  background: radial-gradient(ellipse at center, rgba(188, 164, 244, .18), rgba(10, 22, 49, .85) 70%);
+}
+.scene-bibit .illustration-bibit { width: min(100%, 260px); height: auto; }
+.illustration-bibit { display: block; }
+.onglets-bibit { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 5px; margin: 12px 0; }
+.onglets-bibit .btn { min-width: 0; padding: 6px 3px; font-size: 15px; }
+.onglets-bibit .btn.actif { border-color: var(--or); }
+.titre-options-bibit { margin: 14px 0 8px; color: var(--bleu-clair); }
+.options-bibit { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.option-bibit {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 8px;
+  padding: 10px;
+  color: var(--papier);
+  text-align: left;
+  background: rgba(10, 22, 49, .8);
+  border: 2px solid var(--trait);
+  border-radius: 4px;
+  cursor: pointer;
+}
+.option-bibit.selectionne { border-color: var(--or); background: rgba(245, 197, 66, .12); }
+.option-bibit small { margin-left: auto; color: #c9d8f6; }
+.pastille-bibit { width: 20px; height: 20px; flex: none; border-radius: 50%; background: var(--couleur-bibit); border: 1px solid rgba(255,255,255,.55); }
+.entete-shop { align-items: center; }
+.lien-retour-shop { padding: 0; color: var(--bleu-clair); font: inherit; background: none; border: 0; cursor: pointer; }
+.solde-shop { display: flex; align-items: center; gap: 5px; white-space: nowrap; }
+.solde-shop > span:first-child { font-size: 24px; }
+.solde-shop strong { font-size: 25px; }
+.solde-shop > span:last-child { color: #c9d8f6; font-size: 13px; }
+.solde-negatif { color: #ffb5ad; border-left: 4px solid var(--rouge); }
+.bibit-avenir { margin: 0 0 10px; padding: 10px; color: var(--or); font-family: "Barlow Condensed", "Arial Narrow", sans-serif; font-size: 24px; font-weight: 700; text-align: center; border: 1px dashed var(--trait); border-radius: 4px; }
+.shop-avenir { padding: 18px; text-align: center; border-style: dashed; }
+.shop-avenir h3 { margin: 0; color: var(--or); }
+.articles-shop { display: grid; gap: 8px; }
+.article-shop { display: grid; grid-template-columns: 88px minmax(0, 1fr); align-items: center; gap: 12px; padding: 10px; border-width: 2px; }
+.illustration-article { width: 88px; height: 88px; }
+.article-shop-contenu { min-width: 0; }
+.article-shop-contenu h3 { margin: 0 0 4px; font-size: 20px; overflow-wrap: anywhere; }
+.article-shop-contenu p { margin: 0 0 6px; font-size: 14px; }
+.article-shop-contenu .prix-shop { color: #f5c542; }
+.article-shop-contenu .reste-shop { display: block; margin-top: 4px; color: #c9d8f6; }
+.option-bibit > span:not(.pastille-bibit) {
+  display: inline-block;
+  font-family: "Barlow Condensed", "Arial Narrow", sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.bouton-retour-bibit { margin: 0 0 6px; }
+.article-shop .btn:disabled { opacity: .5; cursor: not-allowed; }
+@media (max-width: 380px) {
+  .onglets-bibit { gap: 3px; }
+  .onglets-bibit .btn { font-size: 12px; }
+  .article-shop { grid-template-columns: 68px minmax(0, 1fr); gap: 8px; }
+  .illustration-article { width: 68px; height: 68px; }
+}
 .completion-defi {
   position: fixed;
   inset: 0;

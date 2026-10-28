@@ -7,6 +7,8 @@ import {
   sauvegarderJours,
   chargerGestionDefis,
   sauvegarderGestionDefis,
+  chargerBibit,
+  sauvegarderBibit,
 } from "./storage";
 import {
   initialiserSauvegarde,
@@ -26,12 +28,20 @@ import { COULEURS_OBJECTIF, couleurObjectif } from "./objectifs";
 import IndicateurDifficulte from "./IndicateurDifficulte";
 import { cleDate } from "./dates";
 import { calculerRecompenses } from "./recompenses";
+import MonBibit from "./MonBibit";
+import ShopBibit from "./ShopBibit";
+import {
+  ARTICLES_BIBIT,
+  ETAT_BIBIT_INITIAL,
+  OPTIONS_BASE_BIBIT,
+} from "./data/bibitBoutique";
 import "./sauvegarde.css";
 
 const SECTIONS = [
   { id: "calendrier", label: "📅 Calendrier" },
   { id: "defis", label: "🎯 Mes défis" },
   { id: "collection", label: "🃏 Collection" },
+  { id: "bibit", label: "✨ Mon Bibit" },
   { id: "notes", label: "📝 Notes à moi-même" },
   { id: "regles", label: "📖 Règles du jeu" },
   { id: "parametres", label: "⚙️ Paramètres" },
@@ -65,6 +75,9 @@ export default function App() {
   const [defis, setDefis] = useState([]);
   const [objectifs, setObjectifs] = useState([]);
   const [jours, setJours] = useState({});
+  const [bibit, setBibit] = useState(ETAT_BIBIT_INITIAL);
+  const [erreurBibit, setErreurBibit] = useState("");
+  const [achatBibitEnCours, setAchatBibitEnCours] = useState(false);
   const [gestionDefis, setGestionDefis] = useState({
     defiDuMomentId: "",
     defiDuMomentActif: false,
@@ -105,15 +118,17 @@ export default function App() {
         const donnees = await chargerDonneesDefis();
         const joursCharges = await chargerJours();
         const gestionDefisChargee = await chargerGestionDefis();
+        const bibitCharge = await chargerBibit();
         setDefis(donnees.defis);
         setObjectifs(donnees.objectifs);
         setJours(joursCharges);
         setGestionDefis(gestionDefisChargee);
+        setBibit(bibitCharge);
         setDatesTiragesAConfirmer(datesAvecTirageInterdit(joursCharges, cleDeDemain()));
         setDonneesChargees(true);
       } catch (erreur) {
-        console.error("Impossible de charger les défis.", erreur);
-        setErreurChargement("Impossible de charger les défis. Tes défis existants n'ont pas été supprimés ; recharge l'application pour réessayer.");
+        console.error("Impossible de charger les données de l'application.", erreur);
+        setErreurChargement("Impossible de charger les données de l’application. Tes données existantes n’ont pas été supprimées ; recharge l’application pour réessayer.");
       }
     }
     initialiser();
@@ -121,7 +136,13 @@ export default function App() {
 
   const defisManquants = defis.filter((defi) => defiIncomplet(defi, objectifs));
   const defiACompleter = donneesChargees ? defisManquants[0] || null : null;
-  const recompenses = calculerRecompenses(jours);
+  const gains = calculerRecompenses(jours);
+  const depensesBibit = bibit.achats.reduce((total, achat) => total + achat.prix, 0);
+  const recompenses = {
+    ...gains,
+    solde: gains.solde - depensesBibit,
+    totalGagne: gains.solde,
+  };
 
   function aller(id) {
     setOnglet(id);
@@ -157,6 +178,53 @@ export default function App() {
   async function enregistrerGestionDefis(nouvelleGestion) {
     await sauvegarderGestionDefis(nouvelleGestion);
     setGestionDefis(nouvelleGestion);
+  }
+
+  async function enregistrerBibit(nouveauBibit) {
+    setErreurBibit("");
+    try {
+      await sauvegarderBibit(nouveauBibit);
+      setBibit(nouveauBibit);
+      return true;
+    } catch (erreur) {
+      setErreurBibit(erreur.message);
+      return false;
+    }
+  }
+
+  async function equiperBibit(categorie, choix) {
+    const optionBase = OPTIONS_BASE_BIBIT[categorie];
+    const article = ARTICLES_BIBIT.find((element) => element.id === choix);
+    const possedeArticle = bibit.achats.some((achat) => achat.articleId === choix);
+    if (choix !== optionBase?.id && (article?.categorie !== categorie || !possedeArticle)) return;
+    await enregistrerBibit({
+      ...bibit,
+      equipe: { ...bibit.equipe, [categorie]: choix },
+    });
+  }
+
+  async function acheterArticleBibit(articleId) {
+    const article = ARTICLES_BIBIT.find((element) => element.id === articleId);
+    if (!article || article.disponible === false || bibit.achats.some((achat) => achat.articleId === articleId) ||
+      recompenses.solde < article.prix || achatBibitEnCours) return;
+    const soldeApresAchat = recompenses.solde - article.prix;
+    const confirme = window.confirm(
+      `Acheter « ${article.nom} » pour 💩 ${article.prix} ? Il te restera 💩 ${soldeApresAchat}.`
+    );
+    if (!confirme) return;
+    setAchatBibitEnCours(true);
+    try {
+      await enregistrerBibit({
+        ...bibit,
+        achats: [...bibit.achats, {
+          articleId,
+          prix: article.prix,
+          dateAchat: new Date().toISOString(),
+        }],
+      });
+    } finally {
+      setAchatBibitEnCours(false);
+    }
   }
 
   async function modifierGestionDefis(patch) {
@@ -389,11 +457,14 @@ export default function App() {
           ✕
         </button>
         <div className="panneau-titre">Menu</div>
-        {SECTIONS.filter((s) => !["regles", "parametres"].includes(s.id)).map((s) => (
-          <button key={s.id} className={`lien ${onglet === s.id ? "actif" : ""}`} onClick={() => aller(s.id)}>
-            {s.label}
-          </button>
-        ))}
+        {SECTIONS.filter((s) => !["regles", "parametres"].includes(s.id)).map((s) => {
+          const actif = onglet === s.id || (onglet === "shop" && s.id === "bibit");
+          return (
+            <button key={s.id} className={`lien ${actif ? "actif" : ""}`} onClick={() => aller(s.id)}>
+              {s.label}
+            </button>
+          );
+        })}
         <div className="menu-bas">
           <button className={`lien ${onglet === "regles" ? "actif" : ""}`} onClick={() => aller("regles")}>
             {SECTIONS.find((s) => s.id === "regles").label}
@@ -428,6 +499,24 @@ export default function App() {
         )}
 
         {onglet === "regles" && <Regles />}
+        {onglet === "bibit" && (
+          <MonBibit
+            bibit={bibit}
+            erreur={erreurBibit}
+            onAllerShop={() => aller("shop")}
+            onEquiper={equiperBibit}
+          />
+        )}
+        {onglet === "shop" && (
+          <ShopBibit
+            bibit={bibit}
+            solde={recompenses.solde}
+            erreur={erreurBibit}
+            achatEnCours={achatBibitEnCours}
+            onRetour={() => aller("bibit")}
+            onAcheter={acheterArticleBibit}
+          />
+        )}
         {onglet === "collection" && (
           <Collection
             defis={defis}

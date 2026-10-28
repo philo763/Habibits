@@ -16,12 +16,15 @@ import {
   sauvegarderRappel,
   chargerGestionDefis,
   sauvegarderGestionDefis,
+  chargerBibit,
+  sauvegarderBibit,
 } from "./storage";
 import { cleDate } from "./dates";
 import { normaliserDonneesDefis } from "./objectifs";
+import { normaliserBibit } from "./data/bibitBoutique";
 
 const APP = "habibits";
-const VERSION_FORMAT = 2;
+const VERSION_FORMAT = 3;
 
 const CLE_META = "habibits.sauvegarde";
 const CLE_ACCUEIL = "habibits.accueil";
@@ -132,6 +135,7 @@ async function construireSauvegarde() {
       jours: await chargerJours(),
       rappel: await chargerRappel(),
       gestionDefis: await chargerGestionDefis(),
+      bibit: await chargerBibit(),
     },
   };
 }
@@ -188,6 +192,7 @@ function verifierSauvegarde(texte) {
             d.gestionDefis?.defiDuMomentActif === true,
           frequencesHebdo: d.gestionDefis?.frequencesHebdo || {},
         },
+        bibit: normaliserBibit(d.bibit),
       },
     },
     resume: {
@@ -216,6 +221,7 @@ async function appliquerSauvegarde(sauvegarde) {
     defiDuMomentActif: false,
     frequencesHebdo: {},
   });
+  await sauvegarderBibit(d.bibit);
 }
 
 export function existeCopieAvantImport() {

@@ -9,13 +9,15 @@ Les données restent **sur le téléphone**, dans le navigateur : pas de compte,
 - **Calendrier** mensuel : une case par jour, avec le titre du défi choisi.
 - **Tirage quotidien** en un clic, pour aujourd’hui ou demain : une carte facile, une moyenne et une difficile, puis choix d'un défi.
 - **Collection** : après avoir validé un défi, on peut ajouter sa carte à sa collection, y compris pour une validation passée en ouvrant cette journée dans le calendrier. Chaque validation apparaît séparément avec sa date ; les cartes utilisent les informations actuelles du défi tant qu’il existe et conservent leur copie si le défi est supprimé. Les filtres par difficulté et les tris récent/ancien reprennent ceux de « Mes défis ».
+- **Mon Bibit** : une créature SVG en couches à personnaliser avec une couleur, un style de corps (les yeux pour le catalogue actuel) et un accessoire. Les sections Couleurs, Corps, Accessoires et Habibits sont partagées avec SHOSHOP ; Habibits affiche « À venir ».
+- **SHOSHOP** : accessible depuis Mon Bibit, avec trois couleurs à 5 💩 chacune, deux styles d’yeux à 10 💩 chacun dans la catégorie Corps et deux accessoires à 15 💩 chacun. Les habits, les yeux spirales et le nœud ne sont plus proposés. Les achats sont définitifs, restent disponibles pour toujours et ne s’équipent pas automatiquement ; les personnalisations précédemment achetées restent conservées.
 - **Notes à moi-même** : après un défi non réussi, une note facultative peut être enregistrée et retrouvée avec la carte du défi.
 - **Confirmations** : l'application demande de confirmer le choix d'une carte et la validation d'un défi.
 - **Tirage de secours** : si une difficulté manque dans la liste, l'application recommande de créer un défi de ce niveau. On peut continuer ; les cartes manquantes sont alors tirées au hasard parmi les défis existants, en conservant leur difficulté réelle. Il faut au moins trois défis distincts pour tirer trois cartes.
 - **Validation** : le défi du jour se valide depuis sa case (bouton « Valider le défi »).
 - **Gestion des objectifs et des défis** : objectifs indépendants avec couleur, renommage et suppression sécurisée ; défis modifiables avec difficulté et date de création.
 - **Défi du moment** : depuis « Mes défis », un défi peut être épinglé à chaque tirage ; il remplace la carte aléatoire de sa difficulté et permet de régler un objectif hebdomadaire.
-- **Récompenses** : une validation rapporte 💩 1 (facile), 💩 3 (moyen) ou 💩 5 (difficile) ; un défi non réussi rapporte un cœur bandé ❤️‍🩹. Chaque gain doit être confirmé dans une petite fenêtre. Les soldes apparaissent sous le calendrier. Le défi du moment a une section dédiée dans la collection et un objectif hebdomadaire de 1 à 7 validations qui, s’il est atteint, double ses gains de la semaine sous forme de bonus.
+- **Récompenses** : une validation rapporte 💩 1 (facile), 💩 3 (moyen) ou 💩 5 (difficile) ; un défi non réussi rapporte un cœur bandé ❤️‍🩹. Chaque gain doit être confirmé dans une petite fenêtre. Le solde disponible après achats apparaît dans le calendrier et SHOSHOP ; la Collection conserve le total cumulé gagné. Le défi du moment a une section dédiée dans la collection et un objectif hebdomadaire de 1 à 7 validations qui, s’il est atteint, double ses gains de la semaine sous forme de bonus.
 - **Tri et filtres** dans « Mes défis » : par date de création, par objectifs et par difficultés, avec sélection multiple.
 - **À propos** : présentation de l'approche de Habibits et de sa raison d'être.
 - **Stockage local** : défis, jours et réglage du rappel sont conservés dans le navigateur.
@@ -34,6 +36,7 @@ Les données restent **sur le téléphone**, dans le navigateur : pas de compte,
 
 - Un tirage par jour, pour aujourd’hui ou demain, propose un défi facile, un moyen et un difficile ; les cartes restent disponibles après le tirage. Si le défi du moment est activé, il remplace la carte aléatoire de sa difficulté. Les autres dates ne créent aucune donnée de tirage.
 - Chaque validation rapporte 1, 3 ou 5 cacas selon la difficulté. Le bonus du défi du moment est attribué une fois par semaine calendaire (lundi-dimanche), dès que l’objectif défini est atteint ; il équivaut à la somme des gains de ce défi pour la semaine. Le seuil est celui enregistré à la première validation du défi dans la semaine.
+- Les achats dans SHOSHOP sont débités du solde disponible, pas du total cumulé affiché dans la Collection. Chaque article disponible est achetable une seule fois et reste débloqué définitivement. Une validation corrigée après dépense peut faire passer le solde disponible sous zéro ; les prochains gains le réduisent et les achats sont bloqués tant que le solde ne couvre pas leur prix.
 - Si un niveau n'est pas représenté, un message conseille de créer un défi de cette difficulté et donne accès à « Mes défis ». Il est aussi possible de continuer : chaque carte manquante est alors tirée au hasard parmi les défis encore disponibles, sans modifier sa difficulté enregistrée.
 - Trois défis distincts au minimum sont nécessaires. On choisit une seule carte par jour ; une confirmation est demandée avant chaque choix et validation. Un défi déjà choisi peut être validé ou marqué comme non réussi, y compris pour un jour passé.
 - Il est impossible de tirer un défi pour un jour passé. Si un tirage existe déjà, on peut modifier le choix parmi les cartes tirées après avoir confirmé l’avertissement « Attention, c’est de la triche 😉 ». Une fois le défi validé ou marqué comme non réussi, le choix ne peut plus être modifié.
@@ -61,12 +64,16 @@ src/
   Calendrier.jsx        Calendrier, tirage, choix et validation
   recompenses.js        Calcul des cacas et des bonus hebdomadaires
   Collection.jsx        Collection des cartes de défis validés
+  MonBibit.jsx          Personnalisation de la créature
+  ShopBibit.jsx         Boutique des personnalisations
+  BibitIllustration.jsx Illustration SVG en couches du Bibit
   Notes.jsx             Notes à soi-même associées aux défis non réussis
   CarteDefiCollection.jsx Carte en lecture seule réutilisée par la collection et les notes
   Parametres.jsx        Sous-pages Rappel et Mes données
   Restauration.jsx      Choix et restauration d'une sauvegarde JSON
   Bandeaux.jsx          Indicateurs et messages de sauvegarde
   objectifs.js          Palette des objectifs et migration des données de défis
+  data/bibitBoutique.js Catalogue, catégories et sauvegarde des personnalisations
   storage.js            Lecture et écriture des défis, des jours et du rappel
   sauvegarde.js         Export, restauration et sauvegarde automatique
   rappel.js             Création et téléchargement du fichier .ics
@@ -91,6 +98,7 @@ Les données principales sont enregistrées localement dans le navigateur, sous 
 - `jours` : un objet indexé par date, `"2026-10-16": { propositions: [ids], choisi: id, fait: false }`. Les nouvelles validations enregistrent `collectionProposable`, `collectionne`, `defiCopie` et `objectifCopie` ; les échecs enregistrent `nonReussi`, `note` et une copie du défi et de son objectif. Si le choix validé est modifié après confirmation, une carte déjà ajoutée à la collection est conservée dans `collectionHistorique`. Les anciens jours validés restent hors de la collection.
 - `rappel` : `{ heure, minute }` (20 h 00 par défaut)
 - `gestion-defis` : `{ defiDuMomentId, defiDuMomentActif, frequencesHebdo }`, configuration du défi garanti dans les tirages et de son objectif hebdomadaire. Cette configuration est incluse dans les sauvegardes et restaurations.
+- `bibit` : `{ achats, equipe }`, achats définitifs et apparence équipée du Bibit. Les achats sont inclus dans les sauvegardes et restaurations ; les articles restent débloqués après changement d’appareil.
 - Les jours validés après l’ajout des récompenses enregistrent leur gain `recompenseCaca`, ainsi que l’identifiant du défi du moment et l’objectif hebdomadaire utilisés pour calculer le bonus. Les anciens jours validés ne rapportent pas de cacas rétroactivement. Un jour marqué ensuite comme non réussi perd son gain et le bonus de sa semaine est recalculé.
 
 Au premier lancement, `defis` est rempli à partir de `src/data/defisDepart.js`, qui comprend des défis faciles, moyens et difficiles afin de permettre le tirage complet dès le départ. Les trois objectifs initiaux Hydratation, Sport et Maison ont chacun une couleur distincte. Cette initialisation ne remplace pas les défis déjà enregistrés dans le navigateur. Le fichier de sauvegarde JSON contient ces données avec le nom de l'application, la version du format et la date d'export.
