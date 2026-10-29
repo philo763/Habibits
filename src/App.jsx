@@ -137,11 +137,12 @@ export default function App() {
   const defisManquants = defis.filter((defi) => defiIncomplet(defi, objectifs));
   const defiACompleter = donneesChargees ? defisManquants[0] || null : null;
   const gains = calculerRecompenses(jours);
-  const depensesBibit = bibit.achats.reduce((total, achat) => total + achat.prix, 0);
+  const depensesPommes = bibit.achats.reduce((total, achat) => total + achat.prix, 0);
   const recompenses = {
     ...gains,
-    solde: gains.solde - depensesBibit,
+    solde: gains.solde,
     totalGagne: gains.solde,
+    pommes: gains.solde + gains.coeurs - depensesPommes,
   };
 
   function aller(id) {
@@ -206,10 +207,10 @@ export default function App() {
   async function acheterArticleBibit(articleId) {
     const article = ARTICLES_BIBIT.find((element) => element.id === articleId);
     if (!article || article.disponible === false || bibit.achats.some((achat) => achat.articleId === articleId) ||
-      recompenses.solde < article.prix || achatBibitEnCours) return;
-    const soldeApresAchat = recompenses.solde - article.prix;
+      recompenses.pommes < article.prix || achatBibitEnCours) return;
+    const soldeApresAchat = recompenses.pommes - article.prix;
     const confirme = window.confirm(
-      `Acheter « ${article.nom} » pour 💩 ${article.prix} ? Il te restera 💩 ${soldeApresAchat}.`
+      `Acheter « ${article.nom} » pour ${article.prix} pommes ? Il te restera ${soldeApresAchat} pommes.`
     );
     if (!confirme) return;
     setAchatBibitEnCours(true);
@@ -510,7 +511,7 @@ export default function App() {
         {onglet === "shop" && (
           <ShopBibit
             bibit={bibit}
-            solde={recompenses.solde}
+            soldePommes={recompenses.pommes}
             erreur={erreurBibit}
             achatEnCours={achatBibitEnCours}
             onRetour={() => aller("bibit")}

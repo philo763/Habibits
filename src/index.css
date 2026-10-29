@@ -151,8 +151,11 @@ select:focus { outline: none; border-color: var(--or); }
   color: #fff;
   font-size: 24px;
 }
+.comptes-recompenses-calendrier { justify-content: space-between; }
 .compte-recompense { display: inline-flex; align-items: center; gap: 6px; }
 .compte-recompense > span { font-size: 27px; }
+.comptes-recompenses-classiques { display: inline-flex; align-items: center; gap: 16px; }
+.compte-popommes { margin-right: auto; }
 .suivi-bonus-hebdo { border-color: var(--bleu-clair); }
 .suivi-bonus-hebdo h3 { margin: 0 0 6px; color: var(--bleu-clair); }
 .suivi-bonus-hebdo p { margin: 0 0 6px; line-height: 1.45; }
@@ -517,9 +520,15 @@ select:focus { outline: none; border-color: var(--or); }
 .entete-shop { align-items: center; }
 .lien-retour-shop { padding: 0; color: var(--bleu-clair); font: inherit; background: none; border: 0; cursor: pointer; }
 .solde-shop { display: flex; align-items: center; gap: 5px; white-space: nowrap; }
-.solde-shop > span:first-child { font-size: 24px; }
+.solde-shop .libelle-solde-shop {
+  color: #c9d8f6;
+  font-family: "Barlow Condensed", "Arial Narrow", sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.solde-shop > span:not(.libelle-solde-shop) { font-size: 24px; }
 .solde-shop strong { font-size: 25px; }
-.solde-shop > span:last-child { color: #c9d8f6; font-size: 13px; }
 .solde-negatif { color: #ffb5ad; border-left: 4px solid var(--rouge); }
 .bibit-avenir { margin: 0 0 10px; padding: 10px; color: var(--or); font-family: "Barlow Condensed", "Arial Narrow", sans-serif; font-size: 24px; font-weight: 700; text-align: center; border: 1px dashed var(--trait); border-radius: 4px; }
 .shop-avenir { padding: 18px; text-align: center; border-style: dashed; }
@@ -539,6 +548,7 @@ select:focus { outline: none; border-color: var(--or); }
   font-weight: 700;
   text-transform: uppercase;
 }
+.gain-pommes { display: flex; align-items: center; justify-content: center; gap: 5px; }
 .bouton-retour-bibit { margin: 0 0 6px; }
 .article-shop .btn:disabled { opacity: .5; cursor: not-allowed; }
 @media (max-width: 380px) {
@@ -546,6 +556,9 @@ select:focus { outline: none; border-color: var(--or); }
   .onglets-bibit .btn { font-size: 12px; }
   .article-shop { grid-template-columns: 68px minmax(0, 1fr); gap: 8px; }
   .illustration-article { width: 68px; height: 68px; }
+}
+@media (max-width: 480px) {
+  .onglets-bibit { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 .completion-defi {
   position: fixed;

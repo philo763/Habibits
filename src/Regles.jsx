@@ -12,7 +12,7 @@ export default function Regles() {
           <li>Un seul tirage par jour, pour aujourd'hui ou demain. Le reste des cartes reste disponible pour d'autres tirages.</li>
           <li>Choisis un défi facile, moyen ou difficile.</li>
           <li>S'il est activé, le défi du moment remplace le défi aléatoire de sa difficulté à chaque tirage.</li>
-          <li>Chaque défi réussi rapporte des cacas : 1 pour un défi facile, 3 pour un moyen et 5 pour un difficile. Chaque défi non réussi rapporte un cœur bandé ❤️‍🩹. Confirme chaque gain avec le bouton affiché ; les soldes s’affichent sous le calendrier.</li>
+          <li>Chaque défi réussi rapporte des cacas : 1 pour un défi facile, 3 pour un moyen et 5 pour un difficile. Chaque défi non réussi rapporte un cœur bandé ❤️‍🩹. Confirme chaque gain avec le bouton affiché ; le calendrier et la Collection affichent le total de cacas gagnés depuis le début, tandis que le solde de popommes est visible uniquement dans Le Shop.</li>
           <li>Les défis du moment réussis apparaissent dans leur section dédiée de la collection. Atteindre l’objectif hebdomadaire choisi donne un bonus égal aux cacas rapportés par ce défi dans la semaine, du lundi au dimanche.</li>
         </ul>
       </section>
@@ -30,21 +30,21 @@ export default function Regles() {
       <section aria-labelledby="titre-regles-recompenses">
         <h3 id="titre-regles-recompenses">Récompense caca et coeur bandé</h3>
         <ul>
-          <li>Chaque défi réussi rapporte des cacas 💩 : 1 pour facile, 3 pour moyen et 5 pour difficile.</li>
-          <li>Un cœur bandé ❤️‍🩹 est obtenu si un défi n'est pas réussi. Confirme chaque gain avec le bouton affiché.</li>
+          <li>Chaque défi réussi rapporte des cacas 💩 : 1 pour facile, 3 pour moyen et 5 pour difficile ; chaque caca gagné rapporte aussi une pomme 🍎.</li>
+          <li>Un cœur bandé ❤️‍🩹 est obtenu si un défi n'est pas réussi et rapporte aussi une pomme 🍎. Confirme chaque gain avec le bouton affiché.</li>
           <li>Si tu n’as pas réussi, signale-le et rédige éventuellement une note à toi-même ; tes notes sont réunies dans la page dédiée.</li>
           <li>Les défis du moment réussis apparaissent dans leur section dédiée de la collection. Atteindre l’objectif hebdomadaire du défi du moment donne un bonus égal aux cacas rapportés par ce défi dans la semaine.</li>
         </ul>
       </section>
 
       <section aria-labelledby="titre-regles-bibit">
-        <h3 id="titre-regles-bibit">Mon Bibit et SHOSHOP</h3>
+        <h3 id="titre-regles-bibit">Mon Bibit et Le Shop</h3>
         <ul>
-          <li>Le look de base de ton Bibit est inclus. Les couleurs et les yeux (dans la catégorie Corps) coûtent 5 et 10 cacas ; les accessoires coûtent 15 cacas. Les habits, dans la section Habibits, arrivent plus tard. SHOSHOP est accessible depuis Mon Bibit.</li>
-          <li>Chaque article disponible ne peut être acheté qu’une fois ; l’achat est définitif et une confirmation affiche le prix et le solde restant.</li>
+          <li>Le look de base de ton Bibit est inclus. Les couleurs et les yeux (dans la catégorie Corps) coûtent 5 et 10 pommes ; les accessoires coûtent 15 pommes. Les habits, dans la section Habibits, arrivent plus tard. Le Shop est accessible depuis Mon Bibit.</li>
+          <li>Chaque article disponible ne peut être acheté qu’une fois ; l’achat est définitif et une confirmation affiche le prix en pommes et le solde restant.</li>
           <li>Un achat débloque l’article sans l’équiper automatiquement. Dans Mon Bibit, tu peux choisir une option par catégorie et les combiner ; les articles débloqués restent disponibles pour toujours. Les anciens articles déjà achetés restent dans ton dressing même s’ils ne sont plus proposés au Shop.</li>
-          <li>SHOSHOP affiche le solde disponible après les achats. La Collection affiche le total cumulé gagné, qui ne diminue pas quand tu dépenses des cacas.</li>
-          <li>Si une validation qui avait rapporté des cacas est ensuite corrigée, le solde du Shop est recalculé et peut devenir négatif. Les gains suivants le feront remonter ; aucun achat n’est possible tant que le solde ne couvre pas son prix.</li>
+          <li>Le Shop affiche Mes popommes, le solde disponible après les achats. Le calendrier et la Collection affichent les cacas et les cœurs gagnés ; ces récompenses ne sont jamais dépensées. Une pomme est accordée par caca gagné et par cœur bandé gagné.</li>
+          <li>Les récompenses obtenues avant ce changement sont aussi converties en pommes : une pomme par caca et par cœur bandé, moins les achats déjà effectués. Si une validation est corrigée, le solde de pommes est recalculé et peut devenir négatif ; les gains suivants le feront remonter.</li>
         </ul>
       </section>
 

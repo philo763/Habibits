@@ -23,7 +23,7 @@ export default function MonBibit({ bibit, erreur, onAllerShop, onEquiper }) {
           <h2 id="titre-bibit" className="jour-titre">Mon Bibit</h2>
           <p>Choisis son look avec les personnalisations que tu as débloquées.</p>
         </div>
-        <button className="btn petit bouton-shop" onClick={onAllerShop}>🛍️ SHOSHOP</button>
+        <button className="btn petit bouton-shop" onClick={onAllerShop}>🛍️ Le Shop</button>
       </div>
 
       <div className="tuile scene-bibit">
@@ -63,7 +63,7 @@ export default function MonBibit({ bibit, erreur, onAllerShop, onEquiper }) {
             ))}
           </div>
         )}
-        {!categorie.aVenir && options.length === 1 && <p className="note">D’autres options seront disponibles après leur achat dans SHOSHOP.</p>}
+        {!categorie.aVenir && options.length === 1 && <p className="note">D’autres options seront disponibles après leur achat dans Le Shop.</p>}
       </section>
       {erreur && <p className="attention" role="alert">{erreur}</p>}
     </section>

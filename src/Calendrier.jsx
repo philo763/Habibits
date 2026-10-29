@@ -103,7 +103,9 @@ export default function Calendrier({
         setConfirmation(null);
         const montant = recompensesApres.recompenses - recompensesAvant.recompenses;
         const bonus = recompensesApres.bonus - recompensesAvant.bonus;
-        if (montant > 0) setGain({ type: "cacas", montant, bonus: Math.max(0, bonus) });
+        const pommes = recompensesApres.solde + recompensesApres.coeurs -
+          recompensesAvant.solde - recompensesAvant.coeurs;
+        if (montant > 0) setGain({ type: "cacas", montant, bonus: Math.max(0, bonus), pommes });
       }
     } else if (confirmation.type === "echec") {
       const objectif = objectifs.find((item) => item.id === defiChoisi.objectifId);
@@ -128,7 +130,9 @@ export default function Calendrier({
         setConfirmation(null);
         setNoteEchec("");
         const montant = recompensesApres.coeurs - recompensesAvant.coeurs;
-        if (montant > 0) setGain({ type: "coeur", montant });
+        const pommes = recompensesApres.solde + recompensesApres.coeurs -
+          recompensesAvant.solde - recompensesAvant.coeurs;
+        if (montant > 0) setGain({ type: "coeur", montant, pommes });
       }
     }
   }
@@ -229,14 +233,20 @@ export default function Calendrier({
           );
         })}
       </div>
-      <div className="comptes-recompenses" aria-label={`Solde : ${recompenses?.solde || 0} cacas et ${recompenses?.coeurs || 0} cœurs bandés`}>
-        <span className="compte-recompense">
-          <span aria-hidden="true">💩</span>
-          <strong>{recompenses?.solde || 0}</strong>
+      <div className="comptes-recompenses comptes-recompenses-calendrier" aria-label={`${recompenses?.totalGagne || 0} cacas gagnés, ${recompenses?.coeurs || 0} cœurs bandés et ${recompenses?.pommes || 0} popommes disponibles`}>
+        <span className="compte-recompense compte-popommes">
+          <span aria-hidden="true">🍎</span>
+          <strong>{recompenses?.pommes || 0}</strong>
         </span>
-        <span className="compte-recompense">
-          <span aria-hidden="true">❤️‍🩹</span>
-          <strong>{recompenses?.coeurs || 0}</strong>
+        <span className="comptes-recompenses-classiques">
+          <span className="compte-recompense">
+            <span aria-hidden="true">💩</span>
+            <strong>{recompenses?.totalGagne || 0}</strong>
+          </span>
+          <span className="compte-recompense">
+            <span aria-hidden="true">❤️‍🩹</span>
+            <strong>{recompenses?.coeurs || 0}</strong>
+          </span>
         </span>
       </div>
 
@@ -429,11 +439,27 @@ export default function Calendrier({
                     {" "}+ {gain.bonus} caca{gain.bonus > 1 ? "s" : ""} de bonus 💩
                   </p>
                 )}
+                <p className="gain-pommes">
+                  {gain.pommes > 0
+                    ? <>Tu reçois aussi {gain.pommes} pomme{gain.pommes > 1 ? "s" : ""}</>
+                    : gain.pommes < 0
+                      ? <>Ajustement du solde : {gain.pommes} pomme{gain.pommes < -1 ? "s" : ""}</>
+                      : "Aucun ajustement net de pommes"}
+                  <span aria-hidden="true">🍎</span>
+                </p>
                 <button className="btn bouton-fermer-gain" onClick={() => setGain(null)}>Miam 😋</button>
               </>
             ) : (
               <>
                 <h2 id="titre-gain">+ {gain.montant} cœur{gain.montant > 1 ? "s" : ""} ❤️‍🩹</h2>
+                <p className="gain-pommes">
+                  {gain.pommes > 0
+                    ? <>Tu reçois aussi {gain.pommes} pomme{gain.pommes > 1 ? "s" : ""}</>
+                    : gain.pommes < 0
+                      ? <>Ajustement du solde : {gain.pommes} pomme{gain.pommes < -1 ? "s" : ""}</>
+                      : "Aucun ajustement net de pommes"}
+                  <span aria-hidden="true">🍎</span>
+                </p>
                 <button className="btn bouton-fermer-gain" onClick={() => setGain(null)}>I Love myself</button>
               </>
             )}
