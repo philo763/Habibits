@@ -219,15 +219,24 @@ select:focus { outline: none; border-color: var(--or); }
   border: 3px solid var(--couleur);
   border-radius: 3px;
 }
-.case.propose { --couleur: var(--violet); }
-.case.choisi { --couleur: var(--orange); background: rgba(224, 138, 45, 0.2); }
-.case.fait { --couleur: var(--vert); background: rgba(63, 174, 116, 0.25); }
+.case.choisi, .case.fait {
+  background-color: color-mix(in srgb, var(--couleur) 22%, rgba(10, 22, 49, 0.8));
+}
 .case.non-reussi { --couleur: var(--rouge); background: rgba(208, 72, 63, 0.18); }
 .case.passe:not(.fait) { opacity: 0.55; }
 .case.aujourdhui .num { color: var(--or); }
 .case.selection { outline: 3px solid var(--or); outline-offset: 1px; }
 .num { font-size: 16px; font-weight: 700; }
 .coche { position: absolute; top: 2px; right: 4px; font-size: 14px; color: #7dffb8; }
+.case-indicateur {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 24px;
+  line-height: 1;
+}
+.de-a-quatre { display: flex; width: 28px; height: 28px; align-items: center; justify-content: center; font-size: 24px; }
 .titre-case {
   font-size: 11px;
   line-height: 1.05;

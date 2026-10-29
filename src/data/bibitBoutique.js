@@ -17,12 +17,22 @@ export const COULEURS_BIBIT = {
   "couleur-turquoise": "#70d7cf",
   "couleur-violet": "#bca4f4",
   "couleur-jaune": "#ffda69",
+  "couleur-menthe": "#8bd9ae",
+  "couleur-corail": "#ff9878",
+  "couleur-bleu-ciel": "#82c8ff",
+  "couleur-doree": "#f2bf46",
+  "couleur-arc-en-ciel": "#ed5b91",
 };
 
 export const ARTICLES_BIBIT = [
   { id: "couleur-turquoise", categorie: "couleur", nom: "Turquoise", description: "Une teinte fraîche et lumineuse.", prix: 5, couleur: "#70d7cf" },
   { id: "couleur-violet", categorie: "couleur", nom: "Violet", description: "Une couleur douce aux reflets rêveurs.", prix: 5, couleur: "#bca4f4" },
   { id: "couleur-jaune", categorie: "couleur", nom: "Jaune soleil", description: "Un jaune joyeux qui illumine le Bibit.", prix: 5, couleur: "#ffda69" },
+  { id: "couleur-menthe", categorie: "couleur", nom: "Vert menthe", description: "Un vert tendre et apaisant.", prix: 5, couleur: "#8bd9ae" },
+  { id: "couleur-corail", categorie: "couleur", nom: "Corail", description: "Une teinte chaude et pétillante.", prix: 5, couleur: "#ff9878" },
+  { id: "couleur-bleu-ciel", categorie: "couleur", nom: "Bleu ciel", description: "Un bleu clair plein de douceur.", prix: 5, couleur: "#82c8ff" },
+  { id: "couleur-doree", categorie: "couleur", nom: "Or scintillant", description: "Une robe dorée qui capte la lumière.", prix: 10, couleur: "#f2bf46" },
+  { id: "couleur-arc-en-ciel", categorie: "couleur", nom: "Arc-en-ciel", description: "Un dégradé multicolore, lumineux et joyeux.", prix: 15, couleur: "#ed5b91" },
   { id: "yeux-ronds", categorie: "corps", nom: "Yeux ronds", description: "De grands yeux bien ouverts.", prix: 10 },
   { id: "yeux-coeurs", categorie: "corps", nom: "Yeux cœurs", description: "Un regard plein de tendresse.", prix: 10 },
   { id: "yeux-spirales", categorie: "corps", nom: "Yeux spirales", description: "Un regard un peu étourdi.", prix: 20, disponible: false },

@@ -496,6 +496,8 @@ export default function App() {
             lectureSeule={datesTiragesAConfirmer.length > 0}
             onMajJour={majJour}
             onAllerDefis={() => aller("defis")}
+            onAllerCollection={() => aller("collection")}
+            onAllerNotes={() => aller("notes")}
           />
         )}
 

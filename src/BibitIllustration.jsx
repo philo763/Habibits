@@ -1,7 +1,11 @@
+import { useId } from "react";
 import { COULEURS_BIBIT } from "./data/bibitBoutique";
 
 export default function BibitIllustration({ apparence, className = "", decorative = false }) {
-  const couleur = COULEURS_BIBIT[apparence?.couleur] || COULEURS_BIBIT.rose;
+  const idGradient = `bibit-couleur-${useId().replace(/:/g, "")}`;
+  const couleurPersonnalisee = ["couleur-doree", "couleur-arc-en-ciel"].includes(apparence?.couleur);
+  const couleur = couleurPersonnalisee ? `url(#${idGradient})` :
+    COULEURS_BIBIT[apparence?.couleur] || COULEURS_BIBIT.rose;
   const ariaProps = decorative
     ? { "aria-hidden": true }
     : { role: "img", "aria-label": "Illustration du Bibit personnalisé" };
@@ -13,12 +17,41 @@ export default function BibitIllustration({ apparence, className = "", decorativ
       xmlns="http://www.w3.org/2000/svg"
       {...ariaProps}
     >
+      {couleurPersonnalisee && (
+        <defs>
+          {apparence.couleur === "couleur-doree" ? (
+            <linearGradient id={idGradient} x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stopColor="#fff3ac" />
+              <stop offset="32%" stopColor="#ffd85f" />
+              <stop offset="58%" stopColor="#f2bf46" />
+              <stop offset="82%" stopColor="#ffe99a" />
+              <stop offset="100%" stopColor="#cf8b20" />
+            </linearGradient>
+          ) : (
+            <linearGradient id={idGradient} x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stopColor="#ff66b3" />
+              <stop offset="22%" stopColor="#f53c91" />
+              <stop offset="42%" stopColor="#f6a844" />
+              <stop offset="60%" stopColor="#f4df58" />
+              <stop offset="75%" stopColor="#62c98b" />
+              <stop offset="88%" stopColor="#55bde8" />
+              <stop offset="100%" stopColor="#9b72dc" />
+            </linearGradient>
+          )}
+        </defs>
+      )}
       <ellipse cx="120" cy="214" rx="57" ry="10" fill="#071127" opacity=".55" />
       <g fill={couleur} stroke="#57385f" strokeLinecap="round" strokeLinejoin="round" strokeWidth="5">
         <path d="M75 82C56 64 58 38 68 29c15 2 28 20 31 43M165 82c19-18 17-44 7-53-15 2-28 20-31 43" />
         <path d="M66 142c-17 1-25 16-20 27 5 10 18 10 29 0M174 142c17 1 25 16 20 27-5 10-18 10-29 0" />
       </g>
       <path d="M120 59c-42 0-69 31-69 77 0 43 29 69 69 69s69-26 69-69c0-46-27-77-69-77Z" fill={couleur} stroke="#57385f" strokeLinejoin="round" strokeWidth="5" />
+      {apparence?.couleur === "couleur-doree" && (
+        <g fill="#fff8d8" opacity=".8" aria-hidden="true">
+          <path d="m166 82 2.5 6 6 2.5-6 2.5-2.5 6-2.5-6-6-2.5 6-2.5Z" />
+          <path d="m75 167 1.5 4 4 1.5-4 1.5-1.5 4-1.5-4-4-1.5 4-1.5Z" />
+        </g>
+      )}
 
       {apparence?.habit === "habit-pull" && (
         <g>

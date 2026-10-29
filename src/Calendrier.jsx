@@ -27,6 +27,8 @@ export default function Calendrier({
   lectureSeule = false,
   onMajJour,
   onAllerDefis,
+  onAllerCollection,
+  onAllerNotes,
 }) {
   const [mois, setMois] = useState(() => {
     const n = new Date();
@@ -206,7 +208,7 @@ export default function Calendrier({
           if (!date) return <div key={i} />;
           const cle = cleDate(date);
           const j = cle <= demain || donneesAnciennesVisibles(cle) ? jours[cle] || {} : {};
-          const defi = j.choisi ? trouver(j.choisi) : null;
+          const defi = j.choisi ? trouver(j.choisi) || j.defiCopie : null;
           let etat = "vide";
           if (j.fait) etat = "fait";
           else if (j.nonReussi) etat = "non-reussi";
@@ -220,7 +222,9 @@ export default function Calendrier({
             cle < aujourdhui ? "passe" : "",
           ].join(" ");
           return (
-            <button key={i} className={classes} onClick={() => {
+            <button key={i} className={classes}
+              style={defi ? { "--couleur": couleurDefi(defi, j.objectifCopie) } : undefined}
+              onClick={() => {
               setSelection(cle);
               setAlerteTirage(false);
               setErreurTirage("");
@@ -229,6 +233,15 @@ export default function Calendrier({
               {j.fait && <span className="coche">✔</span>}
               {j.nonReussi && <span className="coche">×</span>}
               <span className="titre-case">{defi ? defi.titre : ""}</span>
+              {!j.choisi && !j.fait && !j.nonReussi && (j.propositions || []).length > 0 && (
+                <span className="case-indicateur" role="img" aria-label="Défis tirés, choix en attente">🤔</span>
+              )}
+              {!j.choisi && !j.fait && !j.nonReussi && !(j.propositions || []).length &&
+                !lectureSeule && cle >= aujourdhui && cle <= demain && defis.length > 0 && (
+                  <span className="case-indicateur de-a-quatre" role="img" aria-label="Tirer des défis">
+                    🎲
+                  </span>
+                )}
             </button>
           );
         })}
@@ -282,13 +295,19 @@ export default function Calendrier({
                   Ajouter ma carte à la collection
                 </button>
               )}
-              {jour.collectionne && <p>Cette carte est dans ta collection.</p>}
+              {jour.collectionne && (
+                <>
+                  <p>Cette carte est dans ta collection.</p>
+                  <button className="btn" onClick={onAllerCollection}>Voir ma collection</button>
+                </>
+              )}
             </>
           )}
           {jour.nonReussi && (
             <>
               <p className="attention">Ce défi n’a pas été réussi.</p>
               {jour.note && <p className="note-personnelle">{jour.note}</p>}
+              <button className="btn" onClick={onAllerNotes}>Voir mes notes à moi-même</button>
             </>
           )}
           {lectureSeule && <p>Consultation uniquement pendant la mise à jour du calendrier.</p>}
