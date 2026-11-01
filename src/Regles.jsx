@@ -40,7 +40,7 @@ export default function Regles() {
       <section aria-labelledby="titre-regles-bibit">
         <h3 id="titre-regles-bibit">Mon Bibit et Le Shop</h3>
         <ul>
-          <li>Le look de base de ton Bibit est inclus. Dans Mon Bibit et Le Shop, les personnalisations sont classées par catégorie et sous-catégorie : couleurs unies, motifs et spéciales ; yeux, bouche, oreilles, dos et pieds ; chapeaux et vêtements ; fonds unis, à motifs ou spéciaux. Les éléments classiques du Bibit restent disponibles gratuitement.</li>
+          <li>Le look de base de ton Bibit est inclus. Dans Mon Bibit et Le Shop, les personnalisations sont classées par catégorie et sous-catégorie : couleurs unies, motifs et spéciales ; yeux, joues, bouche, oreilles, dos et pieds ; chapeaux et vêtements ; fonds unis, à motifs ou spéciaux. Le fond « Classique Bibit » est inclus ; d’autres fonds peuvent être débloqués dans le Shop.</li>
           <li>Chaque article disponible ne peut être acheté qu’une fois ; l’achat est définitif et une confirmation affiche le prix en pommes et le solde restant.</li>
           <li>Un achat débloque l’article sans l’équiper automatiquement. Dans Mon Bibit, tu peux choisir indépendamment chaque élément du look ou sélectionner « Aucun » pour retirer les yeux, les joues, la bouche, les oreilles, le dos ou les pieds. Les articles débloqués restent disponibles pour toujours. Les anciens articles déjà achetés restent dans ton dressing même s’ils ne sont plus proposés au Shop.</li>
           <li>Le Shop affiche Mes popommes, le solde disponible après les achats. Le calendrier et la Collection affichent les cacas et les cœurs gagnés ; ces récompenses ne sont jamais dépensées. Une pomme est accordée par caca gagné et par cœur bandé gagné.</li>

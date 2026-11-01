@@ -1,7 +1,7 @@
 import { useId } from "react";
 import { COULEURS_BIBIT } from "./data/bibitBoutique";
 
-export default function BibitIllustration({ apparence, className = "", decorative = false }) {
+export default function BibitIllustration({ apparence, className = "", decorative = false, canvasEtendue = false }) {
   const idGradient = `bibit-couleur-${useId().replace(/:/g, "")}`;
   const couleurPersonnalisee = ["couleur-doree", "couleur-arc-en-ciel"].includes(apparence?.couleur);
   const couleur = couleurPersonnalisee ? `url(#${idGradient})` :
@@ -13,7 +13,7 @@ export default function BibitIllustration({ apparence, className = "", decorativ
   return (
     <svg
       className={`illustration-bibit ${className}`}
-      viewBox="0 0 240 240"
+      viewBox={canvasEtendue ? "-72 -72 384 384" : "0 0 240 240"}
       xmlns="http://www.w3.org/2000/svg"
       {...ariaProps}
     >
@@ -133,17 +133,11 @@ export default function BibitIllustration({ apparence, className = "", decorativ
           <circle cx="120" cy="69" r="6" fill="#ffd46c" />
         </g>
       )}
-      {apparence?.accessoire === "accessoire-fleur" && (
-        <g stroke="#57385f" strokeWidth="2">
-          <circle cx="152" cy="65" r="8" fill="#ff8fa3" />
-          <circle cx="160" cy="72" r="8" fill="#ff8fa3" />
-          <circle cx="152" cy="80" r="8" fill="#ff8fa3" />
-          <circle cx="144" cy="72" r="8" fill="#ff8fa3" />
-          <circle cx="152" cy="72" r="5" fill="#ffd46c" />
-        </g>
+      {apparence?.accessoire === "accessoire-frangipanier" && (
+        <image href="/fleur-frangipanier.svg" x="0" y="0" width="240" height="240" />
       )}
-      {apparence?.accessoire === "accessoire-couronne" && (
-        <path d="m91 65 5-18 13 12 11-20 11 20 13-12 5 18Z" fill="#ffd46c" stroke="#57385f" strokeLinejoin="round" strokeWidth="4" />
+      {apparence?.accessoire === "accessoire-couronne-royale" && (
+        <image href="/couronne-royale.svg" x="0" y="0" width="240" height="240" />
       )}
       {apparence?.pieds !== "aucun" && (
         <g fill={couleur} stroke="#57385f" strokeLinecap="round" strokeWidth="5">

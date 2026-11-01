@@ -4,6 +4,7 @@ import {
   ARTICLES_BIBIT,
   CATEGORIES_BIBIT,
   ETAT_BIBIT_INITIAL,
+  FONDS_BIBIT,
 } from "./data/bibitBoutique";
 
 function apparenceArticle(article, apparence) {
@@ -80,13 +81,23 @@ export default function ShopBibit({ bibit, soldePommes, erreur, achatEnCours, on
             {articles.map((article) => {
               const achatPossible = soldePommes >= article.prix && !achatEnCours;
               return (
-                <article className="tuile article-shop" key={article.id}>
-                  <BibitIllustration
-                    className="illustration-article"
-                    apparence={apparenceArticle(article, bibit.equipe || ETAT_BIBIT_INITIAL.equipe)}
-                    decorative
-                  />
-                  <div className="article-shop-contenu">
+                <article className="article-shop" key={article.id}>
+                  <div
+                    className="article-shop-apercu"
+                    style={{
+                      background: article.emplacement === "fond"
+                        ? FONDS_BIBIT[article.id]
+                        : FONDS_BIBIT["fond-classique"],
+                    }}
+                  >
+                    <BibitIllustration
+                      className="illustration-article"
+                      apparence={apparenceArticle(article, bibit.equipe || ETAT_BIBIT_INITIAL.equipe)}
+                      decorative
+                      canvasEtendue
+                    />
+                  </div>
+                  <div className="tuile article-shop-contenu">
                     <h3>{article.nom}</h3>
                     <p>{article.description}</p>
                     <p className="prix-shop">Prix : <strong>{article.prix} 🍎</strong></p>
@@ -97,9 +108,6 @@ export default function ShopBibit({ bibit, soldePommes, erreur, achatEnCours, on
                     >
                       {achatEnCours ? "Achat en cours…" : soldePommes < article.prix ? "Pas assez de popommes" : "Acheter"}
                     </button>
-                    {soldePommes < article.prix && (
-                      <small className="reste-shop">Il te manque {article.prix - soldePommes} popommes.</small>
-                    )}
                   </div>
                 </article>
               );

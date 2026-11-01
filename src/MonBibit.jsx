@@ -3,6 +3,7 @@ import BibitIllustration from "./BibitIllustration";
 import {
   ARTICLES_BIBIT,
   CATEGORIES_BIBIT,
+  FONDS_BIBIT,
   OPTIONS_AUCUN_BIBIT,
   OPTIONS_BASE_BIBIT,
 } from "./data/bibitBoutique";
@@ -36,8 +37,14 @@ export default function MonBibit({ bibit, erreur, onAllerShop, onEquiper }) {
         <button className="btn petit bouton-shop" onClick={onAllerShop}>🛍️ Le Shop</button>
       </div>
 
-      <div className="tuile scene-bibit">
-        <BibitIllustration apparence={bibit.equipe} />
+      <div
+        className="tuile scene-bibit"
+        style={{ background: FONDS_BIBIT[bibit.equipe.fond] || FONDS_BIBIT["fond-classique"] }}
+      >
+        <BibitIllustration
+          apparence={bibit.equipe}
+          canvasEtendue
+        />
       </div>
 
       <div className="onglets-bibit" role="tablist" aria-label="Catégories de personnalisation">
@@ -80,8 +87,12 @@ export default function MonBibit({ bibit, erreur, onAllerShop, onEquiper }) {
                 aria-pressed={bibit.equipe[sousCategorie.emplacement] === option.id}
                 onClick={() => onEquiper(sousCategorie.emplacement, option.id)}
               >
-                {sousCategorie.emplacement === "couleur" && (
-                  <span className="pastille-bibit" style={{ "--couleur-bibit": option.couleur }} aria-hidden="true" />
+                {["couleur", "fond"].includes(sousCategorie.emplacement) && (
+                  <span
+                    className={`pastille-bibit ${sousCategorie.emplacement === "fond" ? "pastille-fond-bibit" : ""}`}
+                    style={{ "--couleur-bibit": option.couleur || FONDS_BIBIT[option.id] }}
+                    aria-hidden="true"
+                  />
                 )}
                 <span>{option.nom}</span>
               </button>
