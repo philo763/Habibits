@@ -505,11 +505,11 @@ select:focus { outline: none; border-color: var(--or); }
 }
 .scene-bibit .illustration-bibit { width: 100%; height: auto; }
 .illustration-bibit { display: block; }
-.onglets-bibit { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 5px; margin: 12px 0; }
+.onglets-bibit { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 5px; margin: 12px 0; padding-bottom: 10px; border-bottom: 1px solid var(--trait); }
 .onglets-bibit .btn { min-width: 0; padding: 6px 3px; font-size: 15px; }
 .onglets-bibit .btn.actif { border-color: var(--or); }
-.sous-onglets-bibit { display: flex; flex-wrap: wrap; gap: 6px; margin: -4px 0 12px; }
-.sous-onglets-bibit .btn { flex: 1 1 auto; min-width: 0; }
+.sous-onglets-bibit { display: grid; grid-template-columns: repeat(var(--colonnes-sous-onglets), minmax(0, 1fr)); gap: 6px; margin: -4px 0 12px; }
+.sous-onglets-bibit .btn { min-width: 0; }
 .sous-onglets-bibit .btn.actif { border-color: var(--bleu-clair); }
 .titre-options-bibit { margin: 14px 0 8px; color: var(--bleu-clair); }
 .options-bibit { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }

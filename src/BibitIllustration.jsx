@@ -134,10 +134,10 @@ export default function BibitIllustration({ apparence, className = "", decorativ
         </g>
       )}
       {apparence?.accessoire === "accessoire-frangipanier" && (
-        <image href="/fleur-frangipanier.svg" x="0" y="0" width="240" height="240" />
+        <image href={`${import.meta.env.BASE_URL}fleur-frangipanier.svg`} x="0" y="0" width="240" height="240" />
       )}
       {apparence?.accessoire === "accessoire-couronne-royale" && (
-        <image href="/couronne-royale.svg" x="0" y="0" width="240" height="240" />
+        <image href={`${import.meta.env.BASE_URL}couronne-royale.svg`} x="0" y="0" width="240" height="240" />
       )}
       {apparence?.pieds !== "aucun" && (
         <g fill={couleur} stroke="#57385f" strokeLinecap="round" strokeWidth="5">
