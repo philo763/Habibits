@@ -40,9 +40,9 @@ export default function Regles() {
       <section aria-labelledby="titre-regles-bibit">
         <h3 id="titre-regles-bibit">Mon Bibit et Le Shop</h3>
         <ul>
-          <li>Le look de base de ton Bibit est inclus. Les couleurs et les yeux (dans la catégorie Corps) coûtent 5 et 10 pommes ; les accessoires coûtent 15 pommes. Les habits, dans la section Habibits, arrivent plus tard. Le Shop est accessible depuis Mon Bibit.</li>
+          <li>Le look de base de ton Bibit est inclus. Dans Mon Bibit et Le Shop, les personnalisations sont classées par catégorie et sous-catégorie : couleurs unies, motifs et spéciales ; yeux, bouche, oreilles, dos et pieds ; chapeaux et vêtements ; fonds unis, à motifs ou spéciaux. Les éléments classiques du Bibit restent disponibles gratuitement.</li>
           <li>Chaque article disponible ne peut être acheté qu’une fois ; l’achat est définitif et une confirmation affiche le prix en pommes et le solde restant.</li>
-          <li>Un achat débloque l’article sans l’équiper automatiquement. Dans Mon Bibit, tu peux choisir une option par catégorie et les combiner ; les articles débloqués restent disponibles pour toujours. Les anciens articles déjà achetés restent dans ton dressing même s’ils ne sont plus proposés au Shop.</li>
+          <li>Un achat débloque l’article sans l’équiper automatiquement. Dans Mon Bibit, tu peux choisir indépendamment chaque élément du look ou sélectionner « Aucun » pour retirer les yeux, les joues, la bouche, les oreilles, le dos ou les pieds. Les articles débloqués restent disponibles pour toujours. Les anciens articles déjà achetés restent dans ton dressing même s’ils ne sont plus proposés au Shop.</li>
           <li>Le Shop affiche Mes popommes, le solde disponible après les achats. Le calendrier et la Collection affichent les cacas et les cœurs gagnés ; ces récompenses ne sont jamais dépensées. Une pomme est accordée par caca gagné et par cœur bandé gagné.</li>
           <li>Les récompenses obtenues avant ce changement sont aussi converties en pommes : une pomme par caca et par cœur bandé, moins les achats déjà effectués. Si une validation est corrigée, le solde de pommes est recalculé et peut devenir négatif ; les gains suivants le feront remonter.</li>
         </ul>

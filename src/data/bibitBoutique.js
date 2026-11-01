@@ -1,56 +1,119 @@
 export const CATEGORIES_BIBIT = [
-  { id: "couleur", nom: "Couleurs" },
-  { id: "corps", nom: "Corps" },
-  { id: "accessoire", nom: "Accessoires" },
-  { id: "habit", nom: "Habibits", aVenir: true },
+  { id: "couleur", nom: "COULEUR", sousCategories: [
+    { id: "unie", nom: "Unie", emplacement: "couleur", optionBase: true },
+    { id: "motif", nom: "Motif", emplacement: "couleur" },
+    { id: "special", nom: "Spécial", emplacement: "couleur" },
+  ] },
+  { id: "corps", nom: "CORPS", sousCategories: [
+    { id: "yeux", nom: "Yeux", emplacement: "yeux", optionBase: true },
+    { id: "joues", nom: "Joues", emplacement: "joues", optionBase: true },
+    { id: "bouche", nom: "Bouche", emplacement: "bouche", optionBase: true },
+    { id: "oreilles", nom: "Oreilles", emplacement: "oreilles", optionBase: true },
+    { id: "dos", nom: "Dos", emplacement: "dos", optionBase: true },
+    { id: "pieds", nom: "Pieds", emplacement: "pieds", optionBase: true },
+  ] },
+  { id: "habibits", nom: "HABIBITS", sousCategories: [
+    { id: "chapeaux", nom: "Chapeaux", emplacement: "accessoire", optionBase: true },
+    { id: "vetements", nom: "Vêtements", emplacement: "habit", optionBase: true },
+  ] },
+  { id: "fond", nom: "FOND", sousCategories: [
+    { id: "unie", nom: "Unie", emplacement: "fond" },
+    { id: "motif", nom: "Motif", emplacement: "fond" },
+    { id: "special", nom: "Spécial", emplacement: "fond" },
+  ] },
 ];
 
 export const OPTIONS_BASE_BIBIT = {
-  couleur: { id: "rose", nom: "Rose", couleur: "#f7cde0" },
-  corps: { id: "simples", nom: "Yeux simples" },
-  accessoire: { id: "aucun", nom: "Aucun" },
-  habit: { id: "aucun", nom: "Aucun habit" },
+  couleur: { id: "rose", nom: "Rose Bibit", couleur: "#f7cde0" },
+  yeux: { id: "simples", nom: "Bibit classique" },
+  joues: { id: "joues-classiques", nom: "Bibit classique" },
+  bouche: { id: "bouche-classique", nom: "Bibit classique" },
+  oreilles: { id: "oreilles-classiques", nom: "Bibit classique" },
+  dos: { id: "dos-classique", nom: "Bibit classique" },
+  pieds: { id: "pieds-classiques", nom: "Bibit classique" },
+  accessoire: { id: "aucun", nom: "Aucun chapeau" },
+  habit: { id: "aucun", nom: "Aucun vêtement" },
+  fond: { id: "aucun", nom: "Aucun fond" },
+};
+
+export const OPTIONS_AUCUN_BIBIT = {
+  yeux: { id: "aucun", nom: "Aucun" },
+  joues: { id: "aucun", nom: "Aucun" },
+  bouche: { id: "aucun", nom: "Aucun" },
+  oreilles: { id: "aucun", nom: "Aucun" },
+  dos: { id: "aucun", nom: "Aucun" },
+  pieds: { id: "aucun", nom: "Aucun" },
 };
 
 export const COULEURS_BIBIT = {
   rose: "#f7cde0",
   "couleur-turquoise": "#70d7cf",
-  "couleur-violet": "#bca4f4",
+  "couleur-violet": "#9810FA",
   "couleur-jaune": "#ffda69",
   "couleur-menthe": "#8bd9ae",
   "couleur-corail": "#ff9878",
-  "couleur-bleu-ciel": "#82c8ff",
+  "couleur-bleu-ciel": "#267BF1",
+  "couleur-bleu-nuit": "#26334f",
+  "couleur-gris-souris": "#9b9ba0",
+  "couleur-vanille-madagascar": "#f3e5b3",
+  "couleur-chocolat-lait": "#795548",
+  "couleur-chocolat-noir": "#4E342E",
+  "couleur-peche": "#ffc5a1",
+  "couleur-abricot": "#f4a261",
+  "couleur-lavande": "#b7a1d8",
+  "couleur-baby-blue": "#A2EFFE",
+  "couleur-vert-emeraude": "#3eaa75",
+  "couleur-vert-pomme": "#BFF23D",
+  "couleur-rose-fuchsia": "#e64291",
   "couleur-doree": "#f2bf46",
   "couleur-arc-en-ciel": "#ed5b91",
 };
 
 export const ARTICLES_BIBIT = [
-  { id: "couleur-turquoise", categorie: "couleur", nom: "Turquoise", description: "Une teinte fraîche et lumineuse.", prix: 5, couleur: "#70d7cf" },
-  { id: "couleur-violet", categorie: "couleur", nom: "Violet", description: "Une couleur douce aux reflets rêveurs.", prix: 5, couleur: "#bca4f4" },
-  { id: "couleur-jaune", categorie: "couleur", nom: "Jaune soleil", description: "Un jaune joyeux qui illumine le Bibit.", prix: 5, couleur: "#ffda69" },
-  { id: "couleur-menthe", categorie: "couleur", nom: "Vert menthe", description: "Un vert tendre et apaisant.", prix: 5, couleur: "#8bd9ae" },
-  { id: "couleur-corail", categorie: "couleur", nom: "Corail", description: "Une teinte chaude et pétillante.", prix: 5, couleur: "#ff9878" },
-  { id: "couleur-bleu-ciel", categorie: "couleur", nom: "Bleu ciel", description: "Un bleu clair plein de douceur.", prix: 5, couleur: "#82c8ff" },
-  { id: "couleur-doree", categorie: "couleur", nom: "Or scintillant", description: "Une robe dorée qui capte la lumière.", prix: 10, couleur: "#f2bf46" },
-  { id: "couleur-arc-en-ciel", categorie: "couleur", nom: "Arc-en-ciel", description: "Un dégradé multicolore, lumineux et joyeux.", prix: 15, couleur: "#ed5b91" },
-  { id: "yeux-ronds", categorie: "corps", nom: "Yeux ronds", description: "De grands yeux bien ouverts.", prix: 10 },
-  { id: "yeux-coeurs", categorie: "corps", nom: "Yeux cœurs", description: "Un regard plein de tendresse.", prix: 10 },
-  { id: "yeux-spirales", categorie: "corps", nom: "Yeux spirales", description: "Un regard un peu étourdi.", prix: 20, disponible: false },
-  { id: "accessoire-noeud", categorie: "accessoire", nom: "Petit nœud", description: "Un joli nœud posé sur la tête.", prix: 5, disponible: false },
-  { id: "accessoire-fleur", categorie: "accessoire", nom: "Fleur", description: "Une fleur colorée à porter fièrement.", prix: 15 },
-  { id: "accessoire-couronne", categorie: "accessoire", nom: "Couronne", description: "Une petite couronne pour les grandes journées.", prix: 15 },
-  { id: "habit-pull", categorie: "habit", nom: "Pull", description: "Un pull tout doux et bien chaud.", prix: 5, disponible: false },
-  { id: "habit-cape", categorie: "habit", nom: "Cape", description: "Une cape prête pour l’aventure.", prix: 10, disponible: false },
-  { id: "habit-salopette", categorie: "habit", nom: "Salopette", description: "Une salopette confortable avec une poche.", prix: 20, disponible: false },
+  { id: "couleur-rose-fuchsia", categorie: "couleur", sousCategorie: "unie", emplacement: "couleur", nom: "Rose fuchsia", description: "Un rose vif plein d’énergie.", prix: 5, couleur: "#e64291" },
+  { id: "couleur-corail", categorie: "couleur", sousCategorie: "unie", emplacement: "couleur", nom: "Corail", description: "Une teinte chaude et pétillante.", prix: 5, couleur: "#ff9878" },
+  { id: "couleur-peche", categorie: "couleur", sousCategorie: "unie", emplacement: "couleur", nom: "Pêche", description: "Un rose orangé tendre et lumineux.", prix: 5, couleur: "#ffc5a1" },
+  { id: "couleur-abricot", categorie: "couleur", sousCategorie: "unie", emplacement: "couleur", nom: "Abricot", description: "Un orange doux et ensoleillé.", prix: 5, couleur: "#f4a261" },
+  { id: "couleur-jaune", categorie: "couleur", sousCategorie: "unie", emplacement: "couleur", nom: "Jaune soleil", description: "Un jaune joyeux qui illumine le Bibit.", prix: 5, couleur: "#ffda69" },
+  { id: "couleur-vanille-madagascar", categorie: "couleur", sousCategorie: "unie", emplacement: "couleur", nom: "Vanille de Madagascar", description: "Une teinte vanillée, chaude et délicate.", prix: 5, couleur: "#f3e5b3" },
+  { id: "couleur-vert-pomme", categorie: "couleur", sousCategorie: "unie", emplacement: "couleur", nom: "Vert pomme", description: "Un vert frais et pétillant.", prix: 5, couleur: "#BFF23D" },
+  { id: "couleur-menthe", categorie: "couleur", sousCategorie: "unie", emplacement: "couleur", nom: "Vert menthe", description: "Un vert tendre et apaisant.", prix: 5, couleur: "#8bd9ae" },
+  { id: "couleur-vert-emeraude", categorie: "couleur", sousCategorie: "unie", emplacement: "couleur", nom: "Vert émeraude", description: "Un vert précieux et éclatant.", prix: 5, couleur: "#3eaa75" },
+  { id: "couleur-turquoise", categorie: "couleur", sousCategorie: "unie", emplacement: "couleur", nom: "Turquoise", description: "Une teinte fraîche et lumineuse.", prix: 5, couleur: "#70d7cf" },
+  { id: "couleur-baby-blue", categorie: "couleur", sousCategorie: "unie", emplacement: "couleur", nom: "Baby blue", description: "Un bleu pastel frais et léger.", prix: 5, couleur: "#A2EFFE" },
+  { id: "couleur-bleu-ciel", categorie: "couleur", sousCategorie: "unie", emplacement: "couleur", nom: "Bleu ciel", description: "Un bleu clair plein de douceur.", prix: 5, couleur: "#267BF1" },
+  { id: "couleur-bleu-nuit", categorie: "couleur", sousCategorie: "unie", emplacement: "couleur", nom: "Bleu nuit", description: "Un bleu profond et mystérieux.", prix: 5, couleur: "#26334f" },
+  { id: "couleur-violet", categorie: "couleur", sousCategorie: "unie", emplacement: "couleur", nom: "Violet", description: "Une couleur douce aux reflets rêveurs.", prix: 5, couleur: "#9810FA" },
+  { id: "couleur-lavande", categorie: "couleur", sousCategorie: "unie", emplacement: "couleur", nom: "Lavande", description: "Un violet pastel plein de douceur.", prix: 5, couleur: "#b7a1d8" },
+  { id: "couleur-chocolat-lait", categorie: "couleur", sousCategorie: "unie", emplacement: "couleur", nom: "Chocolat au lait", description: "Un brun gourmand et réconfortant.", prix: 5, couleur: "#795548" },
+  { id: "couleur-chocolat-noir", categorie: "couleur", sousCategorie: "unie", emplacement: "couleur", nom: "Chocolat noir", description: "Un brun intense et profond.", prix: 5, couleur: "#4E342E" },
+  { id: "couleur-gris-souris", categorie: "couleur", sousCategorie: "unie", emplacement: "couleur", nom: "Gris souris", description: "Un gris doux et tout en discrétion.", prix: 5, couleur: "#9b9ba0" },
+  { id: "couleur-doree", categorie: "couleur", sousCategorie: "special", emplacement: "couleur", nom: "Or scintillant", description: "Une robe dorée qui capte la lumière.", prix: 10, couleur: "#f2bf46" },
+  { id: "couleur-arc-en-ciel", categorie: "couleur", sousCategorie: "special", emplacement: "couleur", nom: "Arc-en-ciel", description: "Un dégradé multicolore, lumineux et joyeux.", prix: 15, couleur: "#ed5b91" },
+  { id: "yeux-ronds", categorie: "corps", sousCategorie: "yeux", emplacement: "yeux", nom: "Yeux ronds", description: "De grands yeux bien ouverts.", prix: 10 },
+  { id: "yeux-coeurs", categorie: "corps", sousCategorie: "yeux", emplacement: "yeux", nom: "Yeux cœurs", description: "Un regard plein de tendresse.", prix: 10 },
+  { id: "yeux-spirales", categorie: "corps", sousCategorie: "yeux", emplacement: "yeux", nom: "Yeux spirales", description: "Un regard un peu étourdi.", prix: 20, disponible: false },
+  { id: "accessoire-noeud", categorie: "habibits", sousCategorie: "chapeaux", emplacement: "accessoire", nom: "Petit nœud", description: "Un joli nœud posé sur la tête.", prix: 5, disponible: false },
+  { id: "accessoire-fleur", categorie: "habibits", sousCategorie: "chapeaux", emplacement: "accessoire", nom: "Fleur", description: "Une fleur colorée à porter fièrement.", prix: 15 },
+  { id: "accessoire-couronne", categorie: "habibits", sousCategorie: "chapeaux", emplacement: "accessoire", nom: "Couronne", description: "Une petite couronne pour les grandes journées.", prix: 15 },
+  { id: "habit-pull", categorie: "habibits", sousCategorie: "vetements", emplacement: "habit", nom: "Pull", description: "Un pull tout doux et bien chaud.", prix: 5, disponible: false },
+  { id: "habit-cape", categorie: "habibits", sousCategorie: "vetements", emplacement: "habit", nom: "Cape", description: "Une cape prête pour l’aventure.", prix: 10, disponible: false },
+  { id: "habit-salopette", categorie: "habibits", sousCategorie: "vetements", emplacement: "habit", nom: "Salopette", description: "Une salopette confortable avec une poche.", prix: 20, disponible: false },
 ];
 
 export const ETAT_BIBIT_INITIAL = {
   achats: [],
   equipe: {
     couleur: OPTIONS_BASE_BIBIT.couleur.id,
-    corps: OPTIONS_BASE_BIBIT.corps.id,
+    yeux: OPTIONS_BASE_BIBIT.yeux.id,
+    joues: OPTIONS_BASE_BIBIT.joues.id,
+    bouche: OPTIONS_BASE_BIBIT.bouche.id,
+    oreilles: OPTIONS_BASE_BIBIT.oreilles.id,
+    dos: OPTIONS_BASE_BIBIT.dos.id,
+    pieds: OPTIONS_BASE_BIBIT.pieds.id,
     accessoire: OPTIONS_BASE_BIBIT.accessoire.id,
     habit: OPTIONS_BASE_BIBIT.habit.id,
+    fond: OPTIONS_BASE_BIBIT.fond.id,
   },
 };
 
@@ -70,14 +133,14 @@ export function normaliserBibit(valeur) {
   });
 
   const equipe = {};
-  CATEGORIES_BIBIT.forEach(({ id }) => {
-    const choisi = id === "corps"
-      ? valeur?.equipe?.corps ?? valeur?.equipe?.yeux
-      : valeur?.equipe?.[id];
+  Object.entries(OPTIONS_BASE_BIBIT).forEach(([emplacement, optionBase]) => {
+    const choisi = emplacement === "yeux"
+      ? valeur?.equipe?.yeux ?? valeur?.equipe?.corps
+      : valeur?.equipe?.[emplacement];
     const articleEquipe = articlesParId.get(choisi);
-    const optionBase = OPTIONS_BASE_BIBIT[id];
-    equipe[id] = choisi === optionBase.id ||
-      (articleEquipe?.categorie === id && articlesPossedes.has(articleEquipe.id))
+    equipe[emplacement] = choisi === optionBase.id ||
+      choisi === OPTIONS_AUCUN_BIBIT[emplacement]?.id ||
+      (articleEquipe?.emplacement === emplacement && articlesPossedes.has(articleEquipe.id))
       ? choisi
       : optionBase.id;
   });

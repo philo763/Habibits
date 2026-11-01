@@ -7,16 +7,20 @@ import {
 } from "./data/bibitBoutique";
 
 function apparenceArticle(article, apparence) {
-  return { ...apparence, [article.categorie]: article.id };
+  return { ...apparence, [article.emplacement]: article.id };
 }
 
 export default function ShopBibit({ bibit, soldePommes, erreur, achatEnCours, onRetour, onAcheter }) {
   const [categorieActive, setCategorieActive] = useState("couleur");
+  const [sousCategorieActive, setSousCategorieActive] = useState("unie");
   const articlesPossedes = new Set(bibit.achats.map((achat) => achat.articleId));
-  const articles = ARTICLES_BIBIT.filter((article) =>
-    article.categorie === categorieActive && article.disponible !== false && !articlesPossedes.has(article.id)
-  );
   const categorie = CATEGORIES_BIBIT.find((item) => item.id === categorieActive);
+  const sousCategorie = categorie.sousCategories.find((item) => item.id === sousCategorieActive);
+  const articlesSousCategorie = ARTICLES_BIBIT.filter((article) =>
+    article.categorie === categorieActive && article.sousCategorie === sousCategorie.id
+  );
+  const articlesDisponibles = articlesSousCategorie.filter((article) => article.disponible !== false);
+  const articles = articlesDisponibles.filter((article) => !articlesPossedes.has(article.id));
 
   return (
     <section className="page-shop" aria-labelledby="titre-shop">
@@ -41,19 +45,35 @@ export default function ShopBibit({ bibit, soldePommes, erreur, achatEnCours, on
             className={`btn petit ${categorieActive === item.id ? "actif" : "discret"}`}
             role="tab"
             aria-selected={categorieActive === item.id}
-            onClick={() => setCategorieActive(item.id)}
+            onClick={() => {
+              setCategorieActive(item.id);
+              setSousCategorieActive(item.sousCategories[0].id);
+            }}
           >
             {item.nom}
           </button>
         ))}
       </div>
-      <section role="tabpanel" aria-label={`Articles : ${categorie.nom.toLocaleLowerCase("fr")}`}>
-        {categorie.aVenir ? (
+      <div className="sous-onglets-bibit" role="tablist" aria-label={`Sous-catégories ${categorie.nom.toLocaleLowerCase("fr")}`}>
+        {categorie.sousCategories.map((item) => (
+          <button
+            key={item.id}
+            className={`btn petit ${sousCategorieActive === item.id ? "actif" : "discret"}`}
+            role="tab"
+            aria-selected={sousCategorieActive === item.id}
+            onClick={() => setSousCategorieActive(item.id)}
+          >
+            {item.nom}
+          </button>
+        ))}
+      </div>
+      <section role="tabpanel" aria-label={`Articles : ${sousCategorie.nom.toLocaleLowerCase("fr")}`}>
+        {articlesDisponibles.length === 0 ? (
           <div className="tuile shop-avenir"><h3>A VENIR</h3></div>
         ) : articles.length === 0 ? (
           <div className="tuile">
             <h3>Tout est débloqué !</h3>
-            <p>Tu as acheté toutes les options de cette catégorie.</p>
+            <p>Tu as acheté toutes les options de cette sous-catégorie.</p>
           </div>
         ) : (
           <div className="articles-shop">

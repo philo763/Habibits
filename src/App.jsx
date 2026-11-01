@@ -33,6 +33,7 @@ import ShopBibit from "./ShopBibit";
 import {
   ARTICLES_BIBIT,
   ETAT_BIBIT_INITIAL,
+  OPTIONS_AUCUN_BIBIT,
   OPTIONS_BASE_BIBIT,
 } from "./data/bibitBoutique";
 import "./sauvegarde.css";
@@ -197,7 +198,9 @@ export default function App() {
     const optionBase = OPTIONS_BASE_BIBIT[categorie];
     const article = ARTICLES_BIBIT.find((element) => element.id === choix);
     const possedeArticle = bibit.achats.some((achat) => achat.articleId === choix);
-    if (choix !== optionBase?.id && (article?.categorie !== categorie || !possedeArticle)) return;
+    const optionAucun = OPTIONS_AUCUN_BIBIT[categorie];
+    if (choix !== optionBase?.id && choix !== optionAucun?.id &&
+      (article?.emplacement !== categorie || !possedeArticle)) return;
     await enregistrerBibit({
       ...bibit,
       equipe: { ...bibit.equipe, [categorie]: choix },
