@@ -41,7 +41,32 @@ export default function BibitIllustration({ apparence, className = "", decorativ
         </defs>
       )}
       <ellipse cx="120" cy="214" rx="57" ry="10" fill="#071127" opacity=".55" />
-      {apparence?.oreilles !== "aucun" && (
+      {apparence?.oreilles === "oreilles-pika" ? (
+        <>
+          <g transform="translate(0 -41) scale(1 1.5)">
+            <path
+              d="M75 82C56 64 58 38 68 29c15 2 28 20 31 43Z"
+              fill={couleur}
+              stroke="#57385f"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="5"
+            />
+            <path d="M68 29C64 33 62 37 62 40L80 37C77 33 72 30 68 29Z" fill="#57385f" />
+          </g>
+          <g transform="rotate(38 153 78) translate(240 -41) scale(-1 1.5)">
+            <path
+              d="M75 82C56 64 58 38 68 29c15 2 28 20 31 43Z"
+              fill={couleur}
+              stroke="#57385f"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="5"
+            />
+            <path d="M68 29C64 33 62 37 62 40L80 37C77 33 72 30 68 29Z" fill="#57385f" />
+          </g>
+        </>
+      ) : apparence?.oreilles !== "aucun" && (
         <path
           d="M75 82C56 64 58 38 68 29c15 2 28 20 31 43M165 82c19-18 17-44 7-53-15 2-28 20-31 43"
           fill={couleur}
@@ -98,12 +123,17 @@ export default function BibitIllustration({ apparence, className = "", decorativ
         </g>
       )}
 
-      {apparence?.joues !== "aucun" && (
+      {apparence?.joues === "joues-pika" ? (
+        <g fill="#ee1b24" stroke="#57385f" strokeWidth="2">
+          <circle cx="79.3" cy="145" r="12" />
+          <circle cx="160.7" cy="145" r="12" />
+        </g>
+      ) : apparence?.joues !== "aucun" ? (
         <g fill="#ed8eaf" opacity=".8">
           <ellipse cx="83" cy="145" rx="12" ry="7" />
           <ellipse cx="157" cy="145" rx="12" ry="7" />
         </g>
-      )}
+      ) : null}
 
       {apparence?.yeux !== "aucun" && (
         (apparence?.yeux ?? apparence?.corps) === "yeux-ronds" ? (

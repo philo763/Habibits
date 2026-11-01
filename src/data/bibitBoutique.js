@@ -111,6 +111,8 @@ export const ARTICLES_BIBIT = [
   { id: "yeux-ronds", categorie: "corps", sousCategorie: "yeux", emplacement: "yeux", nom: "Yeux ronds", description: "De grands yeux bien ouverts.", prix: 10 },
   { id: "yeux-coeurs", categorie: "corps", sousCategorie: "yeux", emplacement: "yeux", nom: "Yeux cœurs", description: "Un regard plein de tendresse.", prix: 10 },
   { id: "yeux-spirales", categorie: "corps", sousCategorie: "yeux", emplacement: "yeux", nom: "Yeux spirales", description: "Un regard un peu étourdi.", prix: 20, disponible: false },
+  { id: "joues-pika", categorie: "corps", sousCategorie: "joues", emplacement: "joues", nom: "Joues Pika", description: "Deux joues rondes rouge vif.", prix: 3 },
+  { id: "oreilles-pika", categorie: "corps", sousCategorie: "oreilles", emplacement: "oreilles", nom: "Oreilles Pika", description: "De longues oreilles Pika aux pointes prune.", prix: 6 },
   { id: "bouche-ondulee", categorie: "corps", sousCategorie: "bouche", emplacement: "bouche", nom: "Bouche Pika", description: "Un sourire ondulé plein de malice.", prix: 6 },
   { id: "bouche-pika-ouverte", categorie: "corps", sousCategorie: "bouche", emplacement: "bouche", nom: "Bouche ouverte Pika", description: "Une bouche ouverte rouge et rose au sourire espiègle.", prix: 6 },
   { id: "accessoire-noeud", categorie: "habibits", sousCategorie: "chapeaux", emplacement: "accessoire", nom: "Petit nœud", description: "Un joli nœud posé sur la tête.", prix: 5, disponible: false },
