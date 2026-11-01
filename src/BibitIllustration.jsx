@@ -51,7 +51,7 @@ export default function BibitIllustration({ apparence, className = "", decorativ
           strokeWidth="5"
         />
       )}
-      {apparence?.dos !== "aucun" && (
+      {apparence?.bras !== "aucun" && (
         <path
           d="M66 142c-17 1-25 16-20 27 5 10 18 10 29 0M174 142c17 1 25 16 20 27-5 10-18 10-29 0"
           fill={couleur}
@@ -66,6 +66,15 @@ export default function BibitIllustration({ apparence, className = "", decorativ
         <g fill="#fff8d8" opacity=".8" aria-hidden="true">
           <path d="m166 82 2.5 6 6 2.5-6 2.5-2.5 6-2.5-6-6-2.5 6-2.5Z" />
           <path d="m75 167 1.5 4 4 1.5-4 1.5-1.5 4-1.5-4-4-1.5 4-1.5Z" />
+          <path d="m91 91 1.5 4 4 1.5-4 1.5-1.5 4-1.5-4-4-1.5 4-1.5Z" />
+          <path d="m158 174 1.5 4 4 1.5-4 1.5-1.5 4-1.5-4-4-1.5 4-1.5Z" />
+        </g>
+      )}
+      {["couleur-doree", "couleur-arc-en-ciel"].includes(apparence?.couleur) && (
+        <g fill="#ffd85f" aria-hidden="true">
+          <path d="m35 101 3 8 8 3-8 3-3 8-3-8-8-3 8-3Z" />
+          <path d="m204 76 2.5 6.5 6.5 2.5-6.5 2.5-2.5 6.5-2.5-6.5-6.5-2.5 6.5-2.5Z" />
+          <path d="m204 171 2 5 5 2-5 2-2 5-2-5-5-2 5-2Z" />
         </g>
       )}
 
@@ -124,7 +133,18 @@ export default function BibitIllustration({ apparence, className = "", decorativ
         )
       )}
 
-      {apparence?.bouche !== "aucun" && (
+      {apparence?.bouche === "bouche-ondulee" ? (
+        <svg x="96" y="136.875" width="48" height="9.75" viewBox="0 0 22 6.5" aria-hidden="true">
+          <path
+            d="M 2,2.6 C 3.2,3.9 4.1,4.5 5.2,4.5 C 7.5,4.5 9.1,2.1 11,2.1 C 12.9,2.1 14.5,4.5 17.5,4.5 C 18.6,4.5 19.3,3.8 20,2.6"
+            fill="none"
+            stroke="#57385f"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+          />
+        </svg>
+      ) : apparence?.bouche !== "aucun" && (
         <path d="M109 139c6 8 16 8 22 0" fill="none" stroke="#57385f" strokeLinecap="round" strokeWidth="4" />
       )}
       {apparence?.accessoire === "accessoire-noeud" && (

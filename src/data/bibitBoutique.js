@@ -2,24 +2,25 @@ export const CATEGORIES_BIBIT = [
   { id: "couleur", nom: "COULEUR", sousCategories: [
     { id: "unie", nom: "Uni", emplacement: "couleur", optionBase: true },
     { id: "motif", nom: "Motif", emplacement: "couleur" },
-    { id: "special", nom: "Spécial", emplacement: "couleur" },
+    { id: "special", nom: "Spécial", emoji: "✨", emplacement: "couleur" },
   ] },
   { id: "corps", nom: "CORPS", sousCategories: [
-    { id: "yeux", nom: "Yeux", emplacement: "yeux", optionBase: true },
-    { id: "joues", nom: "Joues", emplacement: "joues", optionBase: true },
-    { id: "bouche", nom: "Bouche", emplacement: "bouche", optionBase: true },
-    { id: "oreilles", nom: "Oreilles", emplacement: "oreilles", optionBase: true },
+    { id: "yeux", nom: "Yeux", emoji: "👀", emplacement: "yeux", optionBase: true },
+    { id: "joues", nom: "Joues", emoji: "😊", emplacement: "joues", optionBase: true },
+    { id: "bouche", nom: "Bouche", emoji: "👄", emplacement: "bouche", optionBase: true },
+    { id: "oreilles", nom: "Oreilles", emoji: "👂", emplacement: "oreilles", optionBase: true },
+    { id: "bras", nom: "Bras", emoji: "💪", emplacement: "bras", optionBase: true },
     { id: "dos", nom: "Dos", emplacement: "dos", optionBase: true },
-    { id: "pieds", nom: "Pieds", emplacement: "pieds", optionBase: true },
+    { id: "pieds", nom: "Pieds", emoji: "🦶", emplacement: "pieds", optionBase: true },
   ] },
   { id: "habibits", nom: "HABIBITS", sousCategories: [
-    { id: "chapeaux", nom: "Chapeaux", emplacement: "accessoire", optionBase: true },
-    { id: "vetements", nom: "Vêtements", emplacement: "habit", optionBase: true },
+    { id: "chapeaux", nom: "Chapeaux", emoji: "🎩", emplacement: "accessoire", optionBase: true },
+    { id: "vetements", nom: "Vêtements", emoji: "👕", emplacement: "habit", optionBase: true },
   ] },
   { id: "fond", nom: "FOND", sousCategories: [
     { id: "unie", nom: "Uni", emplacement: "fond", optionBase: true },
     { id: "motif", nom: "Motif", emplacement: "fond" },
-    { id: "special", nom: "Spécial", emplacement: "fond" },
+    { id: "special", nom: "Spécial", emoji: "✨", emplacement: "fond" },
   ] },
 ];
 
@@ -29,7 +30,8 @@ export const OPTIONS_BASE_BIBIT = {
   joues: { id: "joues-classiques", nom: "Bibit classique" },
   bouche: { id: "bouche-classique", nom: "Bibit classique" },
   oreilles: { id: "oreilles-classiques", nom: "Bibit classique" },
-  dos: { id: "dos-classique", nom: "Bibit classique" },
+  bras: { id: "bras-classiques", nom: "Bibit classique" },
+  dos: { id: "aucun", nom: "Aucun" },
   pieds: { id: "pieds-classiques", nom: "Bibit classique" },
   accessoire: { id: "aucun", nom: "Aucun chapeau" },
   habit: { id: "aucun", nom: "Aucun vêtement" },
@@ -41,7 +43,7 @@ export const OPTIONS_AUCUN_BIBIT = {
   joues: { id: "aucun", nom: "Aucun" },
   bouche: { id: "aucun", nom: "Aucun" },
   oreilles: { id: "aucun", nom: "Aucun" },
-  dos: { id: "aucun", nom: "Aucun" },
+  bras: { id: "aucun", nom: "Aucun" },
   pieds: { id: "aucun", nom: "Aucun" },
 };
 
@@ -101,14 +103,15 @@ export const ARTICLES_BIBIT = [
   { id: "couleur-gris-souris", categorie: "couleur", sousCategorie: "unie", emplacement: "couleur", nom: "Gris souris", description: "Un gris doux et tout en discrétion.", prix: 5, couleur: "#9b9ba0" },
   { id: "couleur-doree", categorie: "couleur", sousCategorie: "special", emplacement: "couleur", nom: "Or scintillant", description: "Une robe dorée qui capte la lumière.", prix: 10, couleur: "#f2bf46" },
   { id: "couleur-arc-en-ciel", categorie: "couleur", sousCategorie: "special", emplacement: "couleur", nom: "Arc-en-ciel", description: "Un dégradé multicolore, lumineux et joyeux.", prix: 15, couleur: "#ed5b91" },
-  { id: "fond-rose", categorie: "fond", sousCategorie: "unie", emplacement: "fond", nom: "Rose Barbapapa", description: "Un dégradé rose tendre et gourmand autour de ton Bibit.", prix: 5 },
-  { id: "fond-bleu-ciel", categorie: "fond", sousCategorie: "unie", emplacement: "fond", nom: "Ciel doux", description: "Un dégradé bleu clair et profond comme un ciel de printemps.", prix: 5 },
-  { id: "fond-menthe", categorie: "fond", sousCategorie: "unie", emplacement: "fond", nom: "Jardin menthe", description: "Un dégradé vert frais et apaisant autour de ton Bibit.", prix: 5 },
-  { id: "fond-lavande", categorie: "fond", sousCategorie: "unie", emplacement: "fond", nom: "Nuage lavande", description: "Un dégradé violet doux et rêveur autour de ton Bibit.", prix: 5 },
-  { id: "fond-vanille", categorie: "fond", sousCategorie: "unie", emplacement: "fond", nom: "Crème vanillée", description: "Un dégradé jaune doux et chaleureux autour de ton Bibit.", prix: 5 },
+  { id: "fond-rose", categorie: "fond", sousCategorie: "unie", emplacement: "fond", nom: "Rose Barbapapa", description: "Un dégradé rose tendre et gourmand autour de ton Bibit.", prix: 4 },
+  { id: "fond-bleu-ciel", categorie: "fond", sousCategorie: "unie", emplacement: "fond", nom: "Ciel doux", description: "Un dégradé bleu clair et profond comme un ciel de printemps.", prix: 4 },
+  { id: "fond-menthe", categorie: "fond", sousCategorie: "unie", emplacement: "fond", nom: "Jardin menthe", description: "Un dégradé vert frais et apaisant autour de ton Bibit.", prix: 4 },
+  { id: "fond-lavande", categorie: "fond", sousCategorie: "unie", emplacement: "fond", nom: "Nuage lavande", description: "Un dégradé violet doux et rêveur autour de ton Bibit.", prix: 4 },
+  { id: "fond-vanille", categorie: "fond", sousCategorie: "unie", emplacement: "fond", nom: "Crème vanillée", description: "Un dégradé jaune doux et chaleureux autour de ton Bibit.", prix: 4 },
   { id: "yeux-ronds", categorie: "corps", sousCategorie: "yeux", emplacement: "yeux", nom: "Yeux ronds", description: "De grands yeux bien ouverts.", prix: 10 },
   { id: "yeux-coeurs", categorie: "corps", sousCategorie: "yeux", emplacement: "yeux", nom: "Yeux cœurs", description: "Un regard plein de tendresse.", prix: 10 },
   { id: "yeux-spirales", categorie: "corps", sousCategorie: "yeux", emplacement: "yeux", nom: "Yeux spirales", description: "Un regard un peu étourdi.", prix: 20, disponible: false },
+  { id: "bouche-ondulee", categorie: "corps", sousCategorie: "bouche", emplacement: "bouche", nom: "Bouche Pika", description: "Un sourire ondulé plein de malice.", prix: 6 },
   { id: "accessoire-noeud", categorie: "habibits", sousCategorie: "chapeaux", emplacement: "accessoire", nom: "Petit nœud", description: "Un joli nœud posé sur la tête.", prix: 5, disponible: false },
   { id: "accessoire-frangipanier", categorie: "habibits", sousCategorie: "chapeaux", emplacement: "accessoire", nom: "Fleur de frangipanier", description: "Une fleur blanche et jaune à porter sur la tête.", prix: 10 },
   { id: "accessoire-couronne-royale", categorie: "habibits", sousCategorie: "chapeaux", emplacement: "accessoire", nom: "Couronne royale", description: "Une couronne dorée sertie de rubis, digne de la royauté.", prix: 15 },
@@ -125,6 +128,7 @@ export const ETAT_BIBIT_INITIAL = {
     joues: OPTIONS_BASE_BIBIT.joues.id,
     bouche: OPTIONS_BASE_BIBIT.bouche.id,
     oreilles: OPTIONS_BASE_BIBIT.oreilles.id,
+    bras: OPTIONS_BASE_BIBIT.bras.id,
     dos: OPTIONS_BASE_BIBIT.dos.id,
     pieds: OPTIONS_BASE_BIBIT.pieds.id,
     accessoire: OPTIONS_BASE_BIBIT.accessoire.id,
@@ -150,7 +154,11 @@ export function normaliserBibit(valeur) {
 
   const equipe = {};
   Object.entries(OPTIONS_BASE_BIBIT).forEach(([emplacement, optionBase]) => {
-    const choixEnregistre = emplacement === "yeux"
+    const choixEnregistre = emplacement === "bras"
+      ? valeur?.equipe?.bras ?? (valeur?.equipe?.dos === "aucun" ? "aucun" : undefined)
+      : emplacement === "dos" && valeur?.equipe?.dos === "dos-classique"
+        ? optionBase.id
+        : emplacement === "yeux"
       ? valeur?.equipe?.yeux ?? valeur?.equipe?.corps
       : valeur?.equipe?.[emplacement];
     const choisi = emplacement === "fond" && choixEnregistre === "aucun"

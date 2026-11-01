@@ -580,6 +580,7 @@ select:focus { outline: none; border-color: var(--or); }
 .article-shop-contenu h3 { margin: 0 0 4px; font-size: 20px; overflow-wrap: anywhere; }
 .article-shop-contenu p { margin: 0 0 6px; font-size: 14px; }
 .article-shop-contenu .prix-shop { color: #f5c542; }
+.article-shop-contenu .reste-shop { display: block; margin-top: 4px; color: #c9d8f6; }
 .option-bibit > span:not(.pastille-bibit) {
   display: inline-block;
   font-family: "Barlow Condensed", "Arial Narrow", sans-serif;

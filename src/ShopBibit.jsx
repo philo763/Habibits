@@ -70,6 +70,7 @@ export default function ShopBibit({ bibit, soldePommes, erreur, achatEnCours, on
             onClick={() => setSousCategorieActive(item.id)}
           >
             {item.nom}
+            {item.emoji && <span aria-hidden="true"> {item.emoji}</span>}
           </button>
         ))}
       </div>
@@ -113,6 +114,11 @@ export default function ShopBibit({ bibit, soldePommes, erreur, achatEnCours, on
                     >
                       {achatEnCours ? "Achat en cours…" : soldePommes < article.prix ? "Pas assez de popommes" : "Acheter"}
                     </button>
+                    {soldePommes < article.prix && (
+                      <small className="reste-shop">
+                        Il te manque {article.prix - soldePommes} popommes.
+                      </small>
+                    )}
                   </div>
                 </article>
               );
