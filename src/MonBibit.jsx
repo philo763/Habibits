@@ -63,7 +63,12 @@ export default function MonBibit({ bibit, erreur, onAllerShop, onEquiper }) {
           </button>
         ))}
       </div>
-      <div className="sous-onglets-bibit" role="tablist" aria-label={`Sous-catégories ${categorie.nom.toLocaleLowerCase("fr")}`}>
+      <div
+        className="sous-onglets-bibit"
+        role="tablist"
+        aria-label={`Sous-catégories ${categorie.nom.toLocaleLowerCase("fr")}`}
+        style={{ "--colonnes-sous-onglets": Math.min(3, categorie.sousCategories.length) }}
+      >
         {categorie.sousCategories.map((item) => (
           <button
             key={item.id}
