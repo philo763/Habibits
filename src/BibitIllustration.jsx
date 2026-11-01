@@ -41,10 +41,26 @@ export default function BibitIllustration({ apparence, className = "", decorativ
         </defs>
       )}
       <ellipse cx="120" cy="214" rx="57" ry="10" fill="#071127" opacity=".55" />
-      <g fill={couleur} stroke="#57385f" strokeLinecap="round" strokeLinejoin="round" strokeWidth="5">
-        <path d="M75 82C56 64 58 38 68 29c15 2 28 20 31 43M165 82c19-18 17-44 7-53-15 2-28 20-31 43" />
-        <path d="M66 142c-17 1-25 16-20 27 5 10 18 10 29 0M174 142c17 1 25 16 20 27-5 10-18 10-29 0" />
-      </g>
+      {apparence?.oreilles !== "aucun" && (
+        <path
+          d="M75 82C56 64 58 38 68 29c15 2 28 20 31 43M165 82c19-18 17-44 7-53-15 2-28 20-31 43"
+          fill={couleur}
+          stroke="#57385f"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="5"
+        />
+      )}
+      {apparence?.dos !== "aucun" && (
+        <path
+          d="M66 142c-17 1-25 16-20 27 5 10 18 10 29 0M174 142c17 1 25 16 20 27-5 10-18 10-29 0"
+          fill={couleur}
+          stroke="#57385f"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="5"
+        />
+      )}
       <path d="M120 59c-42 0-69 31-69 77 0 43 29 69 69 69s69-26 69-69c0-46-27-77-69-77Z" fill={couleur} stroke="#57385f" strokeLinejoin="round" strokeWidth="5" />
       {apparence?.couleur === "couleur-doree" && (
         <g fill="#fff8d8" opacity=".8" aria-hidden="true">
@@ -73,38 +89,44 @@ export default function BibitIllustration({ apparence, className = "", decorativ
         </g>
       )}
 
-      <g fill="#ed8eaf" opacity=".8">
-        <ellipse cx="83" cy="145" rx="12" ry="7" />
-        <ellipse cx="157" cy="145" rx="12" ry="7" />
-      </g>
-
-      {apparence?.corps === "yeux-ronds" ? (
-        <g>
-          <circle cx="96" cy="119" r="10" fill="#fff" />
-          <circle cx="144" cy="119" r="10" fill="#fff" />
-          <circle cx="98" cy="120" r="5" fill="#302744" />
-          <circle cx="146" cy="120" r="5" fill="#302744" />
-        </g>
-      ) : apparence?.corps === "yeux-coeurs" ? (
-        <g fill="#d94f73">
-          <path d="M96 128 86 119c-8-8 4-18 10-9 6-9 18 1 10 9Z" />
-          <path d="m144 128-10-9c-8-8 4-18 10-9 6-9 18 1 10 9Z" />
-        </g>
-      ) : apparence?.corps === "yeux-spirales" ? (
-        <g fill="none" stroke="#302744" strokeLinecap="round" strokeWidth="4">
-          <path d="M101 117c0-7-10-7-10 0s10 7 10 0 9-6 9 1" />
-          <path d="M149 117c0-7-10-7-10 0s10 7 10 0 9-6 9 1" />
-        </g>
-      ) : (
-        <g fill="#302744">
-          <ellipse cx="96" cy="119" rx="6" ry="9" />
-          <ellipse cx="144" cy="119" rx="6" ry="9" />
-          <circle cx="98" cy="116" r="2" fill="#fff" />
-          <circle cx="146" cy="116" r="2" fill="#fff" />
+      {apparence?.joues !== "aucun" && (
+        <g fill="#ed8eaf" opacity=".8">
+          <ellipse cx="83" cy="145" rx="12" ry="7" />
+          <ellipse cx="157" cy="145" rx="12" ry="7" />
         </g>
       )}
 
-      <path d="M109 139c6 8 16 8 22 0" fill="none" stroke="#57385f" strokeLinecap="round" strokeWidth="4" />
+      {apparence?.yeux !== "aucun" && (
+        (apparence?.yeux ?? apparence?.corps) === "yeux-ronds" ? (
+          <g>
+            <circle cx="96" cy="119" r="10" fill="#fff" />
+            <circle cx="144" cy="119" r="10" fill="#fff" />
+            <circle cx="98" cy="120" r="5" fill="#302744" />
+            <circle cx="146" cy="120" r="5" fill="#302744" />
+          </g>
+        ) : (apparence?.yeux ?? apparence?.corps) === "yeux-coeurs" ? (
+          <g fill="#d94f73">
+            <path d="M96 128 86 119c-8-8 4-18 10-9 6-9 18 1 10 9Z" />
+            <path d="m144 128-10-9c-8-8 4-18 10-9 6-9 18 1 10 9Z" />
+          </g>
+        ) : (apparence?.yeux ?? apparence?.corps) === "yeux-spirales" ? (
+          <g fill="none" stroke="#302744" strokeLinecap="round" strokeWidth="4">
+            <path d="M101 117c0-7-10-7-10 0s10 7 10 0 9-6 9 1" />
+            <path d="M149 117c0-7-10-7-10 0s10 7 10 0 9-6 9 1" />
+          </g>
+        ) : (
+          <g fill="#302744">
+            <ellipse cx="96" cy="119" rx="6" ry="9" />
+            <ellipse cx="144" cy="119" rx="6" ry="9" />
+            <circle cx="98" cy="116" r="2" fill="#fff" />
+            <circle cx="146" cy="116" r="2" fill="#fff" />
+          </g>
+        )
+      )}
+
+      {apparence?.bouche !== "aucun" && (
+        <path d="M109 139c6 8 16 8 22 0" fill="none" stroke="#57385f" strokeLinecap="round" strokeWidth="4" />
+      )}
       {apparence?.accessoire === "accessoire-noeud" && (
         <g fill="#f28aa8" stroke="#57385f" strokeLinejoin="round" strokeWidth="3">
           <path d="m111 69-18-11 2 22ZM129 69l18-11-2 22Z" />
@@ -123,9 +145,11 @@ export default function BibitIllustration({ apparence, className = "", decorativ
       {apparence?.accessoire === "accessoire-couronne" && (
         <path d="m91 65 5-18 13 12 11-20 11 20 13-12 5 18Z" fill="#ffd46c" stroke="#57385f" strokeLinejoin="round" strokeWidth="4" />
       )}
-      <g fill={couleur} stroke="#57385f" strokeLinecap="round" strokeWidth="5">
-        <path d="M88 195v8M152 195v8" />
-      </g>
+      {apparence?.pieds !== "aucun" && (
+        <g fill={couleur} stroke="#57385f" strokeLinecap="round" strokeWidth="5">
+          <path d="M88 195v8M152 195v8" />
+        </g>
+      )}
     </svg>
   );
 }
