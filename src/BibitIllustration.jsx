@@ -133,7 +133,33 @@ export default function BibitIllustration({ apparence, className = "", decorativ
         )
       )}
 
-      {apparence?.bouche === "bouche-ondulee" ? (
+      {apparence?.bouche === "bouche-pika-ouverte" ? (
+        <svg x="106.8" y="133.295" width="26.4" height="20.46" viewBox="0 0 80 62" aria-hidden="true">
+          <path
+            d="M9 14 C19 19 28 15 37 5 C46 15 57 19 68 14 L65.5 25 C57 20 47 18 38 18 C28 18 19 20 11.5 25 Z"
+            fill="#A71922"
+          />
+          <path
+            d="M11.5 25 C19 20 28 18 32 18 C48 18 57 20 65.5 25 C62 36 54 50 45 56 C41 59 39 59 32 57 C23 52 15 37 11.5 25 Z"
+            fill="#E8757D"
+          />
+          <path
+            d="M3 5 C5 8 7 11 9 14 C19 19 28 15 37 5 C46 15 57 19 68 14 C70 11 72 8 73 7 M9 14 C11 29 19 47 29 55 C34 60 42 60 47 56 C58 47 65 29 68 14"
+            fill="none"
+            stroke="#57385F"
+            strokeWidth="4"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M11.5 25 C19 20 28 18 38 18 C48 18 57 20 65.5 25"
+            fill="none"
+            stroke="#57385F"
+            strokeWidth="4"
+            strokeLinecap="round"
+          />
+        </svg>
+      ) : apparence?.bouche === "bouche-ondulee" ? (
         <svg x="96" y="136.875" width="48" height="9.75" viewBox="0 0 22 6.5" aria-hidden="true">
           <path
             d="M 2,2.6 C 3.2,3.9 4.1,4.5 5.2,4.5 C 7.5,4.5 9.1,2.1 11,2.1 C 12.9,2.1 14.5,4.5 17.5,4.5 C 18.6,4.5 19.3,3.8 20,2.6"

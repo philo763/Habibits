@@ -112,6 +112,7 @@ export const ARTICLES_BIBIT = [
   { id: "yeux-coeurs", categorie: "corps", sousCategorie: "yeux", emplacement: "yeux", nom: "Yeux cœurs", description: "Un regard plein de tendresse.", prix: 10 },
   { id: "yeux-spirales", categorie: "corps", sousCategorie: "yeux", emplacement: "yeux", nom: "Yeux spirales", description: "Un regard un peu étourdi.", prix: 20, disponible: false },
   { id: "bouche-ondulee", categorie: "corps", sousCategorie: "bouche", emplacement: "bouche", nom: "Bouche Pika", description: "Un sourire ondulé plein de malice.", prix: 6 },
+  { id: "bouche-pika-ouverte", categorie: "corps", sousCategorie: "bouche", emplacement: "bouche", nom: "Bouche ouverte Pika", description: "Une bouche ouverte rouge et rose au sourire espiègle.", prix: 6 },
   { id: "accessoire-noeud", categorie: "habibits", sousCategorie: "chapeaux", emplacement: "accessoire", nom: "Petit nœud", description: "Un joli nœud posé sur la tête.", prix: 5, disponible: false },
   { id: "accessoire-frangipanier", categorie: "habibits", sousCategorie: "chapeaux", emplacement: "accessoire", nom: "Fleur de frangipanier", description: "Une fleur blanche et jaune à porter sur la tête.", prix: 10 },
   { id: "accessoire-couronne-royale", categorie: "habibits", sousCategorie: "chapeaux", emplacement: "accessoire", nom: "Couronne royale", description: "Une couronne dorée sertie de rubis, digne de la royauté.", prix: 15 },
