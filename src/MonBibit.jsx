@@ -78,6 +78,7 @@ export default function MonBibit({ bibit, erreur, onAllerShop, onEquiper }) {
             onClick={() => setSousCategorieActive(item.id)}
           >
             {item.nom}
+            {item.emoji && <span aria-hidden="true"> {item.emoji}</span>}
           </button>
         ))}
       </div>
