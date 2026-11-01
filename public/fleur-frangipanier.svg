@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" role="img" aria-labelledby="titre description">
+  <title id="titre">Fleur de frangipanier</title>
+  <desc id="description">Fleur blanche à cœur jaune, dessinée pour se placer sur le haut de la tête du Bibit.</desc>
+  <defs>
+    <clipPath id="forme-petale">
+      <path d="M0 0C-18-18-30-42-24-63C-18-85 0-102 14-100C34-96 44-78 41-58C38-36 22-16 0 0Z"/>
+    </clipPath>
+    <clipPath id="moitie-gauche">
+      <rect x="-200" y="-200" width="200" height="260"/>
+    </clipPath>
+    <g id="petale">
+      <path d="M0 0C-18-18-30-42-24-63C-18-85 0-102 14-100C34-96 44-78 41-58C38-36 22-16 0 0Z" fill="#fffcf3"/>
+      <path d="M0-3C-12.7-15.7-12.7-44.3 0-57C12.7-44.3 12.7-15.7 0-3Z" fill="#fdcf38" stroke="#fdcf38" stroke-linejoin="round" stroke-width="7" clip-path="url(#forme-petale)"/>
+      <path d="M0 0C-18-18-30-42-24-63C-18-85 0-102 14-100C34-96 44-78 41-58C38-36 22-16 0 0Z" fill="none" stroke="#57385f" stroke-linejoin="round" stroke-width="7"/>
+    </g>
+  </defs>
+  <g transform="translate(149 71) rotate(-6) scale(.28)">
+    <use href="#petale"/>
+    <use href="#petale" transform="rotate(72)"/>
+    <use href="#petale" transform="rotate(144)"/>
+    <use href="#petale" transform="rotate(216)"/>
+    <use href="#petale" transform="rotate(288)"/>
+    <g clip-path="url(#moitie-gauche)">
+      <g opacity=".999"><use href="#petale"/></g>
+    </g>
+  </g>
+</svg>

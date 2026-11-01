@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" role="img" aria-labelledby="titre description">
+  <title id="titre">Bibit sans oreilles, pieds ni dos</title>
+  <desc id="description">Corps rose du Bibit avec ses yeux, ses joues et son sourire, sans oreilles, pieds ni formes sur les côtés.</desc>
+  <ellipse cx="120" cy="214" rx="57" ry="10" fill="#071127" opacity=".55"/>
+  <path d="M120 59c-42 0-69 31-69 77 0 43 29 69 69 69s69-26 69-69c0-46-27-77-69-77Z" fill="#f7cde0" stroke="#57385f" stroke-linejoin="round" stroke-width="5"/>
+  <g fill="#ed8eaf" opacity=".8">
+    <ellipse cx="83" cy="145" rx="12" ry="7"/>
+    <ellipse cx="157" cy="145" rx="12" ry="7"/>
+  </g>
+  <g fill="#302744">
+    <ellipse cx="96" cy="119" rx="6" ry="9"/>
+    <ellipse cx="144" cy="119" rx="6" ry="9"/>
+    <circle cx="98" cy="116" r="2" fill="#fff"/>
+    <circle cx="146" cy="116" r="2" fill="#fff"/>
+  </g>
+  <path d="M109 139c6 8 16 8 22 0" fill="none" stroke="#57385f" stroke-linecap="round" stroke-width="4"/>
+</svg>
