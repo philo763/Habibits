@@ -41,6 +41,31 @@ export default function BibitIllustration({ apparence, className = "", decorativ
         </defs>
       )}
       <ellipse cx="120" cy="214" rx="57" ry="10" fill="#071127" opacity=".55" />
+      {apparence?.queue === "queue-pika" && (
+        <g transform="translate(238 108) scale(.55 .55) translate(-120 -120)">
+          <path
+            transform="rotate(25 120 120)"
+            d="M148.6 13.2 L174 96.2 L105.6 140.2 L115.5 189.4 L82.4 207 L93 240 L75.4 234.4 L57.7 202.8 L83.8 176.6 L48.6 108.9 L148.6 13.2 Z"
+            fill={couleur}
+            stroke="none"
+          />
+          <path
+            transform="rotate(25 120 120)"
+            d="M82.4 207 L93 240 L75.4 234.4 L73 229 Z"
+            fill="#57385f"
+            stroke="none"
+          />
+          <path
+            transform="rotate(25 120 120)"
+            d="M148.6 13.2 L174 96.2 L105.6 140.2 L115.5 189.4 L82.4 207 L93 240 L75.4 234.4 L57.7 202.8 L83.8 176.6 L48.6 108.9 L148.6 13.2 Z"
+            fill="none"
+            stroke="#57385f"
+            strokeWidth="8"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </g>
+      )}
       {apparence?.oreilles === "oreilles-pika" ? (
         <>
           <g transform="translate(0 -41) scale(1 1.5)">
@@ -154,7 +179,7 @@ export default function BibitIllustration({ apparence, className = "", decorativ
             <path d="M149 117c0-7-10-7-10 0s10 7 10 0 9-6 9 1" />
           </g>
         ) : (
-          <g fill="#302744">
+          <g fill="#57385f">
             <ellipse cx="96" cy="119" rx="6" ry="9" />
             <ellipse cx="144" cy="119" rx="6" ry="9" />
             <circle cx="98" cy="116" r="2" fill="#fff" />
