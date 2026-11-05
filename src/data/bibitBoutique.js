@@ -82,9 +82,9 @@ export const FONDS_BIBIT = {
   "fond-lavande": "radial-gradient(ellipse at center, #faf6ff, #d2c0f0 70%)",
   "fond-vanille": "radial-gradient(ellipse at center, #fffdf2, #f2e3ae 70%)",
   "fond-galaxie": `url("${import.meta.env.BASE_URL}fond-galaxie.svg") center / cover no-repeat`,
-  "fond-balle-mystere": `url("${import.meta.env.BASE_URL}fond-balle-mystere.svg") center / cover no-repeat`,
-  "fond-super-pika-ball": `url("${import.meta.env.BASE_URL}fond-super-pika-ball.svg") center / cover no-repeat`,
-  "fond-master-bibit-ball": `url("${import.meta.env.BASE_URL}fond-master-bibit-ball.svg?v=2") center / cover no-repeat`,
+  "fond-balle-mystere": `url("${import.meta.env.BASE_URL}fond-balle-mystere.svg?v=4") center / cover no-repeat`,
+  "fond-super-pika-ball": `url("${import.meta.env.BASE_URL}fond-super-pika-ball.svg?v=4") center / cover no-repeat`,
+  "fond-master-bibit-ball": `url("${import.meta.env.BASE_URL}fond-master-bibit-ball.svg?v=5") center / cover no-repeat`,
 };
 
 export const ARTICLES_BIBIT = [
