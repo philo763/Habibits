@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" role="img" aria-labelledby="titre description">
+  <title id="titre">Chapeau crotte en spirale</title>
+  <desc id="description">Un petit chapeau marron en forme de crotte en spirale, avec une base arrondie et des étages courbés.</desc>
+  <defs>
+    <linearGradient id="crotte" x1="84" y1="14" x2="155" y2="79" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#A9683B"/>
+      <stop offset=".48" stop-color="#87502F"/>
+      <stop offset="1" stop-color="#59351F"/>
+    </linearGradient>
+    <linearGradient id="lumiere" x1="94" y1="24" x2="123" y2="51" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#D89156" stop-opacity=".85"/>
+      <stop offset="1" stop-color="#D89156" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <path d="M79 67c-7-8-2-17 10-22-5-7-2-15 7-19-3-7 1-13 8-15 2-7 10-10 16-6 7 4 5 11 1 17 10 8 21 12 32 21 13 10 18 23 10 34-7 10-28 15-52 15-18 0-33-4-40-11-4-4-2-9 8-14Z" fill="url(#crotte)" stroke="#57385F" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M83 64c12 8 49 12 76 1" fill="none" stroke="#57385F" stroke-opacity=".72" stroke-width="5" stroke-linecap="round"/>
+  <path d="M92 47c11-8 26-9 41-4 9 3 17 7 23 13M104 29c7-3 15 0 22 5" fill="none" stroke="#57385F" stroke-opacity=".72" stroke-width="4" stroke-linecap="round"/>
+  <path d="M89 44c5-5 11-8 17-9M103 24c3-4 7-6 11-6M84 60c4-5 8-8 13-10" fill="none" stroke="url(#lumiere)" stroke-width="5" stroke-linecap="round"/>
+</svg>

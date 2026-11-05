@@ -240,6 +240,9 @@ export default function BibitIllustration({ apparence, className = "", decorativ
       {apparence?.accessoire === "accessoire-couronne-royale" && (
         <image href={`${import.meta.env.BASE_URL}couronne-royale.svg`} x="0" y="0" width="240" height="240" />
       )}
+      {apparence?.accessoire === "accessoire-crotte-spirale" && (
+        <image href={`${import.meta.env.BASE_URL}chapeau-crotte-spirale.svg?v=1`} x="48" y="22" width="144" height="144" />
+      )}
       {apparence?.pieds !== "aucun" && (
         <g fill={couleur} stroke="#57385f" strokeLinecap="round" strokeWidth="5">
           <path d="M88 195v8M152 195v8" />
