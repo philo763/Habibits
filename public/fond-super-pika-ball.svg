@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" fill="none">
+  <defs>
+    <linearGradient id="top" x1="30" y1="0" x2="370" y2="205" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#168DD4"/>
+      <stop offset=".52" stop-color="#0876C1"/>
+      <stop offset="1" stop-color="#07599E"/>
+    </linearGradient>
+    <linearGradient id="bottom" x1="62" y1="214" x2="340" y2="400" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFDFB"/>
+      <stop offset="1" stop-color="#E9EDF3"/>
+    </linearGradient>
+    <linearGradient id="button" x1="171" y1="174" x2="230" y2="229" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#DCE2E9"/>
+    </linearGradient>
+    <filter id="button-shadow" x="108" y="108" width="184" height="184" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feGaussianBlur stdDeviation="7"/>
+    </filter>
+  </defs>
+  <path fill="url(#top)" d="M0 0h400v200H0z"/>
+  <path fill="url(#bottom)" d="M0 200h400v200H0z"/>
+
+  <g fill="#D52D3D" stroke="none">
+    <path d="M-8-7h29l127 105-54 66L-8 83z"/>
+    <path d="M408-7h-29L252 98l54 66 102-81z"/>
+  </g>
+
+  <path fill="#111318" d="M0 186h400v28H0z"/>
+  <path d="M0 186.5h400" stroke="#FFFFFF" stroke-opacity=".14"/>
+
+  <circle cx="200" cy="202" r="84" fill="#09101C" opacity=".28" filter="url(#button-shadow)"/>
+  <circle cx="200" cy="200" r="82" fill="#101216"/>
+  <circle cx="200" cy="200" r="62" fill="url(#button)" stroke="#111318" stroke-width="5"/>
+  <circle cx="200" cy="200" r="44" fill="#F8FAFC" stroke="#252A31" stroke-width="3"/>
+  <path d="M174 174a37 37 0 0 1 50-2" stroke="#FFFFFF" stroke-opacity=".85" stroke-linecap="round" stroke-width="4"/>
+</svg>
