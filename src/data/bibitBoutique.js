@@ -81,6 +81,7 @@ export const FONDS_BIBIT = {
   "fond-menthe": "radial-gradient(ellipse at center, #f0fff2, #b9e3c3 70%)",
   "fond-lavande": "radial-gradient(ellipse at center, #faf6ff, #d2c0f0 70%)",
   "fond-vanille": "radial-gradient(ellipse at center, #fffdf2, #f2e3ae 70%)",
+  "fond-galaxie": `url("${import.meta.env.BASE_URL}fond-galaxie.svg") center / cover no-repeat`,
 };
 
 export const ARTICLES_BIBIT = [
@@ -110,6 +111,7 @@ export const ARTICLES_BIBIT = [
   { id: "fond-menthe", categorie: "fond", sousCategorie: "unie", emplacement: "fond", nom: "Jardin menthe", description: "Un dégradé vert frais et apaisant autour de ton Bibit.", prix: 4 },
   { id: "fond-lavande", categorie: "fond", sousCategorie: "unie", emplacement: "fond", nom: "Nuage lavande", description: "Un dégradé violet doux et rêveur autour de ton Bibit.", prix: 4 },
   { id: "fond-vanille", categorie: "fond", sousCategorie: "unie", emplacement: "fond", nom: "Crème vanillée", description: "Un dégradé jaune doux et chaleureux autour de ton Bibit.", prix: 4 },
+  { id: "fond-galaxie", categorie: "fond", sousCategorie: "special", emplacement: "fond", nom: "Dans les étoiles", description: "Une nuit profonde piquée d’étoiles scintillantes et d’une étoile filante, au-dessus de la Terre.", prix: 15 },
   { id: "yeux-ronds", categorie: "corps", sousCategorie: "yeux", emplacement: "yeux", nom: "Yeux ronds", description: "De grands yeux bien ouverts.", prix: 10 },
   { id: "yeux-coeurs", categorie: "corps", sousCategorie: "yeux", emplacement: "yeux", nom: "Yeux cœurs", description: "Un regard plein de tendresse.", prix: 10 },
   { id: "yeux-spirales", categorie: "corps", sousCategorie: "yeux", emplacement: "yeux", nom: "Yeux spirales", description: "Un regard un peu étourdi.", prix: 20, disponible: false },
