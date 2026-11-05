@@ -82,6 +82,9 @@ export const FONDS_BIBIT = {
   "fond-lavande": "radial-gradient(ellipse at center, #faf6ff, #d2c0f0 70%)",
   "fond-vanille": "radial-gradient(ellipse at center, #fffdf2, #f2e3ae 70%)",
   "fond-galaxie": `url("${import.meta.env.BASE_URL}fond-galaxie.svg") center / cover no-repeat`,
+  "fond-balle-mystere": `url("${import.meta.env.BASE_URL}fond-balle-mystere.svg") center / cover no-repeat`,
+  "fond-super-pika-ball": `url("${import.meta.env.BASE_URL}fond-super-pika-ball.svg") center / cover no-repeat`,
+  "fond-master-bibit-ball": `url("${import.meta.env.BASE_URL}fond-master-bibit-ball.svg?v=2") center / cover no-repeat`,
 };
 
 export const ARTICLES_BIBIT = [
@@ -112,6 +115,9 @@ export const ARTICLES_BIBIT = [
   { id: "fond-lavande", categorie: "fond", sousCategorie: "unie", emplacement: "fond", nom: "Nuage lavande", description: "Un dégradé violet doux et rêveur autour de ton Bibit.", prix: 4 },
   { id: "fond-vanille", categorie: "fond", sousCategorie: "unie", emplacement: "fond", nom: "Crème vanillée", description: "Un dégradé jaune doux et chaleureux autour de ton Bibit.", prix: 4 },
   { id: "fond-galaxie", categorie: "fond", sousCategorie: "special", emplacement: "fond", nom: "Dans les étoiles", description: "Une nuit profonde piquée d’étoiles scintillantes et d’une étoile filante, au-dessus de la Terre.", prix: 15 },
+  { id: "fond-balle-mystere", categorie: "fond", sousCategorie: "special", emplacement: "fond", nom: "Bibit Ball", description: "Pour attraper un Bibit.", prix: 10 },
+  { id: "fond-super-pika-ball", categorie: "fond", sousCategorie: "special", emplacement: "fond", nom: "Super Bibit Ball", description: "Pour attraper un Bibit qui a déjà mangé quelques popommes.", prix: 12 },
+  { id: "fond-master-bibit-ball", categorie: "fond", sousCategorie: "special", emplacement: "fond", nom: "Master Bibit Ball", description: "Pour attraper un Bibit qui a mangé toutes les popommes.", prix: 15 },
   { id: "yeux-ronds", categorie: "corps", sousCategorie: "yeux", emplacement: "yeux", nom: "Yeux ronds", description: "De grands yeux bien ouverts.", prix: 10 },
   { id: "yeux-coeurs", categorie: "corps", sousCategorie: "yeux", emplacement: "yeux", nom: "Yeux cœurs", description: "Un regard plein de tendresse.", prix: 10 },
   { id: "yeux-spirales", categorie: "corps", sousCategorie: "yeux", emplacement: "yeux", nom: "Yeux spirales", description: "Un regard un peu étourdi.", prix: 20, disponible: false },
