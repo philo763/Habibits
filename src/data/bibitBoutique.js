@@ -72,6 +72,7 @@ export const COULEURS_BIBIT = {
   "couleur-rose-fuchsia": "#e64291",
   "couleur-doree": "#f2bf46",
   "couleur-arc-en-ciel": "#ed5b91",
+  "couleur-caca": "#87502F",
 };
 
 export const FONDS_BIBIT = {
@@ -110,6 +111,7 @@ export const ARTICLES_BIBIT = [
   { id: "couleur-gris-souris", categorie: "couleur", sousCategorie: "unie", emplacement: "couleur", nom: "Gris souris", description: "Un gris doux et tout en discrétion.", prix: 5, couleur: "#9b9ba0" },
   { id: "couleur-doree", categorie: "couleur", sousCategorie: "special", emplacement: "couleur", nom: "Or scintillant", description: "Une robe dorée qui capte la lumière.", prix: 10, couleur: "#f2bf46" },
   { id: "couleur-arc-en-ciel", categorie: "couleur", sousCategorie: "special", emplacement: "couleur", nom: "Arc-en-ciel", description: "Un dégradé multicolore, lumineux et joyeux.", prix: 15, couleur: "#ed5b91" },
+  { id: "couleur-caca", categorie: "couleur", sousCategorie: "special", emplacement: "couleur", nom: "Caca", description: "Un petit look qui ne manque pas de flair !", prix: 10, couleur: "#87502F" },
   { id: "fond-rose", categorie: "fond", sousCategorie: "unie", emplacement: "fond", nom: "Rose Barbapapa", description: "Un dégradé rose tendre et gourmand autour de ton Bibit.", prix: 4 },
   { id: "fond-bleu-ciel", categorie: "fond", sousCategorie: "unie", emplacement: "fond", nom: "Ciel doux", description: "Un dégradé bleu clair et profond comme un ciel de printemps.", prix: 4 },
   { id: "fond-menthe", categorie: "fond", sousCategorie: "unie", emplacement: "fond", nom: "Jardin menthe", description: "Un dégradé vert frais et apaisant autour de ton Bibit.", prix: 4 },

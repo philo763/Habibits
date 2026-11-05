@@ -3,7 +3,7 @@ import { COULEURS_BIBIT } from "./data/bibitBoutique";
 
 export default function BibitIllustration({ apparence, className = "", decorative = false, canvasEtendue = false }) {
   const idGradient = `bibit-couleur-${useId().replace(/:/g, "")}`;
-  const couleurPersonnalisee = ["couleur-doree", "couleur-arc-en-ciel"].includes(apparence?.couleur);
+  const couleurPersonnalisee = ["couleur-doree", "couleur-arc-en-ciel", "couleur-caca"].includes(apparence?.couleur);
   const couleur = couleurPersonnalisee ? `url(#${idGradient})` :
     COULEURS_BIBIT[apparence?.couleur] || COULEURS_BIBIT.rose;
   const ariaProps = decorative
@@ -27,7 +27,7 @@ export default function BibitIllustration({ apparence, className = "", decorativ
               <stop offset="82%" stopColor="#ffe99a" />
               <stop offset="100%" stopColor="#cf8b20" />
             </linearGradient>
-          ) : (
+          ) : apparence.couleur === "couleur-arc-en-ciel" ? (
             <linearGradient id={idGradient} x1="0" y1="0" x2="1" y2="1">
               <stop offset="0%" stopColor="#ff66b3" />
               <stop offset="22%" stopColor="#f53c91" />
@@ -37,6 +37,18 @@ export default function BibitIllustration({ apparence, className = "", decorativ
               <stop offset="88%" stopColor="#55bde8" />
               <stop offset="100%" stopColor="#9b72dc" />
             </linearGradient>
+          ) : (
+            <>
+              <linearGradient id={idGradient} x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stopColor="#B98254" />
+                <stop offset="34%" stopColor="#9B613A" />
+                <stop offset="72%" stopColor="#754326" />
+                <stop offset="100%" stopColor="#56311F" />
+              </linearGradient>
+              <clipPath id={`${idGradient}-body`}>
+                <path d="M120 59c-42 0-69 31-69 77 0 43 29 69 69 69s69-26 69-69c0-46-27-77-69-77Z" />
+              </clipPath>
+            </>
           )}
         </defs>
       )}
@@ -112,6 +124,35 @@ export default function BibitIllustration({ apparence, className = "", decorativ
         />
       )}
       <path d="M120 59c-42 0-69 31-69 77 0 43 29 69 69 69s69-26 69-69c0-46-27-77-69-77Z" fill={couleur} stroke="#57385f" strokeLinejoin="round" strokeWidth="5" />
+      {apparence?.couleur === "couleur-caca" && (
+        <g clipPath={`url(#${idGradient}-body)`} aria-hidden="true">
+          <g fill="none" stroke="#56351F" strokeLinecap="round" strokeOpacity=".42">
+            <path d="m85 83 4-3m30-12 4 2m31 16 4 3m-92 35 5-3m34 7 5-4m42 7 4 2m-65 39 4-3m34 12 3-4m34-32 5-3m-77-56 3-3m42 89 4-2" strokeWidth="2"/>
+          </g>
+          <g fill="none" stroke="#E5B17C" strokeLinecap="round" strokeOpacity=".5">
+            <path d="m94 78 4-2m41 4 4 2m-65 34 4-3m39 12 4 2m37 39 4-3m-75 21 4 1m44-20 4-2" strokeWidth="2"/>
+          </g>
+          <g fill="#4B2D1C" opacity=".34">
+            <circle cx="106" cy="78" r="1.3"/>
+            <circle cx="158" cy="97" r="1.2"/>
+            <circle cx="88" cy="125" r="1.4"/>
+            <circle cx="136" cy="113" r="1.2"/>
+            <circle cx="166" cy="155" r="1.5"/>
+            <circle cx="102" cy="172" r="1.2"/>
+            <circle cx="148" cy="184" r="1.4"/>
+          </g>
+        </g>
+      )}
+      {apparence?.couleur === "couleur-caca" && (
+        <g fill="none" strokeLinecap="round" aria-hidden="true">
+          <g stroke="#56351F" strokeOpacity=".5" strokeWidth="2">
+            <path d="m68 43 4 3m-2 8 4-3m88-8 4 3m-3 9 4-3M48 151l4 2m8 10-3 3m140-15-4 2m-3 12 4 3"/>
+          </g>
+          <g stroke="#E5B17C" strokeOpacity=".55" strokeWidth="1.5">
+            <path d="m76 48 3 2m84 5 3 2m-109 98 3 2m131-1 3 2"/>
+          </g>
+        </g>
+      )}
       {apparence?.couleur === "couleur-doree" && (
         <g fill="#fff8d8" opacity=".8" aria-hidden="true">
           <path d="m166 82 2.5 6 6 2.5-6 2.5-2.5 6-2.5-6-6-2.5 6-2.5Z" />
@@ -246,6 +287,13 @@ export default function BibitIllustration({ apparence, className = "", decorativ
       {apparence?.pieds !== "aucun" && (
         <g fill={couleur} stroke="#57385f" strokeLinecap="round" strokeWidth="5">
           <path d="M88 195v8M152 195v8" />
+        </g>
+      )}
+      {apparence?.couleur === "couleur-caca" && (
+        <g fill="none" stroke="#7CBD55" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <path d="M91 43c-6-5 5-9 0-15-3-4-1-8 2-11" strokeWidth="3.5" />
+          <path d="M120 37c-5-5 5-9 0-15-3-4-2-8 1-12" strokeWidth="4" />
+          <path d="M149 43c6-5-5-9 0-15 3-4 1-8-2-11" strokeWidth="3.5" />
         </g>
       )}
     </svg>
