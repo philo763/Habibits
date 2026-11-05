@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" fill="none">
+  <defs>
+    <radialGradient id="space" cx="200" cy="195" r="290" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#17184A"/>
+      <stop offset=".48" stop-color="#101536"/>
+      <stop offset="1" stop-color="#050918"/>
+    </radialGradient>
+    <radialGradient id="nebula" cx="0" cy="0" r="1" gradientTransform="matrix(186 128 -112 163 198 201)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F6D0FF" stop-opacity=".62"/>
+      <stop offset=".32" stop-color="#B18BFF" stop-opacity=".4"/>
+      <stop offset=".68" stop-color="#477DFF" stop-opacity=".2"/>
+      <stop offset="1" stop-color="#5369E8" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="arm" x1="58" y1="107" x2="351" y2="294" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#69C9FF" stop-opacity="0"/>
+      <stop offset=".28" stop-color="#66D9FF" stop-opacity=".72"/>
+      <stop offset=".62" stop-color="#C58BFF" stop-opacity=".88"/>
+      <stop offset="1" stop-color="#FFF3DD"/>
+    </linearGradient>
+    <linearGradient id="arm-soft" x1="63" y1="298" x2="339" y2="89" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#5EE3FF" stop-opacity="0"/>
+      <stop offset=".4" stop-color="#63D7FF" stop-opacity=".68"/>
+      <stop offset=".72" stop-color="#898BFF" stop-opacity=".78"/>
+      <stop offset="1" stop-color="#FFC9F2" stop-opacity=".9"/>
+    </linearGradient>
+    <radialGradient id="core">
+      <stop stop-color="#FFFFFF"/>
+      <stop offset=".18" stop-color="#FFF5E3" stop-opacity=".96"/>
+      <stop offset=".42" stop-color="#FFD9FF" stop-opacity=".76"/>
+      <stop offset="1" stop-color="#C59BFF" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="soft-glow" x="0" y="0" width="400" height="400" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feGaussianBlur stdDeviation="11"/>
+    </filter>
+  </defs>
+  <path fill="url(#space)" d="M0 0h400v400H0z"/>
+  <path fill="url(#nebula)" d="M0 0h400v400H0z"/>
+
+  <g fill="#E8EDFF">
+    <circle cx="25" cy="44" r="1.1" opacity=".8"/>
+    <circle cx="66" cy="24" r=".8" opacity=".62"/>
+    <circle cx="109" cy="65" r="1" opacity=".74"/>
+    <circle cx="152" cy="29" r=".8" opacity=".6"/>
+    <circle cx="237" cy="37" r="1.1" opacity=".74"/>
+    <circle cx="284" cy="21" r=".8" opacity=".66"/>
+    <circle cx="359" cy="53" r="1.1" opacity=".78"/>
+    <circle cx="385" cy="111" r=".8" opacity=".66"/>
+    <circle cx="29" cy="135" r=".9" opacity=".64"/>
+    <circle cx="73" cy="185" r="1.1" opacity=".78"/>
+    <circle cx="29" cy="251" r="1" opacity=".75"/>
+    <circle cx="55" cy="350" r="1.1" opacity=".7"/>
+    <circle cx="102" cy="378" r=".8" opacity=".58"/>
+    <circle cx="154" cy="353" r="1" opacity=".68"/>
+    <circle cx="242" cy="371" r=".8" opacity=".6"/>
+    <circle cx="307" cy="347" r="1.1" opacity=".72"/>
+    <circle cx="373" cy="379" r=".9" opacity=".76"/>
+    <circle cx="378" cy="267" r="1.1" opacity=".78"/>
+    <circle cx="359" cy="177" r=".9" opacity=".64"/>
+    <circle cx="323" cy="80" r=".8" opacity=".68"/>
+    <circle cx="125" cy="121" r=".8" opacity=".57"/>
+    <circle cx="271" cy="303" r=".8" opacity=".62"/>
+  </g>
+
+  <g fill="#C5C9FF">
+    <path d="m52 85 1.8 4.5 4.5 1.8-4.5 1.8-1.8 4.5-1.8-4.5-4.5-1.8 4.5-1.8z" opacity=".8"/>
+    <path d="m340 119 1.6 4 4 1.6-4 1.6-1.6 4-1.6-4-4-1.6 4-1.6z" opacity=".75"/>
+    <path d="m90 318 1.8 4.5 4.5 1.8-4.5 1.8-1.8 4.5-1.8-4.5-4.5-1.8 4.5-1.8z" opacity=".72"/>
+    <path d="m326 315 1.5 3.8 3.8 1.5-3.8 1.5-1.5 3.8-1.5-3.8-3.8-1.5 3.8-1.5z" opacity=".82"/>
+  </g>
+
+  <g transform="rotate(-24 200 200)">
+    <ellipse cx="200" cy="200" rx="157" ry="67" stroke="url(#arm)" stroke-width="52" opacity=".34" filter="url(#soft-glow)"/>
+    <ellipse cx="200" cy="200" rx="157" ry="67" stroke="url(#arm)" stroke-width="31" opacity=".26" filter="url(#soft-glow)"/>
+    <ellipse cx="200" cy="200" rx="157" ry="67" stroke="url(#arm)" stroke-width="13" opacity=".76"/>
+    <ellipse cx="200" cy="200" rx="118" ry="48" stroke="url(#arm-soft)" stroke-width="36" opacity=".3" filter="url(#soft-glow)"/>
+    <ellipse cx="200" cy="200" rx="118" ry="48" stroke="url(#arm-soft)" stroke-width="20" opacity=".42" filter="url(#soft-glow)"/>
+    <ellipse cx="200" cy="200" rx="118" ry="48" stroke="url(#arm-soft)" stroke-width="7" opacity=".82"/>
+    <path d="M49 193c13-34 51-61 99-69 49-9 96 4 125 34 22 22 26 49 12 73-16 29-56 49-104 53-49 4-94-9-117-36" stroke="url(#arm)" stroke-width="6" stroke-linecap="round" opacity=".88"/>
+    <path d="M350 207c-13 34-51 61-99 69-49 9-96-4-125-34-22-22-26-49-12-73 16-29 56-49 104-53 49-4 94 9 117 36" stroke="url(#arm-soft)" stroke-width="5" stroke-linecap="round" opacity=".78"/>
+    <g fill="#FFFFFF">
+      <circle cx="49" cy="190" r="1.5" opacity=".92"/>
+      <circle cx="72" cy="154" r="1.2" opacity=".8"/>
+      <circle cx="101" cy="147" r="1.7" opacity=".95"/>
+      <circle cx="128" cy="131" r="1.1" opacity=".82"/>
+      <circle cx="157" cy="126" r="1.4" opacity=".9"/>
+      <circle cx="188" cy="136" r="1" opacity=".76"/>
+      <circle cx="230" cy="132" r="1.6" opacity=".92"/>
+      <circle cx="265" cy="146" r="1.2" opacity=".85"/>
+      <circle cx="299" cy="164" r="1.5" opacity=".94"/>
+      <circle cx="336" cy="190" r="1.1" opacity=".8"/>
+      <circle cx="321" cy="225" r="1.6" opacity=".92"/>
+      <circle cx="289" cy="244" r="1.2" opacity=".84"/>
+      <circle cx="257" cy="262" r="1.5" opacity=".92"/>
+      <circle cx="218" cy="266" r="1.1" opacity=".8"/>
+      <circle cx="176" cy="263" r="1.6" opacity=".95"/>
+      <circle cx="139" cy="251" r="1.2" opacity=".82"/>
+      <circle cx="103" cy="238" r="1.5" opacity=".9"/>
+      <circle cx="75" cy="217" r="1.1" opacity=".82"/>
+      <path d="m88 176 1.4 3.2 3.2 1.4-3.2 1.4-1.4 3.2-1.4-3.2-3.2-1.4 3.2-1.4z" opacity=".9"/>
+      <path d="m278 213 1.2 2.8 2.8 1.2-2.8 1.2-1.2 2.8-1.2-2.8-2.8-1.2 2.8-1.2z" opacity=".88"/>
+    </g>
+  </g>
+
+  <circle cx="200" cy="200" r="62" fill="url(#core)" opacity=".96"/>
+  <circle cx="200" cy="200" r="30" fill="#F3D8FF" opacity=".24" filter="url(#soft-glow)"/>
+</svg>
