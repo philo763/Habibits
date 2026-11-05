@@ -13,6 +13,10 @@
       <stop stop-color="#FFFFFF"/>
       <stop offset="1" stop-color="#DCE2E9"/>
     </linearGradient>
+    <radialGradient id="classic-fade" cx=".5" cy=".5" r=".7">
+      <stop stop-color="#BCA4F4" stop-opacity=".85"/>
+      <stop offset="1" stop-color="#0A1631" stop-opacity=".18"/>
+    </radialGradient>
     <filter id="button-shadow" x="108" y="108" width="184" height="184" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
       <feGaussianBlur stdDeviation="7"/>
     </filter>
@@ -27,4 +31,5 @@
   <circle cx="200" cy="200" r="62" fill="url(#button)" stroke="#111318" stroke-width="5"/>
   <circle cx="200" cy="200" r="44" fill="#F8FAFC" stroke="#252A31" stroke-width="3"/>
   <path d="M174 174a37 37 0 0 1 50-2" stroke="#FFFFFF" stroke-opacity=".85" stroke-linecap="round" stroke-width="4"/>
+  <path fill="url(#classic-fade)" d="M0 0h400v400H0z"/>
 </svg>
