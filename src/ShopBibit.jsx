@@ -14,6 +14,7 @@ function apparenceArticle(article, apparence) {
 export default function ShopBibit({ bibit, soldePommes, erreur, achatEnCours, onRetour, onAcheter }) {
   const [categorieActive, setCategorieActive] = useState("couleur");
   const [sousCategorieActive, setSousCategorieActive] = useState("unie");
+  const [introOuverte, setIntroOuverte] = useState(false);
   const articlesPossedes = new Set(bibit.achats.map((achat) => achat.articleId));
   const categorie = CATEGORIES_BIBIT.find((item) => item.id === categorieActive);
   const sousCategorie = categorie.sousCategories.find((item) => item.id === sousCategorieActive);
@@ -28,7 +29,16 @@ export default function ShopBibit({ bibit, soldePommes, erreur, achatEnCours, on
       <div className="entete-shop">
         <div>
           <button className="btn petit bouton-shop bouton-retour-bibit" onClick={onRetour}>✨ Mon Bibit</button>
-          <h2 id="titre-shop" className="jour-titre">Le Shop</h2>
+          <h2 id="titre-shop" className="jour-titre">
+            <button
+              className="titre-depliable"
+              aria-expanded={introOuverte}
+              aria-controls="intro-shop"
+              onClick={() => setIntroOuverte(!introOuverte)}
+            >
+              {introOuverte ? "▾" : "▸"} Le Shop
+            </button>
+          </h2>
         </div>
         <div className="solde-shop" aria-label={`Mes popommes : ${soldePommes}`}>
           <span className="libelle-solde-shop">Mes popommes</span>
@@ -37,7 +47,7 @@ export default function ShopBibit({ bibit, soldePommes, erreur, achatEnCours, on
         </div>
       </div>
       {soldePommes < 0 && <p className="note solde-negatif">Ton solde de pommes est négatif. Gagne des pommes pour le faire remonter avant de nouveaux achats.</p>}
-      <p className="intro-shop">Achète une personnalisation pour la débloquer définitivement. Tu pourras l’équiper ou la retirer dans Mon Bibit.</p>
+      {introOuverte && <p id="intro-shop" className="intro-shop">Achète une personnalisation pour la débloquer définitivement. Tu pourras l’équiper ou la retirer dans Mon Bibit.</p>}
 
       <div className="onglets-bibit" role="tablist" aria-label="Catégories du Shop">
         {CATEGORIES_BIBIT.map((item) => (

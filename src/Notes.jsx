@@ -32,7 +32,7 @@ export default function Notes({ defis, objectifs, jours, recompenses }) {
   }
 
   return (
-    <section aria-labelledby="titre-notes">
+    <section aria-labelledby="titre-notes" className="page-notes">
       <h2 id="titre-notes" className="jour-titre">Notes à moi-même ({notes.length})</h2>
       <div className="comptes-recompenses" aria-label={`Solde : ${recompenses?.coeurs || 0} cœurs bandés`}>
         <span className="compte-recompense">

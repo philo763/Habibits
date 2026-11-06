@@ -365,7 +365,7 @@ export default function Calendrier({
               <div key={d.id} className="tirage-colonne">
                 <div className={`tuile c${i} carte-tirage`} style={{ "--couleur": couleurDefi(d) }}>
                   <div className="tirage-contenu">
-                    {d.id === defiDuMoment?.id && <span className="badge-defi-moment">Défi du moment</span>}
+                    {d.id === defiDuMoment?.id && <span className="badge-defi-moment">Défi du moment ⭐</span>}
                     <h3>{d.titre}</h3>
                     {d.description && <p>{d.description}</p>}
                   </div>
