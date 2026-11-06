@@ -222,10 +222,34 @@ select:focus { outline: none; border-color: var(--or); }
 .case.choisi, .case.fait {
   background-color: color-mix(in srgb, var(--couleur) 22%, rgba(10, 22, 49, 0.8));
 }
+.case.porte-droite, .case.porte-gauche { z-index: 2; overflow: visible; }
+.case.porte-droite::after, .case.porte-gauche::before {
+  position: absolute;
+  top: 50%;
+  top: calc(50% - 7px);
+  width: 6px;
+  height: 14px;
+  content: "";
+  background: var(--nuit);
+  border: 2px solid var(--couleur);
+  border-radius: 2px;
+  pointer-events: none;
+}
+.case.porte-droite::after {
+  right: -5px;
+  border-right: 0;
+  border-radius: 2px 0 0 2px;
+}
+.case.porte-gauche::before {
+  left: -5px;
+  border-left: 0;
+  border-radius: 0 2px 2px 0;
+}
 .case.non-reussi { --couleur: var(--rouge); background: rgba(208, 72, 63, 0.18); }
 .case.passe:not(.fait) { opacity: 0.55; }
 .case.aujourdhui .num { color: var(--or); }
-.case.selection { outline: 3px solid var(--or); outline-offset: 1px; }
+.case.selection { box-shadow: 0 0 0 2px var(--or); }
+.case.selection.porte-droite, .case.selection.porte-gauche { z-index: 1; }
 .num { font-size: 16px; font-weight: 700; }
 .coche { position: absolute; top: 2px; right: 4px; font-size: 14px; color: #7dffb8; }
 .case-indicateur {
