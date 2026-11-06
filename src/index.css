@@ -1,4 +1,4 @@
-:root {
+﻿:root {
   --nuit: #0a1631;
   --bleu: #1553c7;
   --bleu-clair: #4aa3ff;
@@ -297,7 +297,7 @@ select:focus { outline: none; border-color: var(--or); }
 .btn.bouton-defi-moment { background: #9a4f16; border-color: #ffad55; }
 .btn.bouton-defi-moment:active { background: #783c10; }
 .panneau-defi-moment { --couleur: var(--orange); }
-.meta-defi { font-size: 14px; opacity: 0.85; }
+.meta-defi { font-size: 14px; }
 .liste-objectifs { display: grid; gap: 4px; margin: 8px 0 20px; }
 .objectif-tuile, .defi-tuile { border-color: var(--couleur); }
 .objectif-tuile, .defi-tuile, .carte-tirage {
@@ -450,6 +450,75 @@ select:focus { outline: none; border-color: var(--or); }
   flex: 1;
   font-size: 13px;
   overflow-wrap: anywhere;
+}
+.de-bouton {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  margin: 10px auto;
+  padding: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+  color: inherit;
+}
+.de-bouton:disabled { cursor: wait; }
+.de-scene {
+  position: relative;
+  display: block;
+  width: 160px;
+  height: 150px;
+  perspective: 600px;
+  zoom: 1.3;
+}
+.de-saut, .de-tetra {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0;
+  height: 0;
+  transform-style: preserve-3d;
+}
+.de-tetra { transform: rotateX(-20deg) rotateY(20deg); }
+.de-triangle {
+  position: absolute;
+  left: -60px;
+  top: -104px;
+  width: 120px;
+  height: 104px;
+  transform-origin: 50% 100%;
+  clip-path: path('M67 12.1 Q60 0 53 12.1 L7 91.9 Q0 104 14 104 L106 104 Q120 104 113 91.9 Z');
+  backface-visibility: hidden;
+}
+.de-triangle.t0 { background-color: rgba(21,83,199,0.45); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='104'%3E%3Cpath d='M67 12.1 Q60 0 53 12.1 L7 91.9 Q0 104 14 104 L106 104 Q120 104 113 91.9 Z' fill='none' stroke='%238fb8ff' stroke-width='6' stroke-linejoin='round'/%3E%3C/svg%3E"), linear-gradient(rgba(143,184,255,0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(143,184,255,0.4) 1px, transparent 1px); background-size: 120px 104px, 15px 15px, 15px 15px; --pos: translateY(24.5px) translateZ(34.64px) rotateX(90deg); transform: var(--pos); }
+.de-triangle.t1 { background-color: rgba(21,83,199,0.45); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='104'%3E%3Cpath d='M67 12.1 Q60 0 53 12.1 L7 91.9 Q0 104 14 104 L106 104 Q120 104 113 91.9 Z' fill='none' stroke='%238fb8ff' stroke-width='6' stroke-linejoin='round'/%3E%3C/svg%3E"), linear-gradient(rgba(143,184,255,0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(143,184,255,0.4) 1px, transparent 1px); background-size: 120px 104px, 15px 15px, 15px 15px; --pos: translateY(24.5px) translateZ(34.64px) rotateX(19.47deg); transform: var(--pos); }
+.de-triangle.t2 { background-color: rgba(21,83,199,0.45); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='104'%3E%3Cpath d='M67 12.1 Q60 0 53 12.1 L7 91.9 Q0 104 14 104 L106 104 Q120 104 113 91.9 Z' fill='none' stroke='%238fb8ff' stroke-width='6' stroke-linejoin='round'/%3E%3C/svg%3E"), linear-gradient(rgba(143,184,255,0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(143,184,255,0.4) 1px, transparent 1px); background-size: 120px 104px, 15px 15px, 15px 15px; --pos: translateY(24.5px) rotateY(120deg) translateZ(34.64px) rotateX(19.47deg); transform: var(--pos); }
+.de-triangle.t3 { background-color: rgba(21,83,199,0.45); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='104'%3E%3Cpath d='M67 12.1 Q60 0 53 12.1 L7 91.9 Q0 104 14 104 L106 104 Q120 104 113 91.9 Z' fill='none' stroke='%238fb8ff' stroke-width='6' stroke-linejoin='round'/%3E%3C/svg%3E"), linear-gradient(rgba(143,184,255,0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(143,184,255,0.4) 1px, transparent 1px); background-size: 120px 104px, 15px 15px, 15px 15px; --pos: translateY(24.5px) rotateY(240deg) translateZ(34.64px) rotateX(19.47deg); transform: var(--pos); }
+.de-triangle.arriere { transform: var(--pos) rotateY(180deg); opacity: 0.3; }
+.de-face-contenu { position: absolute; left: 50%; top: 68%; transform: translate(-50%, -50%); display: flex; line-height: 1; }
+.de-face-contenu svg { display: block; }
+.de-bouton:hover:not(:disabled) .de-saut { transform: translateY(-4px); }
+.de-bouton.lance .de-tetra { animation: de-roule 1.65s cubic-bezier(0.3, 0.45, 0.25, 1); }
+.de-bouton.lance .de-saut { animation: de-saute 1.65s ease-out; }
+@keyframes de-roule {
+  from { transform: rotate3d(1, 1.5, 0.5, 0deg) rotateX(-20deg) rotateY(20deg); }
+  to { transform: rotate3d(1, 1.5, 0.5, 720deg) rotateX(-20deg) rotateY(20deg); }
+}
+@keyframes de-saute {
+  0% { transform: translateY(0); }
+  25% { transform: translateY(-55px); }
+  50% { transform: translateY(0); }
+  65% { transform: translateY(-22px); }
+  80% { transform: translateY(0); }
+  90% { transform: translateY(-6px); }
+  100% { transform: translateY(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .de-tetra, .de-bouton.lance .de-tetra, .de-bouton.lance .de-saut { animation: none; }
+  .de-bouton.lance .de-scene { opacity: 0.6; }
 }
 .bouton-choix-tirage {
   width: 100%;
@@ -660,3 +729,21 @@ select:focus { outline: none; border-color: var(--or); }
 .nettoyage-tirages .tuile p { line-height: 1.5; }
 .nettoyage-tirages .btn { width: 100%; white-space: normal; }
 .nettoyage-tirages .btn:disabled { opacity: 0.6; cursor: wait; }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
