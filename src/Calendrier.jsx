@@ -26,10 +26,10 @@ const VCOCHE_DE = (
 
 // La face 1 est celle qui apparaît devant au repos.
 const FACES_DE = [
-  <BarresDe nombre={1} couleur="#3fae74" />,
+  <BarresDe key="facile" nombre={1} couleur="#3fae74" />,
   VCOCHE_DE,
-  <BarresDe nombre={2} couleur="#e08a2d" />,
-  <BarresDe nombre={3} couleur="#d0483f" />,
+  <BarresDe key="moyen" nombre={2} couleur="#e08a2d" />,
+  <BarresDe key="difficile" nombre={3} couleur="#d0483f" />,
 ];
 
 function melanger(liste) {
@@ -548,6 +548,7 @@ export default function Calendrier({
     </div>
   );
 }
+
 
 
 
