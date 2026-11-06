@@ -207,7 +207,10 @@ export default function Calendrier({
         {cases.map((date, i) => {
           if (!date) return <div key={i} />;
           const cle = cleDate(date);
+          const datePrecedente = new Date(date.getFullYear(), date.getMonth(), date.getDate() - 1);
+          const dateSuivante = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1);
           const j = cle <= demain || donneesAnciennesVisibles(cle) ? jours[cle] || {} : {};
+          const colonneSemaine = (date.getDay() + 6) % 7;
           const defi = j.choisi ? trouver(j.choisi) || j.defiCopie : null;
           let etat = "vide";
           if (j.fait) etat = "fait";
@@ -217,6 +220,13 @@ export default function Calendrier({
           const classes = [
             "case",
             etat,
+            j.fait && colonneSemaine > 0 && (
+              date.getDate() === 1 || jours[cleDate(datePrecedente)]?.fait
+            ) ? "porte-gauche" : "",
+            j.fait && colonneSemaine < 6 && (
+              date.getDate() === new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate() ||
+              jours[cleDate(dateSuivante)]?.fait
+            ) ? "porte-droite" : "",
             cle === selection ? "selection" : "",
             cle === aujourdhui ? "aujourdhui" : "",
             cle < aujourdhui ? "passe" : "",

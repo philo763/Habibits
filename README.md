@@ -6,7 +6,7 @@ Les données restent **sur le téléphone**, dans le navigateur : pas de compte,
 
 ## Fonctionnalités actuelles
 
-- **Calendrier** mensuel : une case par jour, avec le titre du défi choisi.
+- **Calendrier** mensuel : une case par jour, avec le titre du défi choisi et de petits couloirs entre les jours consécutifs validés ; aux coupures entre deux mois, un couloir indique la continuité sur le bord.
 - **Tirage quotidien** en un clic, pour aujourd’hui ou demain : une carte facile, une moyenne et une difficile, puis choix d'un défi.
 - **Collection** : après avoir validé un défi, on peut ajouter sa carte à sa collection, y compris pour une validation passée en ouvrant cette journée dans le calendrier. Chaque validation apparaît séparément avec sa date ; les cartes utilisent les informations actuelles du défi tant qu’il existe et conservent leur copie si le défi est supprimé. Les filtres par difficulté et les tris récent/ancien reprennent ceux de « Mes défis ».
 - **Mon Bibit** : une créature SVG en couches à personnaliser avec une couleur, un style de corps (les yeux pour le catalogue actuel) et un accessoire. Les sections Couleurs, Corps, Accessoires et Habibits sont partagées avec Le Shop ; Habibits affiche « À venir ».
