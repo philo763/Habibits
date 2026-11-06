@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { cleDate, grilleDuMois } from "./dates";
 import { couleurObjectif } from "./objectifs";
 import { calculerRecompenses, recompensePourDifficulte } from "./recompenses";
@@ -6,6 +6,31 @@ import IndicateurDifficulte from "./IndicateurDifficulte";
 
 const NOMS_JOURS = ["L", "M", "M", "J", "V", "S", "D"];
 const DIFFICULTES = ["facile", "moyen", "difficile"];
+
+function BarresDe({ nombre, couleur }) {
+  return (
+    <svg width="44" height="40" viewBox="0 0 44 40">
+      {[14, 24, 34].map((h, i) => (
+        <rect key={h} x={2 + i * 14} y={36 - h} width="10" height={h} rx="1"
+          fill={i < nombre ? couleur : "rgba(234,242,255,0.25)"} />
+      ))}
+    </svg>
+  );
+}
+
+const VCOCHE_DE = (
+  <svg width="56" height="44" viewBox="0 0 56 44">
+    <path d="M8 24 L22 38 L48 8" fill="none" stroke="#eaf2ff" strokeWidth="9" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+
+// La face 1 est celle qui apparaît devant au repos.
+const FACES_DE = [
+  <BarresDe key="facile" nombre={1} couleur="#3fae74" />,
+  VCOCHE_DE,
+  <BarresDe key="moyen" nombre={2} couleur="#e08a2d" />,
+  <BarresDe key="difficile" nombre={3} couleur="#d0483f" />,
+];
 
 function melanger(liste) {
   const melangee = [...liste];
@@ -42,6 +67,7 @@ export default function Calendrier({
   });
   const [selection, setSelection] = useState(aujourdhui);
   const [alerteTirage, setAlerteTirage] = useState(false);
+  const [deLance, setDeLance] = useState(false);
   const [erreurTirage, setErreurTirage] = useState("");
   const [confirmation, setConfirmation] = useState(null);
   const [gain, setGain] = useState(null);
@@ -161,6 +187,15 @@ export default function Calendrier({
 
   function changerMois(delta) {
     setMois(new Date(mois.getFullYear(), mois.getMonth() + delta, 1));
+  }
+
+  function lancerDe() {
+    if (deLance) return;
+    setDeLance(true);
+    setTimeout(() => {
+      setDeLance(false);
+      preparerTirage();
+    }, 1650);
   }
 
   function preparerTirage(continuerSansToutesLesDifficultes = false) {
@@ -374,8 +409,23 @@ export default function Calendrier({
             </div>
           </div>
         ) : (
-          <button className="btn grand" onClick={() => preparerTirage()}>
-            Tirer 3 défis
+          <button
+            className={`de-bouton${deLance ? " lance" : ""}`}
+            onClick={lancerDe}
+            disabled={deLance}
+            aria-label="Tirer mes défis"
+          >
+            <span className="de-scene" aria-hidden="true">
+              <span className="de-saut">
+                <span className="de-tetra">
+                  {FACES_DE.flatMap((contenu, i) => [
+                    <span key={i} className={`de-triangle t${i}`}><span className="de-face-contenu">{contenu}</span></span>,
+                    <span key={`a${i}`} className={`de-triangle t${i} arriere`}><span className="de-face-contenu">{contenu}</span></span>,
+                  ])}
+                </span>
+              </span>
+            </span>
+            <span className="de-texte">{deLance ? "Tin-tin tinnnn.." : "Tirer mes défis"}</span>
           </button>
         )
       ) : lectureSeule && donneesAnciennesVisibles(selection) ? (
@@ -498,3 +548,8 @@ export default function Calendrier({
     </div>
   );
 }
+
+
+
+
+
