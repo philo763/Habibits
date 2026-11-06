@@ -1,13 +1,14 @@
 import { couleurObjectif } from "./objectifs";
 import IndicateurDifficulte from "./IndicateurDifficulte";
 
-export default function CarteDefiCollection({ defi, objectif, note, date }) {
+export default function CarteDefiCollection({ defi, objectif, note, date, moment }) {
   const couleur = couleurObjectif(objectif?.couleur);
 
   return (
     <article className="tuile defi-tuile carte-collection" style={{ "--couleur": couleur }}>
       <div className="defi-corps">
         <div className="defi-contenu">
+          {moment && <span className="badge-defi-moment">Défi du moment ⭐</span>}
           <div className="carte-collection-entete">
             <h3>{defi.titre}</h3>
           </div>

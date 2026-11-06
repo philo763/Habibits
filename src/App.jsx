@@ -22,6 +22,7 @@ import Parametres from "./Parametres";
 import Accueil from "./Accueil";
 import Regles from "./Regles";
 import Collection from "./Collection";
+import DefiDuMoment from "./DefiDuMoment";
 import Notes from "./Notes";
 import { Bandeaux, Indicateur } from "./Bandeaux";
 import { COULEURS_OBJECTIF, couleurObjectif } from "./objectifs";
@@ -40,10 +41,15 @@ import "./sauvegarde.css";
 
 const SECTIONS = [
   { id: "calendrier", label: "📅 Calendrier" },
-  { id: "defis", label: "🎯 Mes défis" },
+  { id: "defis", label: "🎯 Objectifs & défis" },
+  { id: "defiMoment", label: "⭐ Défi du moment" },
+  { id: "sac", label: "🎒 Sac à dos" },
   { id: "collection", label: "🃏 Collection" },
   { id: "bibit", label: "✨ Mon Bibit" },
   { id: "notes", label: "📝 Notes à moi-même" },
+  { id: "sacCacas", label: "💩 Sac à cacas" },
+  { id: "objets", label: "🧰 Objets" },
+  { id: "badges", label: "🏅 Badges" },
   { id: "regles", label: "📖 Règles du jeu" },
   { id: "parametres", label: "⚙️ Paramètres" },
 ];
@@ -92,7 +98,6 @@ export default function App() {
   const [objectifId, setObjectifId] = useState("");
   const [difficulte, setDifficulte] = useState("facile");
   const [formulaireDefiOuvert, setFormulaireDefiOuvert] = useState(false);
-  const [defiMomentOuvert, setDefiMomentOuvert] = useState(false);
   const [triRecent, setTriRecent] = useState(true);
   const [objectifsFiltres, setObjectifsFiltres] = useState([]);
   const [difficultesFiltrees, setDifficultesFiltrees] = useState([]);
@@ -461,8 +466,9 @@ export default function App() {
           ✕
         </button>
         <div className="panneau-titre">Menu</div>
-        {SECTIONS.filter((s) => !["regles", "parametres"].includes(s.id)).map((s) => {
-          const actif = onglet === s.id || (onglet === "shop" && s.id === "bibit");
+        {SECTIONS.filter((s) => !["regles", "parametres",                 "collection", "notes", "sacCacas", "objets", "badges"].includes(s.id)).map((s) => {
+          const actif = onglet === s.id || (onglet === "shop" && s.id === "bibit") ||
+                    (s.id === "sac" && ["collection", "notes", "sacCacas", "objets", "badges"].includes(onglet));
           return (
             <button key={s.id} className={`lien ${actif ? "actif" : ""}`} onClick={() => aller(s.id)}>
               {s.label}
@@ -523,13 +529,71 @@ export default function App() {
             onAcheter={acheterArticleBibit}
           />
         )}
+        {onglet === "sac" && (
+          <section aria-labelledby="titre-sac">
+            <h2 id="titre-sac" className="jour-titre">Sac à dos</h2>
+            <div className="grille-sac">
+              {["collection", "notes", "sacCacas", "objets"].map((id) => (
+                <button key={id} className="btn tuile-sac" onClick={() => aller(id)}>
+                  {SECTIONS.find((s) => s.id === id).label}
+                </button>
+              ))}
+            </div>
+            <button className="btn bouton-badges" onClick={() => aller("badges")}>
+              {SECTIONS.find((s) => s.id === "badges").label}
+            </button>
+          </section>
+        )}
+        {["collection", "notes", "sacCacas", "objets", "badges"].includes(onglet) && (
+          <button className="btn petit bouton-retour-bibit" onClick={() => aller("sac")}>← Sac à dos</button>
+        )}
+        {onglet === "badges" && (
+          <section aria-labelledby="titre-sous-sac">
+            <h2 id="titre-sous-sac" className="jour-titre">{SECTIONS.find((s) => s.id === "badges").label}</h2>
+            <div className="tuile shop-avenir"><h3>A VENIR</h3></div>
+          </section>
+        )}
+        {onglet === "sacCacas" && (
+          <section aria-labelledby="titre-sous-sac">
+            <h2 id="titre-sous-sac" className="jour-titre">{SECTIONS.find((s) => s.id === "sacCacas").label}</h2>
+            <div className="comptes-recompenses compte-geant" aria-label={`${recompenses?.totalGagne || 0} cacas gagnés`}>
+              <span className="compte-recompense">
+                <span aria-hidden="true">💩</span>
+                <strong>{recompenses?.totalGagne || 0}</strong>
+              </span>
+            </div>
+          </section>
+        )}
+        {onglet === "objets" && (
+          <section aria-labelledby="titre-sous-sac">
+            <h2 id="titre-sous-sac" className="jour-titre">{SECTIONS.find((s) => s.id === "objets").label}</h2>
+            <div className="comptes-recompenses liste-objets" aria-label={`${recompenses?.coeurs || 0} cœurs bandés et ${recompenses?.pommes || 0} popommes`}>
+              <span className="compte-recompense">
+                <span aria-hidden="true">❤️‍🩹</span>
+                <strong>{recompenses?.coeurs || 0}</strong>
+              </span>
+              <span className="compte-recompense">
+                <span aria-hidden="true">🍎</span>
+                <strong>{recompenses?.pommes || 0}</strong>
+              </span>
+            </div>
+          </section>
+        )}
         {onglet === "collection" && (
           <Collection
             defis={defis}
             objectifs={objectifs}
             jours={jours}
+          />
+        )}
+        {onglet === "defiMoment" && (
+          <DefiDuMoment
+            defis={defis}
+            objectifs={objectifs}
             recompenses={recompenses}
             gestionDefis={gestionDefis}
+            modifierGestionDefis={modifierGestionDefis}
+            erreurGestionDefis={erreurGestionDefis}
           />
         )}
         {onglet === "notes" && (
@@ -541,6 +605,7 @@ export default function App() {
             <p className="jour-titre description-mes-defis">
               Relève tes <span>défis</span> pour atteindre tes <span>objectifs</span>
             </p>
+            <hr className="separateur-section" />
             <section aria-labelledby="titre-objectifs">
               <div className="entete-section">
                 <h2 id="titre-objectifs" className="jour-titre">Mes objectifs ({objectifs.length})</h2>
@@ -607,97 +672,16 @@ export default function App() {
               )}
             </section>
 
+            <hr className="separateur-section" />
             <section aria-labelledby="titre-defis">
               <div className="defis-entete">
                 <h2 id="titre-defis" className="jour-titre">Mes défis ({defis.length})</h2>
-                <button
-                  className="btn petit bouton-defi-moment"
-                  aria-expanded={defiMomentOuvert}
-                  aria-controls="panneau-defi-moment"
-                  onClick={() => setDefiMomentOuvert((ouvert) => !ouvert)}
-                >
-                  {defiMomentOuvert ? "Fermer" : "Défi du moment"}
-                </button>
                 {objectifs.length > 0 && (
                   <button className="btn petit" onClick={() => setFormulaireDefiOuvert(!formulaireDefiOuvert)}>
                     {formulaireDefiOuvert ? "Annuler" : "+ Créer un défi"}
                   </button>
                 )}
               </div>
-              {defiMomentOuvert && (
-                <div id="panneau-defi-moment" className="tuile panneau-defi-moment">
-                  <h3>Défi du moment</h3>
-                  <p>
-                    Choisis un défi qui apparaîtra à chaque tirage tant que l’option est activée. Il remplacera la carte
-                    aléatoire de sa difficulté : le tirage conservera trois cartes.
-                  </p>
-                  <p>Chaque réussite rapporte 💩 1 (facile), 💩 3 (moyen) ou 💩 5 (difficile).</p>
-                  <label className="champ-label" htmlFor="defi-du-moment">Défi à mettre en avant</label>
-                  <select
-                    id="defi-du-moment"
-                    value={gestionDefis.defiDuMomentId}
-                    onChange={(event) => {
-                      const defiId = event.target.value;
-                      modifierGestionDefis({
-                        defiDuMomentId: defiId,
-                        defiDuMomentActif: defiId ? gestionDefis.defiDuMomentActif : false,
-                        frequencesHebdo: defiId
-                          ? {
-                            ...gestionDefis.frequencesHebdo,
-                            [defiId]: gestionDefis.frequencesHebdo?.[defiId] || 3,
-                          }
-                          : gestionDefis.frequencesHebdo,
-                      });
-                    }}
-                  >
-                    <option value="">Choisir un défi</option>
-                    {defis.map((defi) => (
-                      <option key={defi.id} value={defi.id}>
-                        {defi.titre} — {defi.difficulte}
-                      </option>
-                    ))}
-                  </select>
-                  {gestionDefis.defiDuMomentId && (
-                    <>
-                      <label className="champ-label" htmlFor="frequence-defi-moment">
-                        Objectif hebdomadaire
-                      </label>
-                      <select
-                        id="frequence-defi-moment"
-                        value={gestionDefis.frequencesHebdo?.[gestionDefis.defiDuMomentId] || 3}
-                        onChange={(event) => modifierGestionDefis({
-                          frequencesHebdo: {
-                            ...gestionDefis.frequencesHebdo,
-                            [gestionDefis.defiDuMomentId]: Number(event.target.value),
-                          },
-                        })}
-                      >
-                        {Array.from({ length: 7 }, (_, index) => index + 1).map((nombre) => (
-                          <option key={nombre} value={nombre}>
-                            {nombre} fois par semaine
-                          </option>
-                        ))}
-                      </select>
-                      <p className="note">
-                        Une fois cet objectif atteint entre lundi et dimanche, tu reçois en bonus autant de cacas que ce défi
-                        t’en a rapportés cette semaine. Le seuil est fixé à la première validation du défi chaque semaine ;
-                        si tu le changes ensuite, le nouveau seuil s’appliquera la semaine suivante.
-                      </p>
-                    </>
-                  )}
-                  <label className="case-a-cocher">
-                    <input
-                      type="checkbox"
-                      checked={gestionDefis.defiDuMomentActif}
-                      disabled={!gestionDefis.defiDuMomentId}
-                      onChange={(event) => modifierGestionDefis({ defiDuMomentActif: event.target.checked })}
-                    />
-                    Activer le défi du moment
-                  </label>
-                  {erreurGestionDefis && <p className="attention" role="alert">{erreurGestionDefis}</p>}
-                  {!defis.length && <p className="note">Crée d’abord un défi dans la liste ci-dessous.</p>}
-                </div>
-              )}
               <div className="filtres-defis">
                 <div className="filtres-difficulte" aria-label="Filtrer par difficulté">
                 {DIFFICULTES.map((niveau) => (
@@ -878,7 +862,7 @@ export default function App() {
             )}
             {objectifs.length === 0 && (
               <>
-                <p className="attention">Crée d’abord un objectif dans la section « Mes défis ».</p>
+                <p className="attention">Crée d’abord un objectif dans la section « Objectifs & défis ».</p>
                 <button className="btn" onClick={() => {
                   setCompletionSuspendue(true);
                   setOnglet("defis");

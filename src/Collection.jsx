@@ -1,18 +1,15 @@
 import { useState } from "react";
-import { cleDate } from "./dates";
-import { debutSemaine } from "./recompenses";
 import CarteDefiCollection from "./CarteDefiCollection";
 import IndicateurDifficulte from "./IndicateurDifficulte";
 
 const DIFFICULTES = ["facile", "moyen", "difficile"];
 
-export default function Collection({ defis, objectifs, jours, recompenses, gestionDefis }) {
+export default function Collection({ defis, objectifs, jours }) {
   const [triRecent, setTriRecent] = useState(true);
   const [difficultesFiltrees, setDifficultesFiltrees] = useState([]);
-  const [semaineActuelle] = useState(() => debutSemaine(cleDate(new Date())));
 
   const { collection, defisMoment } = Object.entries(jours).reduce((resultat, [date, jour]) => {
-    function ajouterCarte(collectionCible, id, defiCopie, objectifCopie, cle) {
+    function ajouterCarte(collectionCible, id, defiCopie, objectifCopie, cle, moment = false) {
       const defiActuel = defis.find((item) => item.id === id);
       const entree = {
         cle,
@@ -20,13 +17,14 @@ export default function Collection({ defis, objectifs, jours, recompenses, gesti
         id,
         defi: defiActuel || defiCopie,
         objectifCopie,
+        moment,
       };
       collectionCible.push(entree);
     }
 
     if (jour?.fait && jour.choisi) {
       if (jour.defiDuMomentIdLorsValidation === jour.choisi) {
-        ajouterCarte(resultat.defisMoment, jour.choisi, jour.defiCopie, jour.objectifCopie, `${date}:moment`);
+        ajouterCarte(resultat.defisMoment, jour.choisi, jour.defiCopie, jour.objectifCopie, `${date}:moment`, true);
       } else if (jour.collectionne) {
         ajouterCarte(
           resultat.collection,
@@ -51,11 +49,13 @@ export default function Collection({ defis, objectifs, jours, recompenses, gesti
     return resultat;
   }, { collection: [], defisMoment: [] });
 
-  const cartes = collection
-    .map(({ id, defi, objectifCopie, date, cle }) => ({
+  const total = collection.length + defisMoment.length;
+  const cartes = [...collection, ...defisMoment]
+    .map(({ id, defi, objectifCopie, date, cle, moment }) => ({
       cle,
       id,
       defi,
+      moment,
       objectif: objectifs.find((item) => item.id === defi?.objectifId) || objectifCopie,
       date,
     }))
@@ -64,33 +64,6 @@ export default function Collection({ defis, objectifs, jours, recompenses, gesti
     .sort((a, b) => {
       return (triRecent ? -1 : 1) * a.date.localeCompare(b.date) || a.id.localeCompare(b.id);
     });
-
-  const cartesMoment = defisMoment
-    .map(({ id, defi, objectifCopie, date, cle }) => ({
-      cle,
-      id,
-      defi,
-      objectif: objectifs.find((item) => item.id === defi?.objectifId) || objectifCopie,
-      date,
-    }))
-    .filter(({ defi }) => defi)
-    .sort((a, b) => a.date.localeCompare(b.date));
-
-  const suivisSemaine = (recompenses?.suivisHebdomadaires || [])
-    .filter((suivi) => suivi.semaine === semaineActuelle);
-  const defiMomentActif = defis.find((defi) =>
-    defi.id === gestionDefis?.defiDuMomentId && gestionDefis.defiDuMomentActif
-  );
-  const suiviActif = defiMomentActif && !suivisSemaine.some((suivi) => suivi.defiId === defiMomentActif.id)
-    ? {
-      defiId: defiMomentActif.id,
-      nombre: 0,
-      objectif: gestionDefis.frequencesHebdo?.[defiMomentActif.id] || 3,
-      recompenses: 0,
-      bonus: 0,
-    }
-    : null;
-  const progressions = suiviActif ? [...suivisSemaine, suiviActif] : suivisSemaine;
 
   function basculerDifficulte(difficulte) {
     setDifficultesFiltrees((actives) => actives.includes(difficulte)
@@ -101,57 +74,8 @@ export default function Collection({ defis, objectifs, jours, recompenses, gesti
 
   return (
     <section aria-labelledby="titre-collection">
-      <h2 id="titre-collection" className="jour-titre">Ma collection ({collection.length + defisMoment.length})</h2>
-      <div
-        className="comptes-recompenses total-gagne-collection"
-        aria-label={`Total gagné depuis le début : ${recompenses?.totalGagne || 0} cacas`}
-      >
-        <span className="compte-recompense">
-          <span aria-hidden="true">💩</span>
-          <strong>{recompenses?.totalGagne || 0}</strong>
-          <span className="libelle-total-gagne">gagnés depuis le début</span>
-        </span>
-      </div>
-      <section aria-labelledby="titre-defis-moment-collection">
-        <h3 id="titre-defis-moment-collection" className="jour-titre titre-defis-moment-collection">Défis du moment</h3>
-        {progressions.length > 0 && (
-          <div className="tuile suivi-bonus-hebdo suivi-defi-moment">
-            <h3>Objectif de la semaine</h3>
-            {progressions.map((suivi) => {
-              const defi = defis.find((item) => item.id === suivi.defiId) ||
-                defisMoment.get(suivi.defiId)?.defi;
-              return (
-                <p key={suivi.defiId}>
-                  {defi?.titre || "Défi du moment"} : {suivi.nombre}/{suivi.objectif} cette semaine.
-                  {suivi.bonus > 0
-                    ? ` Bonus gagné : 💩 ${suivi.bonus}.`
-                    : ` Bonus prévu : 💩 ${suivi.recompenses} si l’objectif est atteint.`}
-                </p>
-              );
-            })}
-          </div>
-        )}
-        {cartesMoment.length === 0 ? (
-          <p>Les défis du moment réussis apparaîtront ici.</p>
-        ) : (
-          cartesMoment.map(({ cle, defi, objectif, date }) => (
-            <CarteDefiCollection
-              key={cle}
-              defi={defi}
-              objectif={objectif}
-              date={new Date(`${date}T00:00`).toLocaleDateString("fr-FR", {
-                weekday: "long",
-                day: "numeric",
-                month: "long",
-                year: "numeric",
-              })}
-            />
-          ))
-        )}
-      </section>
-
-      <section aria-labelledby="titre-cartes-collection">
-        <h3 id="titre-cartes-collection" className="jour-titre">Autres cartes ({collection.length})</h3>
+      <h2 id="titre-collection" className="jour-titre">Ma collection ({total})</h2>
+      <section aria-labelledby="titre-collection">
         <div className="filtres-defis" aria-label="Filtrer et trier la collection">
           <div className="filtres-difficulte" aria-label="Filtrer par difficulté">
             {DIFFICULTES.map((niveau) => (
@@ -184,15 +108,16 @@ export default function Collection({ defis, objectifs, jours, recompenses, gesti
           </div>
         </div>
         {cartes.length === 0 ? (
-          <p>          {collection.length === 0
+          <p>          {total === 0
             ? "Ta collection est vide. Valide un défi puis ajoute sa carte pour la retrouver ici."
             : "Aucune carte ne correspond aux filtres sélectionnés."}</p>
         ) : (
-          cartes.map(({ cle, defi, objectif, date }) => (
+          cartes.map(({ cle, defi, objectif, date, moment }) => (
             <CarteDefiCollection
               key={cle}
               defi={defi}
               objectif={objectif}
+              moment={moment}
               date={new Date(`${date}T00:00`).toLocaleDateString("fr-FR", {
                 weekday: "long",
                 day: "numeric",

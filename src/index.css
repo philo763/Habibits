@@ -291,12 +291,57 @@ select:focus { outline: none; border-color: var(--or); }
 .accompli { color: #7dffb8; font-weight: 700; }
 .defis-entete, .entete-section { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px; }
 .defis-entete .jour-titre { margin-bottom: 0; }
+.separateur-section { margin: 18px 0; border: 0; border-top: 1px solid var(--trait); }
+.compte-geant { display: flex; justify-content: center; width: 100%; margin: 24px 0; }
+.compte-geant .compte-recompense { font-size: clamp(64px, 22vw, 160px); line-height: 1; gap: 0.15em; justify-content: center; }
+.compte-geant .compte-recompense strong { font-size: 1em; }
+.compte-geant .compte-recompense > span { font-size: 0.8em; }
+.liste-objets { display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-start; gap: 10px; margin-top: 16px; }
+.bouton-badges { display: block; width: 100%; margin-top: 12px; padding: 10px; font-size: 18px; }
+.grille-sac { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.grille-sac .tuile-sac {
+  aspect-ratio: 1 / 1;
+  width: 100%;
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 20px;
+  padding: 8px;
+}
+.explications-defi-moment summary { margin-bottom: 8px; color: var(--bleu-clair); font-weight: 700; cursor: pointer; }
+.explications-defi-moment:not([open]) summary { margin-bottom: 0; }
+.explications-defi-moment p { margin: 0 0 8px; font-size: 14px; line-height: 1.45; }
+.explications-defi-moment p:last-child { margin-bottom: 0; }
+#titre-objectifs.jour-titre, #titre-defis.jour-titre { color: #fff; }
 .defis-entete > .btn { margin-left: auto; }
-.defis-entete > .bouton-defi-moment { margin-left: auto; }
-.defis-entete > .bouton-defi-moment + .btn { margin-left: 0; }
-.btn.bouton-defi-moment { background: #9a4f16; border-color: #ffad55; }
-.btn.bouton-defi-moment:active { background: #783c10; }
-.panneau-defi-moment { --couleur: var(--orange); }
+.panneau-defi-moment { --couleur: var(--orange); border: 0; background: none; padding-left: 0; padding-right: 0; }
+.defi-moment-suivi { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+.defi-moment-carte { min-width: 0; flex: 1; }
+.defi-moment-carte .tuile { margin-bottom: 0; }
+.defi-moment-compteur { flex: none; font-family: "Barlow Condensed", "Arial Narrow", sans-serif; font-size: 40px; font-weight: 700; color: #fff; }
+.case-defi-moment {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+  color: #ffad55;
+  font-family: "Barlow Condensed", "Arial Narrow", sans-serif;
+  font-size: 22px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.case-a-cocher.case-defi-moment input {
+  width: 23px;
+  height: 23px;
+  flex: none;
+  margin: 0;
+  padding: 0;
+  background: none;
+  border: 0;
+  accent-color: #ffad55;
+}
 .meta-defi { font-size: 14px; }
 .liste-objectifs { display: grid; gap: 4px; margin: 8px 0 20px; }
 .objectif-tuile, .defi-tuile { border-color: var(--couleur); }
@@ -537,6 +582,11 @@ select:focus { outline: none; border-color: var(--or); }
   font-weight: 700;
   text-transform: uppercase;
 }
+.carte-tirage .badge-defi-moment,
+.carte-collection .badge-defi-moment {
+  padding: 0;
+  border: 0;
+}
 .formulaire-objectif { border-color: var(--bleu-clair); }
 .palette-objectifs { display: flex; flex-wrap: wrap; gap: 10px; margin: 8px 0 14px; }
 .choix-couleur {
@@ -579,14 +629,29 @@ select:focus { outline: none; border-color: var(--or); }
 .bouton-correction-defi { width: auto; max-width: 320px; }
 .carte-collection-entete { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
 .carte-collection-entete h3 { min-width: 0; }
-.carte-collection-objectif { display: inline-block; margin-top: 8px; }
-.note-date { color: var(--bleu-clair); font-size: 14px; font-weight: 700; text-transform: capitalize; }
+.carte-collection-objectif { display: inline-block; max-width: 100%; margin-top: 8px; padding: 0; border: 0; }
+.page-notes .note-personnelle { font-style: italic; }
+.page-notes .note-personnelle::before { content: "« "; }
+.page-notes .note-personnelle::after { content: " »"; }
+.note-date { color: #fff; text-align: right; font-size: 14px; font-weight: 700; text-transform: capitalize; }
 .note-personnelle { margin-top: 10px !important; padding-top: 10px; border-top: 1px solid var(--trait); white-space: pre-wrap; overflow-wrap: anywhere; }
 .apropos p { line-height: 1.6; }
 .total-gagne-collection .compte-recompense { flex-wrap: wrap; justify-content: flex-end; }
 .libelle-total-gagne { color: #c9d8f6; font-size: 13px !important; }
 .entete-bibit, .entete-shop { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
 .entete-bibit .jour-titre, .entete-shop .jour-titre { margin-top: 0; }
+.titre-depliable {
+  display: inline;
+  width: auto;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-transform: inherit;
+  letter-spacing: inherit;
+  cursor: pointer;
+}
 .entete-bibit p, .intro-shop { margin: 0 0 10px; line-height: 1.45; }
 .bouton-shop { flex: none; margin-top: 4px; white-space: nowrap; }
 .scene-bibit {
