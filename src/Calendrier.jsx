@@ -1,7 +1,9 @@
-﻿import { useState } from "react";
+import { useState } from "react";
 import { cleDate, grilleDuMois } from "./dates";
 import { couleurObjectif } from "./objectifs";
 import { calculerRecompenses, recompensePourDifficulte } from "./recompenses";
+import { OBJETS, calculerObjets, messageMiroir, pommesBonusObjets } from "./objets";
+import { tirerDefis } from "./tirage";
 import IndicateurDifficulte from "./IndicateurDifficulte";
 
 const NOMS_JOURS = ["L", "M", "M", "J", "V", "S", "D"];
@@ -32,15 +34,6 @@ const FACES_DE = [
   <BarresDe key="difficile" nombre={3} couleur="#d0483f" />,
 ];
 
-function melanger(liste) {
-  const melangee = [...liste];
-  for (let i = melangee.length - 1; i > 0; i -= 1) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [melangee[i], melangee[j]] = [melangee[j], melangee[i]];
-  }
-  return melangee;
-}
-
 export default function Calendrier({
   defis,
   objectifs = [],
@@ -49,28 +42,27 @@ export default function Calendrier({
   defiDuMoment = null,
   frequenceHebdoDefiMoment = 3,
   datesTiragesAConfirmer = [],
+  limite,
   lectureSeule = false,
   onMajJour,
   onAllerDefis,
   onAllerCollection,
   onAllerNotes,
+  onAllerObjets,
 }) {
   const [mois, setMois] = useState(() => {
     const n = new Date();
     return new Date(n.getFullYear(), n.getMonth(), 1);
   });
   const [aujourdhui] = useState(() => cleDate(new Date()));
-  const [demain] = useState(() => {
-    const date = new Date();
-    date.setDate(date.getDate() + 1);
-    return cleDate(date);
-  });
+  const demain = limite;
   const [selection, setSelection] = useState(aujourdhui);
   const [alerteTirage, setAlerteTirage] = useState(false);
   const [deLance, setDeLance] = useState(false);
   const [erreurTirage, setErreurTirage] = useState("");
   const [confirmation, setConfirmation] = useState(null);
   const [gain, setGain] = useState(null);
+  const [miroirAffiche, setMiroirAffiche] = useState("");
   const [noteEchec, setNoteEchec] = useState("");
 
   async function maj(cle, patch) {
@@ -87,28 +79,6 @@ export default function Calendrier({
   async function confirmerAction() {
     if (confirmation.type === "choisir") {
       if (await maj(selection, { choisi: confirmation.defi.id })) setConfirmation(null);
-    } else if (confirmation.type === "modifier") {
-      const collectionHistorique = Array.isArray(jour.collectionHistorique) ? [...jour.collectionHistorique] : [];
-      if (jour.collectionne && jour.choisi) {
-        collectionHistorique.push({
-          id: jour.choisi,
-          defiCopie: jour.defiCopie || defiChoisi,
-          objectifCopie: jour.objectifCopie || objectifs.find((item) => item.id === defiChoisi?.objectifId) || null,
-        });
-      }
-      if (await maj(selection, {
-        choisi: null,
-        fait: false,
-        nonReussi: false,
-        note: "",
-        collectionProposable: false,
-        collectionne: false,
-        defiCopie: null,
-        objectifCopie: null,
-        collectionHistorique,
-      })) {
-        setConfirmation(null);
-      }
     } else if (confirmation.type === "valider") {
       const objectif = objectifs.find((item) => item.id === defiChoisi.objectifId);
       const patch = {
@@ -122,18 +92,37 @@ export default function Calendrier({
         defiDuMomentIdLorsValidation: defiDuMoment?.id === defiChoisi.id ? defiChoisi.id : null,
         objectifHebdoDefiMoment: defiDuMoment?.id === defiChoisi.id ? frequenceHebdoDefiMoment : null,
       };
+      const joursApres = { ...jours, [selection]: { ...jours[selection], ...patch } };
       const recompensesAvant = calculerRecompenses(jours);
-      const recompensesApres = calculerRecompenses({
-        ...jours,
-        [selection]: { ...jours[selection], ...patch },
-      });
+      const recompensesApres = calculerRecompenses(joursApres);
+      const objetsAvant = calculerObjets(jours).gagnes;
+      const objetsApres = calculerObjets(joursApres).gagnes;
+      const objetsGagnes = OBJETS.filter((objet) => objetsApres[objet.id] > objetsAvant[objet.id]).map((objet) => ({
+        ...objet,
+        nombre: objetsApres[objet.id] - objetsAvant[objet.id],
+      }));
       if (await maj(selection, patch)) {
         setConfirmation(null);
         const montant = recompensesApres.recompenses - recompensesAvant.recompenses;
         const bonus = recompensesApres.bonus - recompensesAvant.bonus;
         const pommes = recompensesApres.solde + recompensesApres.coeurs -
-          recompensesAvant.solde - recompensesAvant.coeurs;
-        if (montant > 0) setGain({ type: "cacas", montant, bonus: Math.max(0, bonus), pommes });
+          recompensesAvant.solde - recompensesAvant.coeurs +
+          pommesBonusObjets(joursApres) - pommesBonusObjets(jours);
+        if (montant > 0) setGain({ type: "cacas", montant, bonus: Math.max(0, bonus), pommes, objetsGagnes });
+      }
+    } else if (confirmation.type === "valider2") {
+      const patch = { fuseeValidee: true, recompenseCaca: recompensePourDifficulte(defiChoisi.difficulte) * 2 };
+      const joursApres = { ...jours, [selection]: { ...jours[selection], ...patch } };
+      const recompensesAvant = calculerRecompenses(jours);
+      const recompensesApres = calculerRecompenses(joursApres);
+      if (await maj(selection, patch)) {
+        setConfirmation(null);
+        const montant = recompensesApres.recompenses - recompensesAvant.recompenses;
+        const bonus = recompensesApres.bonus - recompensesAvant.bonus;
+        const pommes = recompensesApres.solde + recompensesApres.coeurs -
+          recompensesAvant.solde - recompensesAvant.coeurs +
+          pommesBonusObjets(joursApres) - pommesBonusObjets(jours);
+        if (montant > 0) setGain({ type: "cacas", montant, bonus: Math.max(0, bonus), pommes, objetsGagnes: [] });
       }
     } else if (confirmation.type === "echec") {
       const objectif = objectifs.find((item) => item.id === defiChoisi.objectifId);
@@ -157,6 +146,7 @@ export default function Calendrier({
       if (await maj(selection, patch)) {
         setConfirmation(null);
         setNoteEchec("");
+        setMiroirAffiche(messageMiroir(jours));
         const montant = recompensesApres.coeurs - recompensesAvant.coeurs;
         const pommes = recompensesApres.solde + recompensesApres.coeurs -
           recompensesAvant.solde - recompensesAvant.coeurs;
@@ -178,9 +168,9 @@ export default function Calendrier({
   const modifiable = !lectureSeule && selection >= aujourdhui && selection <= demain;
   const jourPasseAvecTirage = !lectureSeule && selection < aujourdhui &&
     Boolean(jour.choisi || propositions.length > 0);
-  const peutModifierChoix = !jour.fait && !jour.nonReussi &&
-    (modifiable || (jourPasseAvecTirage && propositions.length > 0));
-  const peutModifierEtat = !lectureSeule && selection <= aujourdhui && Boolean(jour.choisi);
+  const jourRepos = jour.objetUtilise === "lotus" && !jour.fait;
+  const peutModifierEtat = !lectureSeule && selection <= aujourdhui && Boolean(jour.choisi) && !jourRepos;
+  const defiImpose = jour.dauphinDefiId ? trouver(jour.dauphinDefiId) || null : null;
   const difficultesManquantes = DIFFICULTES.filter(
     (difficulte) => !defis.some((defi) => defi.difficulte === difficulte)
   );
@@ -206,17 +196,8 @@ export default function Calendrier({
     }
 
     setAlerteTirage(false);
-    const tirage = DIFFICULTES.flatMap((difficulte) => {
-      if (defiDuMoment?.difficulte === difficulte) return [defiDuMoment];
-      const defi = melanger(defis.filter((element) => element.difficulte === difficulte))[0];
-      return defi ? [defi] : [];
-    });
-    while (tirage.length < 3) {
-      const disponibles = defis.filter((defi) => !tirage.some((selectionne) => selectionne.id === defi.id));
-      if (disponibles.length === 0) break;
-      tirage.push(melanger(disponibles)[0]);
-    }
-    if (tirage.length < 3) {
+    const tirage = tirerDefis(defis, defiDuMoment, defiImpose);
+    if (!tirage) {
       setErreurTirage("Il faut au moins trois défis distincts pour tirer trois cartes.");
       return;
     }
@@ -274,15 +255,18 @@ export default function Calendrier({
               setAlerteTirage(false);
               setErreurTirage("");
             }}>
-              <span className="num">{date.getDate()}</span>
-              {j.fait && <span className="coche">✔</span>}
-              {j.nonReussi && <span className="coche">×</span>}
-              <span className="titre-case">{defi ? defi.titre : ""}</span>
+              <span className="num" style={j.fait ? { color: { facile: "var(--vert)", moyen: "var(--orange)", difficile: "var(--rouge)" }[j.defiCopie?.difficulte || defi?.difficulte] } : undefined}>{date.getDate()}</span>
+              {j.fait && <span className="coche">{j.defiDuMomentIdLorsValidation ? "⭐" : ""}✔</span>}
+              {j.nonReussi && <span className="coche">{j.note ? "📝" : "×"}</span>}
+              {j.objetUtilise === "lotus" && !j.fait && (
+                <span className="case-indicateur" role="img" aria-label="Jour de repos">🪷</span>
+              )}
+              <span className="titre-case">{defi && !(j.objetUtilise === "lotus" && !j.fait) ? defi.titre : ""}</span>
               {!j.choisi && !j.fait && !j.nonReussi && (j.propositions || []).length > 0 && (
                 <span className="case-indicateur" role="img" aria-label="Défis tirés, choix en attente">🤔</span>
               )}
               {!j.choisi && !j.fait && !j.nonReussi && !(j.propositions || []).length &&
-                !lectureSeule && cle >= aujourdhui && cle <= demain && defis.length > 0 && (
+                !lectureSeule && cle >= aujourdhui && cle <= demain && defis.length > 0 && j.objetUtilise !== "lotus" && (
                   <span className="case-indicateur de-a-quatre" role="img" aria-label="Tirer des défis">
                     🎲
                   </span>
@@ -291,11 +275,7 @@ export default function Calendrier({
           );
         })}
       </div>
-      <div className="comptes-recompenses comptes-recompenses-calendrier" aria-label={`${recompenses?.totalGagne || 0} cacas gagnés, ${recompenses?.coeurs || 0} cœurs bandés et ${recompenses?.pommes || 0} popommes disponibles`}>
-        <span className="compte-recompense compte-popommes">
-          <span aria-hidden="true">🍎</span>
-          <strong>{recompenses?.pommes || 0}</strong>
-        </span>
+      <div className="comptes-recompenses comptes-recompenses-calendrier" aria-label={`${recompenses?.totalGagne || 0} cacas gagnés et ${recompenses?.coeurs || 0} cœurs bandés`}>
         <span className="comptes-recompenses-classiques">
           <span className="compte-recompense">
             <span aria-hidden="true">💩</span>
@@ -306,6 +286,9 @@ export default function Calendrier({
             <strong>{recompenses?.coeurs || 0}</strong>
           </span>
         </span>
+        <button className="btn petit bouton-utiliser-objet" onClick={onAllerObjets}>
+          <span aria-hidden="true">🎒</span> Utiliser un objet
+        </button>
       </div>
 
       <h3 className="jour-titre">
@@ -314,7 +297,12 @@ export default function Calendrier({
 
       {erreurTirage && <p className="alerte-tirage" role="alert">{erreurTirage}</p>}
 
-      {defiChoisi ? (
+      {jourRepos ? (
+        <div className="tuile jour-repos">
+          <h3>🪷 Jour de repos</h3>
+          <p>Tu as utilisé un lotus : aujourd’hui est un jour de repos bien mérité.<br />Pas de défi aujourd’hui, seulement la satisfaction d’être avec soi-même et d’écouter son corps et son esprit.</p>
+        </div>
+      ) : defiChoisi ? (
         <div
           className={`tuile defi-tuile ${jour.fait ? "fait" : jour.nonReussi ? "non-reussi" : "c2"}`}
           style={{ "--couleur": couleurDefi(defiChoisi, jour.objectifCopie) }}
@@ -335,6 +323,11 @@ export default function Calendrier({
           {jour.fait && (
             <>
               <p className="accompli">Bravo, défi accompli !</p>
+              {jour.objetUtilise === "fusee" && !jour.fuseeValidee && peutModifierEtat && (
+                <button className="btn" onClick={() => setConfirmation({ type: "valider2" })}>
+                  Valider une 2ème fois <span aria-hidden="true">🚀</span>
+                </button>
+              )}
               {!jour.collectionne && jour.defiDuMomentIdLorsValidation !== jour.choisi && !lectureSeule && (
                 <button className="btn" onClick={() => maj(selection, { collectionne: true })}>
                   Ajouter ma carte à la collection
@@ -431,33 +424,9 @@ export default function Calendrier({
       ) : lectureSeule && donneesAnciennesVisibles(selection) ? (
         <p>Pas de défi enregistré pour cette date.</p>
       ) : selection > demain ? (
-        <p>Le tirage est possible uniquement pour aujourd’hui ou demain.</p>
+        <p>Le tirage n’est pas encore possible pour ce jour. Une boule de cristal 🔮 permet de tirer jusqu’à 7 jours à l’avance.</p>
       ) : (
         <p>Aucun défi ce jour-là.</p>
-      )}
-      {jour.choisi && peutModifierChoix && (
-        <div className="actions actions-modifier-choix">
-          <button className="btn discret" onClick={() => setConfirmation({ type: "modifier" })}>
-            Je me suis trompée
-          </button>
-        </div>
-      )}
-      {peutModifierEtat && (jour.fait || jour.nonReussi) && (
-        <div className="actions actions-modifier-choix">
-          <button
-            className="btn petit discret bouton-correction-defi"
-            onClick={() => {
-              if (jour.fait) {
-                setNoteEchec("");
-                setConfirmation({ type: "echec" });
-              } else {
-                setConfirmation({ type: "valider" });
-              }
-            }}
-          >
-            Je me suis trompée
-          </button>
-        </div>
       )}
       {confirmation && (
         <div className="completion-defi" role="dialog" aria-modal="true" aria-labelledby="titre-confirmation-defi">
@@ -472,10 +441,10 @@ export default function Calendrier({
                 <h2 id="titre-confirmation-defi">Confirmer la réussite</h2>
                 <p>As-tu bien réalisé « {defiChoisi?.titre} » aujourd’hui ?</p>
               </>
-            ) : confirmation.type === "modifier" ? (
+            ) : confirmation.type === "valider2" ? (
               <>
-                <h2 id="titre-confirmation-defi">Attention, c’est de la triche 😉</h2>
-                <p>Tu vas pouvoir revenir au tirage et choisir une autre carte pour cette journée.</p>
+                <h2 id="titre-confirmation-defi">Deuxième validation 🚀</h2>
+                <p>As-tu vraiment réalisé « {defiChoisi?.titre} » une deuxième fois aujourd’hui ? Tu regagneras les cacas et pommes du défi.</p>
               </>
             ) : (
               <>
@@ -495,14 +464,21 @@ export default function Calendrier({
               <button className="btn" onClick={confirmerAction}>
                 {confirmation.type === "choisir"
                   ? "Confirmer mon choix"
-                  : confirmation.type === "valider"
+                  : confirmation.type === "valider" || confirmation.type === "valider2"
                     ? "Oui, j’ai réussi"
-                    : confirmation.type === "modifier"
-                      ? "Oui, je sais…"
-                      : "Confirmer"}
+                    : "Confirmer"}
               </button>
               <button className="btn discret" onClick={() => setConfirmation(null)}>Annuler</button>
             </div>
+          </div>
+        </div>
+      )}
+      {miroirAffiche && !gain && (
+        <div className="completion-defi" role="dialog" aria-modal="true" aria-labelledby="titre-miroir">
+          <div className="tuile">
+            <h2 id="titre-miroir"><span aria-hidden="true">🪞</span> Un message pour toi</h2>
+            <p className="message-miroir">« {miroirAffiche} »</p>
+            <button className="btn bouton-fermer-gain" onClick={() => setMiroirAffiche("")}>Merci</button>
           </div>
         </div>
       )}
@@ -526,6 +502,16 @@ export default function Calendrier({
                       : "Aucun ajustement net de pommes"}
                   <span aria-hidden="true">🍎</span>
                 </p>
+                {gain.objetsGagnes?.length > 0 && (
+                  <div className="gain-objets">
+                    <strong>Coup de poker ! 🃏</strong>
+                    {gain.objetsGagnes.map((objet) => (
+                      <p key={objet.id}>
+                        {objet.combinaison} : + {objet.nombre} {objet.nom} <span aria-hidden="true">{objet.emoji}</span>
+                      </p>
+                    ))}
+                  </div>
+                )}
                 <button className="btn bouton-fermer-gain" onClick={() => setGain(null)}>Miam 😋</button>
               </>
             ) : (

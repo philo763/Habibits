@@ -1,3 +1,18 @@
+const C = "♥";
+const P = "♠";
+const K = "♦";
+const T = "♣";
+const COUPS = [
+  { nom: "Paire", objet: "🪩 boule disco (×1 facile, ×2 moyen, ×3 difficile)", cartes: [["F", C], ["F", P]] },
+  { nom: "Double paire", objet: "🐫 chameau", cartes: [["F", C], ["F", P], ["M", K], ["M", T]] },
+  { nom: "Brelan", objet: "🐬 dauphin", cartes: [["M", K], ["M", C], ["M", T]] },
+  { nom: "Suite", objet: "🪷 lotus", cartes: [["F", P], ["M", C], ["D", K]] },
+  { nom: "Couleur", objet: "🪄 baguette magique", cartes: [["F", T], ["D", T], ["M", T], ["F", T], ["D", T]] },
+  { nom: "Full", objet: "🔮 boule de cristal", cartes: [["D", C], ["D", P], ["D", K], ["F", T], ["F", C]] },
+  { nom: "Carré", objet: "🚀 fusée", cartes: [["F", C], ["F", P], ["F", K], ["F", T]] },
+  { nom: "Suite couleur", objet: "💎 diamant (objet au choix)", cartes: [["F", C], ["M", C], ["D", C]] },
+];
+
 export default function Regles() {
   return (
     <article className="page-regles">
@@ -6,55 +21,52 @@ export default function Regles() {
         <p className="resume-regles-texte">Tire tes défis, choisis-en un et réalise-le aujourd’hui.</p>
       </div>
 
-      <section aria-labelledby="titre-regles-tirage">
-        <h3 id="titre-regles-tirage">Le tirage quotidien</h3>
-        <ul>
-          <li>Un seul tirage par jour, pour aujourd'hui ou demain. Le reste des cartes reste disponible pour d'autres tirages.</li>
-          <li>Choisis un défi facile, moyen ou difficile.</li>
-          <li>S'il est activé, le défi du moment remplace le défi aléatoire de sa difficulté à chaque tirage.</li>
-          <li>Chaque défi réussi rapporte des cacas : 1 pour un défi facile, 3 pour un moyen et 5 pour un difficile. Chaque défi non réussi rapporte un cœur bandé ❤️‍🩹. Confirme chaque gain avec le bouton affiché ; le calendrier et la Collection affichent le total de cacas gagnés depuis le début, tandis que le solde de popommes est visible uniquement dans Le Shop.</li>
-          <li>Les défis du moment réussis apparaissent dans leur section dédiée de la collection. Atteindre l’objectif hebdomadaire choisi donne un bonus égal aux cacas rapportés par ce défi dans la semaine, du lundi au dimanche.</li>
-        </ul>
-      </section>
-
-      <section aria-labelledby="titre-regles-choix">
-        <h3 id="titre-regles-choix">Choix et validation</h3>
-        <ul>
-          <li>Choisis une seule carte pour la journée.</li>
-          <li>Si un tirage existe déjà, tu peux modifier le choix parmi ses cartes après avoir confirmé l’avertissement « Attention, c’est de la triche 😉 ». Une fois le défi validé ou marqué comme non réussi, le choix ne peut plus être modifié.</li>
-          <li>Tu peux valider ou indiquer que tu n’as pas réussi un défi déjà choisi, y compris pour un jour passé.</li>
-          <li>Il est impossible de tirer un défi pour un jour passé. Si un tirage existe déjà, modifie le choix après confirmation.</li>
-        </ul>
-      </section>
-
-      <section aria-labelledby="titre-regles-recompenses">
-        <h3 id="titre-regles-recompenses">Récompense caca et coeur bandé</h3>
+      <details className="regles-section">
+        <summary><h3>Récompenses</h3></summary>
         <ul>
           <li>Chaque défi réussi rapporte des cacas 💩 : 1 pour facile, 3 pour moyen et 5 pour difficile ; chaque caca gagné rapporte aussi une pomme 🍎.</li>
-          <li>Un cœur bandé ❤️‍🩹 est obtenu si un défi n'est pas réussi et rapporte aussi une pomme 🍎. Confirme chaque gain avec le bouton affiché.</li>
+          <li>Un cœur bandé ❤️‍🩹 est obtenu si un défi n'est pas réussi et rapporte aussi une pomme 🍎.</li>
           <li>Si tu n’as pas réussi, signale-le et rédige éventuellement une note à toi-même ; tes notes sont réunies dans la page dédiée.</li>
+        </ul>
+      </details>
+
+      <details className="regles-section">
+        <summary><h3>Défi du moment</h3></summary>
+        <ul>
           <li>Les défis du moment réussis apparaissent dans leur section dédiée de la collection. Atteindre l’objectif hebdomadaire du défi du moment donne un bonus égal aux cacas rapportés par ce défi dans la semaine.</li>
         </ul>
-      </section>
+      </details>
 
-      <section aria-labelledby="titre-regles-choix">
-        <h3 id="titre-regles-choix">Collectionne tes défis réussis</h3>
+      <details className="regles-section">
+        <summary><h3>Collectionne tes défis réussis</h3></summary>
         <ul>
           <li>Après validation de ton défi, tu peux ajouter la carte défi à ta collection.</li>
-          <li>⚠️ Les défis déjà validés avant cette fonctionnalité n’y sont pas ajoutés automatiquement.</li>
         </ul>
-      </section>
+      </details>
 
-      <section aria-labelledby="titre-regles-manque-niveau">
-        <h3 id="titre-regles-manque-niveau">Cartes manquantes ?</h3>
+      <details className="regles-section">
+        <summary><h3>Coups de poker</h3></summary>
         <ul>
-          <li>
-            Un niveau manque ? Crée un défi de ce niveau ou continue : les cartes manquantes sont tirées au hasard
-            parmi les défis restants et gardent leur difficulté réelle.
-          </li>
-          <li>Il faut au moins trois défis distincts pour tirer trois cartes.</li>
+          <li>Chaque défi réussi est une carte : sa <strong>valeur</strong> est sa difficulté (F facile, M moyen, D difficile) et sa <strong>couleur</strong> est sa catégorie.</li>
+          <li>Les cartes de la semaine (lundi–dimanche) forment des mains. Chaque main te donne un objet dès qu’elle est atteinte, et tout repart à zéro à la fin de la semaine.</li>
+          <li>Un jour de repos 🪷 est neutre. Un seul objet utilisable par jour.</li>
         </ul>
-      </section>
+        <ul className="regles-poker">
+          {COUPS.map((coup) => (
+            <li key={coup.nom}>
+              <span className="cartes-mini" aria-hidden="true">
+                {coup.cartes.map(([valeur, symbole], i) => (
+                  <span key={i} className={`carte-mini ${symbole === C || symbole === K ? "rouge" : ""}`}>
+                    <small>{valeur}</small>{symbole}
+                  </span>
+                ))}
+              </span>
+              <span><strong>{coup.nom}</strong> → {coup.objet}</span>
+            </li>
+          ))}
+        </ul>
+        <p className="regles-poker-note">Double paire : deux paires. Suite : facile + moyen + difficile. Couleur : 5 défis de la même catégorie. Full : brelan + paire. Suite couleur : facile + moyen + difficile de la même catégorie. Fusée : après la validation, un bouton 🚀 permet de valider le défi une 2ème fois.</p>
+      </details>
 
     </article>
   );
