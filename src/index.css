@@ -1,4 +1,4 @@
-﻿:root {
+:root {
   --nuit: #0a1631;
   --bleu: #1553c7;
   --bleu-clair: #4aa3ff;
@@ -251,7 +251,7 @@ select:focus { outline: none; border-color: var(--or); }
 .case.selection { box-shadow: 0 0 0 2px var(--or); }
 .case.selection.porte-droite, .case.selection.porte-gauche { z-index: 1; }
 .num { font-size: 16px; font-weight: 700; }
-.coche { position: absolute; top: 2px; right: 4px; font-size: 14px; color: #7dffb8; }
+.coche { position: absolute; top: 2px; right: 4px; font-size: 14px; color: #fff; }
 .case-indicateur {
   position: absolute;
   top: 50%;
@@ -812,3 +812,48 @@ select:focus { outline: none; border-color: var(--or); }
 
 
 
+
+.bouton-utiliser-objet { margin:0; font-size:1rem; }
+.jour-repos { text-align:center; }
+.gain-objets { margin:10px 0; text-align:center; }
+.gain-objets p { margin:4px 0; }
+.liste-objets-sac { list-style:none; padding:0; margin:14px 0 0; display:grid; gap:10px; }
+.objet-sac-entete { display:flex; align-items:center; gap:10px; }
+.objet-sac-emoji { font-size:2rem; }
+.objet-sac-titre { flex:1; display:flex; flex-direction:column; }
+.objet-sac-combinaison { font-size:.8rem; opacity:.7; }
+.objet-sac-nombre { font-weight:700; font-size:1.2rem; }
+.objet-sac-info { width:28px; height:28px; min-height:0; padding:0; border-radius:50%; font-style:italic; }
+.objet-sac-description { margin:8px 0 0; font-size:.9rem; }
+.objet-sac-utiliser { width:100%; margin-top:8px; }
+.objet-sac-utiliser.grise { opacity:.45; }
+.objet-sac-raison { color:#ffad55; margin:6px 0 0; font-size:.9rem; }
+.objet-sac-succes { margin:6px 0 0; font-size:.9rem; }
+.regles-poker { list-style:none; padding:0; display:grid; gap:6px; }
+.regles-poker li { display:flex; align-items:center; gap:10px; }
+.cartes-mini { display:inline-flex; min-width:112px; }
+.carte-mini { background:#fff; color:#222; border-radius:4px; width:20px; height:28px; display:inline-flex; align-items:center; justify-content:center; font-size:.95rem; margin-right:-4px; box-shadow:0 0 0 1px #0003; }
+.carte-mini.rouge { color:#d33; }
+.regles-poker-note { font-size:.85rem; opacity:.8; }
+
+.objet-sac { padding:0; }
+.objet-sac-ligne { display:flex; align-items:center; gap:12px; }
+.objet-sac-emoji { font-size:2.2rem; }
+.objet-sac-nombre { font-size:1.6rem; min-width:4ch; }
+.objet-sac-utiliser { flex:0 0 190px; width:190px; margin-top:0; }
+.objet-sac-info { background:none; border:0; padding:0; font-size:1.5rem; cursor:pointer; min-height:0; width:auto; }
+
+.objet-sac-info { font-style:normal; transform:none; }
+.message-miroir { font-style:italic; text-align:center; white-space:pre-wrap; }
+.carte-mini { flex-direction:column; line-height:1; width:24px; height:34px; }
+.carte-mini small { font-size:.6rem; font-weight:700; }
+.cartes-mini { min-width:130px; }
+
+.objet-sac-avenir { font-size: 0.65rem; font-weight: 700; color: #ffad55; margin-right: 4px; }
+
+.regles-section { margin: 12px 0; }
+.regles-section > summary { cursor: pointer; list-style: none; }
+.regles-section > summary::-webkit-details-marker { display: none; }
+.regles-section > summary::before { content: "▸ "; color: var(--bleu-clair); }
+.regles-section[open] > summary::before { content: "▾ "; }
+.regles-section > summary h3 { display: inline; }

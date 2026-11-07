@@ -24,6 +24,8 @@ import Regles from "./Regles";
 import Collection from "./Collection";
 import DefiDuMoment from "./DefiDuMoment";
 import Notes from "./Notes";
+import ObjetsSac from "./ObjetsSac";
+import { calculerObjets, limiteTirage, pommesBonusObjets } from "./objets";
 import { Bandeaux, Indicateur } from "./Bandeaux";
 import { COULEURS_OBJECTIF, couleurObjectif } from "./objectifs";
 import IndicateurDifficulte from "./IndicateurDifficulte";
@@ -59,11 +61,6 @@ const defiIncomplet = (defi, objectifs) =>
   !objectifs.some((objectif) => objectif.id === defi.objectifId) || !DIFFICULTES.includes(defi.difficulte);
 const dateActuelleISO = () => new Date().toISOString();
 
-function cleDeDemain() {
-  const demain = new Date();
-  demain.setDate(demain.getDate() + 1);
-  return cleDate(demain);
-}
 
 function datesAvecTirageInterdit(jours, dateLimite) {
   return Object.entries(jours)
@@ -130,7 +127,7 @@ export default function App() {
         setJours(joursCharges);
         setGestionDefis(gestionDefisChargee);
         setBibit(bibitCharge);
-        setDatesTiragesAConfirmer(datesAvecTirageInterdit(joursCharges, cleDeDemain()));
+        setDatesTiragesAConfirmer(datesAvecTirageInterdit(joursCharges, limiteTirage(joursCharges, cleDate(new Date()))));
         setDonneesChargees(true);
       } catch (erreur) {
         console.error("Impossible de charger les données de l'application.", erreur);
@@ -144,12 +141,26 @@ export default function App() {
   const defiACompleter = donneesChargees ? defisManquants[0] || null : null;
   const gains = calculerRecompenses(jours);
   const depensesPommes = bibit.achats.reduce((total, achat) => total + achat.prix, 0);
+  const objets = calculerObjets(jours);
+  const limite = limiteTirage(jours, cleDate(new Date()));
   const recompenses = {
     ...gains,
     solde: gains.solde,
     totalGagne: gains.solde,
-    pommes: gains.solde + gains.coeurs - depensesPommes,
+    pommes: gains.solde + gains.coeurs - depensesPommes + pommesBonusObjets(jours),
   };
+
+  async function majJours(patchs) {
+    const aujourdhui = cleDate(new Date());
+    const nouveau = { ...jours };
+    for (const [cle, patch] of Object.entries(patchs)) {
+      if (cle > limite) throw new Error("Le calendrier ne peut pas être modifié aussi loin.");
+      if (cle < aujourdhui) throw new Error("Un jour passé ne peut pas être modifié.");
+      nouveau[cle] = { ...nouveau[cle], ...patch };
+    }
+    await sauvegarderJours(nouveau);
+    setJours(nouveau);
+  }
 
   function aller(id) {
     setOnglet(id);
@@ -163,7 +174,7 @@ export default function App() {
 
   async function majJour(cle, patch) {
     const aujourdhui = cleDate(new Date());
-    if (cle > cleDeDemain()) throw new Error("Le calendrier ne peut être modifié que jusqu’à demain.");
+    if (cle > limite) throw new Error("Le calendrier ne peut être modifié que jusqu’à demain.");
     if (cle < aujourdhui) {
       const jourExistant = jours[cle];
       const propositionsExistantes = Array.isArray(jourExistant?.propositions) ? jourExistant.propositions : [];
@@ -504,6 +515,8 @@ export default function App() {
             datesTiragesAConfirmer={datesTiragesAConfirmer}
             lectureSeule={datesTiragesAConfirmer.length > 0}
             onMajJour={majJour}
+            limite={limite}
+            onAllerObjets={() => aller("objets")}
             onAllerDefis={() => aller("defis")}
             onAllerCollection={() => aller("collection")}
             onAllerNotes={() => aller("notes")}
@@ -568,15 +581,26 @@ export default function App() {
           <section aria-labelledby="titre-sous-sac">
             <h2 id="titre-sous-sac" className="jour-titre">{SECTIONS.find((s) => s.id === "objets").label}</h2>
             <div className="comptes-recompenses liste-objets" aria-label={`${recompenses?.coeurs || 0} cœurs bandés et ${recompenses?.pommes || 0} popommes`}>
-              <span className="compte-recompense">
-                <span aria-hidden="true">❤️‍🩹</span>
-                <strong>{recompenses?.coeurs || 0}</strong>
-              </span>
-              <span className="compte-recompense">
-                <span aria-hidden="true">🍎</span>
-                <strong>{recompenses?.pommes || 0}</strong>
-              </span>
+              <div className="objet-sac-ligne">
+                <span className="objet-sac-emoji" aria-hidden="true">❤️‍🩹</span>
+                <strong className="objet-sac-nombre">{recompenses?.coeurs || 0}</strong>
+                <button className="btn petit objet-sac-utiliser" onClick={() => aller("notes")}>Aller dans mes notes</button>
+              </div>
+              <div className="objet-sac-ligne">
+                <span className="objet-sac-emoji" aria-hidden="true">🍎</span>
+                <strong className="objet-sac-nombre">{recompenses?.pommes || 0}</strong>
+                <button className="btn petit objet-sac-utiliser" onClick={() => aller("shop")}>Aller au shop</button>
+              </div>
             </div>
+            <ObjetsSac
+              defis={defis}
+              jours={jours}
+              inventaire={objets.inventaire}
+              defiDuMoment={gestionDefis.defiDuMomentActif
+                ? defis.find((defi) => defi.id === gestionDefis.defiDuMomentId) || null
+                : null}
+              onMajJours={majJours}
+            />
           </section>
         )}
         {onglet === "collection" && (
