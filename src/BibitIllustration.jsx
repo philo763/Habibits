@@ -1,6 +1,40 @@
 import { useId } from "react";
 import { COULEURS_BIBIT } from "./data/bibitBoutique";
 
+const PAIRES_OREILLES = ["oreilles-ours", "oreilles-chat", "oreilles-chien", "oreilles-lapin"];
+
+function DemiOreilleAnimale({ type, couleur, miroir }) {
+  const contour = { stroke: "#57385f", strokeLinejoin: "round", strokeLinecap: "round" };
+  return (
+    <g transform={miroir ? "translate(240 0) scale(-1 1)" : undefined}>
+      {type === "oreilles-ours" && (
+        <g transform="translate(4 -4) translate(78 82) scale(.99) translate(-78 -82)" {...contour} strokeWidth="5.5">
+          <ellipse cx="76" cy="78" rx="17" ry="23" fill={couleur} />
+          <ellipse cx="76" cy="78" rx="8" ry="12" fill="#ed8eaf" stroke="none" />
+        </g>
+      )}
+      {type === "oreilles-chat" && (
+        <g transform="translate(4 -4) translate(78 82) scale(.9) translate(-78 -82)" {...contour} strokeWidth="5.5">
+          <path d="M60 94L62 44c0-5 4-6 8-3l38 28Z" fill={couleur} />
+          <path d="M69 80L70 56l20 15Z" transform="translate(76 69) scale(.9) translate(-76 -69)" fill="#ed8eaf" stroke="none" />
+          <path d="M64 41l-5-9M64 41l1-12M64 41l6-8" fill="none" strokeWidth="3.5" />
+        </g>
+      )}
+      {type === "oreilles-chien" && (
+        <g transform="translate(78 82) scale(.9) translate(-78 -82)" {...contour} strokeWidth="5.5">
+          <path d="M82 68C62 54 42 62 40 84c-1 12 8 16 15 8 7-8 15-14 29-14Z" fill={couleur} />
+        </g>
+      )}
+      {type === "oreilles-lapin" && (
+        <g transform="translate(84 0) scale(.8 1) translate(-84 0)" {...contour} strokeWidth="5">
+          <path d="M72 82C58 56 58 10 76 6c15 1 24 40 28 70Z" fill={couleur} />
+          <path d="M72 82C58 56 58 10 76 6c15 1 24 40 28 70Z" transform="translate(82 52) scale(.6) translate(-82 -52)" fill="#ed8eaf" stroke="none" />
+        </g>
+      )}
+    </g>
+  );
+}
+
 export default function BibitIllustration({ apparence, className = "", decorative = false, canvasEtendue = false }) {
   const idGradient = `bibit-couleur-${useId().replace(/:/g, "")}`;
   const couleurPersonnalisee = ["couleur-doree", "couleur-arc-en-ciel", "couleur-caca"].includes(apparence?.couleur);
@@ -103,6 +137,11 @@ export default function BibitIllustration({ apparence, className = "", decorativ
             <path d="M68 29C64 33 62 37 62 40L80 37C77 33 72 30 68 29Z" fill="#57385f" />
           </g>
         </>
+      ) : PAIRES_OREILLES.includes(apparence?.oreilles) ? (
+        <>
+          <DemiOreilleAnimale type={apparence.oreilles} couleur={couleur} />
+          <DemiOreilleAnimale type={apparence.oreilles} couleur={couleur} miroir />
+        </>
       ) : apparence?.oreilles !== "aucun" && (
         <path
           d="M75 82C56 64 58 38 68 29c15 2 28 20 31 43M165 82c19-18 17-44 7-53-15 2-28 20-31 43"
@@ -113,7 +152,25 @@ export default function BibitIllustration({ apparence, className = "", decorativ
           strokeWidth="5"
         />
       )}
-      {apparence?.bras !== "aucun" && (
+      {apparence?.bras === "bras-tombants" ? (
+        <path
+          d="M60 138c-16 4-24 14-22 26 2 9 9 12 14 9 5-3 3-8 9-12M180 138c16 4 24 14 22 26-2 9-9 12-14 9-5-3-3-8-9-12"
+          fill={couleur}
+          stroke="#57385f"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="5"
+        />
+      ) : apparence?.bras === "bras-leves" ? (
+        <path
+          d="M62 140c-14-8-22-22-22-40 0-9 4-14 10-13 7 1 8 8 8 14 0 10 4 18 12 26M178 140c14-8 22-22 22-40 0-9-4-14-10-13-7 1-8 8-8 14 0 10-4 18-12 26"
+          fill={couleur}
+          stroke="#57385f"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="5"
+        />
+      ) : apparence?.bras !== "aucun" && (
         <path
           d="M66 142c-17 1-25 16-20 27 5 10 18 10 29 0M174 142c17 1 25 16 20 27-5 10-18 10-29 0"
           fill={couleur}
@@ -122,6 +179,22 @@ export default function BibitIllustration({ apparence, className = "", decorativ
           strokeLinejoin="round"
           strokeWidth="5"
         />
+      )}
+      {apparence?.pieds === "pieds-ronds" ? (
+        <g fill={couleur} stroke="#57385f" strokeLinecap="round" strokeLinejoin="round" strokeWidth="5">
+          <circle cx="88" cy="200" r="13" />
+          <circle cx="152" cy="200" r="13" />
+        </g>
+      ) : apparence?.pieds === "pieds-pattes-chat" ? (
+        <g fill={couleur} stroke="#57385f" strokeLinecap="round" strokeLinejoin="round" strokeWidth="5">
+          <ellipse cx="88" cy="202" rx="17" ry="11" />
+          <ellipse cx="152" cy="202" rx="17" ry="11" />
+          <path d="M82 206v5M94 206v5M146 206v5M158 206v5" fill="none" strokeWidth="3.5" />
+        </g>
+      ) : apparence?.pieds !== "aucun" && apparence?.pieds !== "pieds-coussinets" && (
+        <g fill={couleur} stroke="#57385f" strokeLinecap="round" strokeWidth="5">
+          <path d="M88 195v8M152 195v8" />
+        </g>
       )}
       <path d="M120 59c-42 0-69 31-69 77 0 43 29 69 69 69s69-26 69-69c0-46-27-77-69-77Z" fill={couleur} stroke="#57385f" strokeLinejoin="round" strokeWidth="5" />
       {apparence?.couleur === "couleur-caca" && (
@@ -214,6 +287,13 @@ export default function BibitIllustration({ apparence, className = "", decorativ
             <path d="M96 128 86 119c-8-8 4-18 10-9 6-9 18 1 10 9Z" />
             <path d="m144 128-10-9c-8-8 4-18 10-9 6-9 18 1 10 9Z" />
           </g>
+        ) : (apparence?.yeux ?? apparence?.corps) === "yeux-arques" ? (
+          <path d="M86 120c5-6 15-6 20 0M134 120c5-6 15-6 20 0" fill="none" stroke="#57385f" strokeLinecap="round" strokeWidth="4.5" />
+        ) : (apparence?.yeux ?? apparence?.corps) === "yeux-arques-cils" ? (
+          <g fill="none" stroke="#57385f" strokeLinecap="round">
+            <path d="M86 120c5-6 15-6 20 0M134 120c5-6 15-6 20 0" strokeWidth="4.5" />
+            <path d="M85.5 119.5l-5-2M87.5 116.5l-4-4M91 114.5l-2-5M154.5 119.5l5-2M152.5 116.5l4-4M149 114.5l2-5" strokeWidth="3" />
+          </g>
         ) : (apparence?.yeux ?? apparence?.corps) === "yeux-spirales" ? (
           <g fill="none" stroke="#302744" strokeLinecap="round" strokeWidth="4">
             <path d="M101 117c0-7-10-7-10 0s10 7 10 0 9-6 9 1" />
@@ -284,10 +364,23 @@ export default function BibitIllustration({ apparence, className = "", decorativ
       {apparence?.accessoire === "accessoire-crotte-spirale" && (
         <image href={`${import.meta.env.BASE_URL}chapeau-crotte-spirale.svg?v=1`} x="48" y="22" width="144" height="144" />
       )}
-      {apparence?.pieds !== "aucun" && (
-        <g fill={couleur} stroke="#57385f" strokeLinecap="round" strokeWidth="5">
-          <path d="M88 195v8M152 195v8" />
-        </g>
+      {apparence?.pieds === "pieds-coussinets" && (
+        <>
+          <g fill={couleur} stroke="#57385f" strokeLinecap="round" strokeLinejoin="round" strokeWidth="5">
+            <ellipse cx="88" cy="202" rx="17" ry="11" />
+            <ellipse cx="152" cy="202" rx="17" ry="11" />
+          </g>
+          <g fill="#ed8eaf">
+            <g transform="translate(88 203.5) scale(.9 .8) translate(-88 -202)">
+              <path d="M88 200c-5 0-7 4-6 6 1 2 3 2 6 2s5 0 6-2c1-2-1-6-6-6Z" />
+              <circle cx="80" cy="197" r="2.5" /><circle cx="88" cy="194" r="2.5" /><circle cx="96" cy="197" r="2.5" />
+            </g>
+            <g transform="translate(152 203.5) scale(.9 .8) translate(-152 -202)">
+              <path d="M152 200c-5 0-7 4-6 6 1 2 3 2 6 2s5 0 6-2c1-2-1-6-6-6Z" />
+              <circle cx="144" cy="197" r="2.5" /><circle cx="152" cy="194" r="2.5" /><circle cx="160" cy="197" r="2.5" />
+            </g>
+          </g>
+        </>
       )}
       {apparence?.couleur === "couleur-caca" && (
         <g fill="none" stroke="#7CBD55" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
