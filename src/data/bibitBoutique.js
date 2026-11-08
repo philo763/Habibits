@@ -63,6 +63,7 @@ export const COULEURS_BIBIT = {
   "couleur-vanille-madagascar": "#f3e5b3",
   "couleur-chocolat-lait": "#795548",
   "couleur-chocolat-noir": "#4E342E",
+  "couleur-blanc-ours-polaire": "#f5f8fb",
   "couleur-peche": "#ffc5a1",
   "couleur-abricot": "#f4a261",
   "couleur-lavande": "#b7a1d8",
@@ -73,6 +74,7 @@ export const COULEURS_BIBIT = {
   "couleur-doree": "#f2bf46",
   "couleur-arc-en-ciel": "#ed5b91",
   "couleur-caca": "#87502F",
+  "couleur-spirale-satin-bleu": "#4422FD",
 };
 
 export const FONDS_BIBIT = {
@@ -109,9 +111,11 @@ export const ARTICLES_BIBIT = [
   { id: "couleur-chocolat-lait", categorie: "couleur", sousCategorie: "unie", emplacement: "couleur", nom: "Chocolat au lait", description: "Un brun gourmand et réconfortant.", prix: 5, couleur: "#795548" },
   { id: "couleur-chocolat-noir", categorie: "couleur", sousCategorie: "unie", emplacement: "couleur", nom: "Chocolat noir", description: "Un brun intense et profond.", prix: 5, couleur: "#4E342E" },
   { id: "couleur-gris-souris", categorie: "couleur", sousCategorie: "unie", emplacement: "couleur", nom: "Gris souris", description: "Un gris doux et tout en discrétion.", prix: 5, couleur: "#9b9ba0" },
+  { id: "couleur-blanc-ours-polaire", categorie: "couleur", sousCategorie: "unie", emplacement: "couleur", nom: "Blanc polaire", description: "Un blanc immaculé, doux comme la neige.", prix: 5, couleur: "#f5f8fb" },
   { id: "couleur-doree", categorie: "couleur", sousCategorie: "special", emplacement: "couleur", nom: "Or scintillant", description: "Une robe dorée qui capte la lumière.", prix: 10, couleur: "#f2bf46" },
   { id: "couleur-arc-en-ciel", categorie: "couleur", sousCategorie: "special", emplacement: "couleur", nom: "Arc-en-ciel", description: "Un dégradé multicolore, lumineux et joyeux.", prix: 15, couleur: "#ed5b91" },
   { id: "couleur-caca", categorie: "couleur", sousCategorie: "special", emplacement: "couleur", nom: "Caca", description: "Un petit look qui ne manque pas de flair !", prix: 10, couleur: "#87502F" },
+  { id: "couleur-spirale-satin-bleu", categorie: "couleur", sousCategorie: "special", emplacement: "couleur", nom: "Mystic blue", description: "Un dégradé en spirale, du bleu électrique au bleu nuit.", prix: 15, couleur: "#4422FD" },
   { id: "fond-rose", categorie: "fond", sousCategorie: "unie", emplacement: "fond", nom: "Rose Barbapapa", description: "Un dégradé rose tendre et gourmand autour de ton Bibit.", prix: 4 },
   { id: "fond-bleu-ciel", categorie: "fond", sousCategorie: "unie", emplacement: "fond", nom: "Ciel doux", description: "Un dégradé bleu clair et profond comme un ciel de printemps.", prix: 4 },
   { id: "fond-menthe", categorie: "fond", sousCategorie: "unie", emplacement: "fond", nom: "Jardin menthe", description: "Un dégradé vert frais et apaisant autour de ton Bibit.", prix: 4 },
@@ -133,6 +137,7 @@ export const ARTICLES_BIBIT = [
   { id: "oreilles-chat", categorie: "corps", sousCategorie: "oreilles", emplacement: "oreilles", nom: "Oreilles de chat", description: "Des oreilles pointues avec trois poils au sommet, comme un Maine coon.", prix: 6 },
   { id: "oreilles-chien", categorie: "corps", sousCategorie: "oreilles", emplacement: "oreilles", nom: "Oreilles de chien", description: "Des oreilles qui tombent gentiment sur les côtés.", prix: 6 },
   { id: "oreilles-lapin", categorie: "corps", sousCategorie: "oreilles", emplacement: "oreilles", nom: "Oreilles de lapin", description: "De longues oreilles dressées à l’intérieur rose.", prix: 6 },
+  { id: "oreilles-girafe", categorie: "corps", sousCategorie: "oreilles", emplacement: "oreilles", nom: "Antennes de girafe", description: "Deux petites antennes à pompons, comme une girafe.", prix: 10 },
   { id: "bouche-ondulee", categorie: "corps", sousCategorie: "bouche", emplacement: "bouche", nom: "Bouche Pika", description: "Un sourire ondulé plein de malice.", prix: 6 },
   { id: "bouche-pika-ouverte", categorie: "corps", sousCategorie: "bouche", emplacement: "bouche", nom: "Bouche ouverte Pika", description: "Une bouche ouverte rouge et rose au sourire espiègle.", prix: 6 },
   { id: "queue-pika", categorie: "corps", sousCategorie: "queue", emplacement: "queue", nom: "Queue Pika", description: "Une queue Pika jaune avec une base prune.", prix: 15 },
