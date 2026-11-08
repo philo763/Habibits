@@ -1,7 +1,7 @@
 import { useId } from "react";
 import { COULEURS_BIBIT } from "./data/bibitBoutique";
 
-const PAIRES_OREILLES = ["oreilles-ours", "oreilles-chat", "oreilles-chien", "oreilles-lapin"];
+const PAIRES_OREILLES = ["oreilles-ours", "oreilles-chat", "oreilles-chien", "oreilles-lapin", "oreilles-girafe"];
 
 function DemiOreilleAnimale({ type, couleur, miroir }) {
   const contour = { stroke: "#57385f", strokeLinejoin: "round", strokeLinecap: "round" };
@@ -31,13 +31,44 @@ function DemiOreilleAnimale({ type, couleur, miroir }) {
           <path d="M72 82C58 56 58 10 76 6c15 1 24 40 28 70Z" transform="translate(82 52) scale(.6) translate(-82 -52)" fill="#ed8eaf" stroke="none" />
         </g>
       )}
+      {type === "oreilles-girafe" && (
+        <g {...contour} strokeWidth="5" fill={couleur}>
+          <path d="M91 70L88 34h10l3 38Z" />
+          <circle cx="93" cy="30" r="8" />
+        </g>
+      )}
     </g>
   );
 }
 
+const SPIRALE_DEBUT = [0x44, 0x22, 0xfd];
+const SPIRALE_FIN = [0x16, 0x0e, 0x5b];
+
+function segmentsSpirale() {
+  const tours = 4;
+  const pasParTour = 32;
+  const bandes = 16;
+  const pas = 210 / tours;
+  return Array.from({ length: bandes }, (_, k) => {
+    const s = (k + 0.5) / bandes;
+    const t = 1 - Math.abs(2 * s - 1);
+    const rgb = SPIRALE_DEBUT.map((c, j) => Math.round(c + (SPIRALE_FIN[j] - c) * t));
+    let d = "";
+    for (let i = 0; i <= (tours + 1) * pasParTour; i++) {
+      const u = i / pasParTour;
+      const r = Math.max(0, u * pas - pas * (1 - s));
+      const a = u * Math.PI * 2;
+      d += `${i ? "L" : "M"}${(120 + r * Math.cos(a)).toFixed(1)} ${(140 + r * Math.sin(a)).toFixed(1)}`;
+    }
+    return { d, couleur: `rgb(${rgb.join(",")})` };
+  });
+}
+
+const SEGMENTS_SPIRALE = segmentsSpirale();
+
 export default function BibitIllustration({ apparence, className = "", decorative = false, canvasEtendue = false }) {
   const idGradient = `bibit-couleur-${useId().replace(/:/g, "")}`;
-  const couleurPersonnalisee = ["couleur-doree", "couleur-arc-en-ciel", "couleur-caca"].includes(apparence?.couleur);
+  const couleurPersonnalisee = ["couleur-doree", "couleur-arc-en-ciel", "couleur-caca", "couleur-spirale-satin-bleu"].includes(apparence?.couleur);
   const couleur = couleurPersonnalisee ? `url(#${idGradient})` :
     COULEURS_BIBIT[apparence?.couleur] || COULEURS_BIBIT.rose;
   const ariaProps = decorative
@@ -71,6 +102,13 @@ export default function BibitIllustration({ apparence, className = "", decorativ
               <stop offset="88%" stopColor="#55bde8" />
               <stop offset="100%" stopColor="#9b72dc" />
             </linearGradient>
+          ) : apparence.couleur === "couleur-spirale-satin-bleu" ? (
+            <pattern id={idGradient} patternUnits="userSpaceOnUse" x="0" y="0" width="240" height="240">
+              <rect width="240" height="240" fill="#4422FD" />
+              <g fill="none" strokeWidth="4.2" strokeLinejoin="round">
+                {SEGMENTS_SPIRALE.map((s, i) => <path key={i} d={s.d} stroke={s.couleur} />)}
+              </g>
+            </pattern>
           ) : (
             <>
               <linearGradient id={idGradient} x1="0" y1="0" x2="1" y2="1">
