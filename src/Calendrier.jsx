@@ -269,7 +269,9 @@ export default function Calendrier({
                   <IndicateurDifficulte difficulte={j.defiCopie?.difficulte || defi?.difficulte} />
                 </span>
               )}
-              {j.nonReussi && <span className="coche">{j.note ? "📝" : "×"}</span>}
+              {j.nonReussi && (
+                <span className="case-indicateur" role="img" aria-label={j.note ? "Défi raté, avec une note" : "Défi raté"}>{j.note ? "📝" : "×"}</span>
+              )}
               {j.objetUtilise === "lotus" && !j.fait && (
                 <span className="case-indicateur" role="img" aria-label="Jour de repos">🪷</span>
               )}
