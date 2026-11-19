@@ -2,7 +2,7 @@ export const COULEURS_OBJECTIF = [
   { id: "bleu", nom: "Bleu", valeur: "#4aa3ff" },
   { id: "cyan", nom: "Cyan", valeur: "#24c7d9" },
   { id: "turquoise", nom: "Turquoise", valeur: "#2fc5a2" },
-  { id: "vert", nom: "Ardoise", valeur: "#8596ad" },
+  { id: "vert", nom: "Indigo", valeur: "#6f74f0" },
   { id: "citron", nom: "Citron", valeur: "#b5cf4a" },
   { id: "or", nom: "Or", valeur: "#f5c542" },
   { id: "orange", nom: "Magenta", valeur: "#d45c9f" },
