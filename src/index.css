@@ -276,11 +276,11 @@ select:focus { outline: none; border-color: var(--or); }
 .num { font-size: 16px; font-weight: 700; }
 .coche { position: absolute; top: 2px; right: 4px; font-size: 14px; color: #fff; }
 .indicateur-difficulte-case { display: flex; }
-.indicateur-difficulte-case .indicateur-difficulte { gap: 3px; height: 22px; }
-.indicateur-difficulte-case .indicateur-difficulte-barre { width: 6px; border-width: 1.5px; }
-.indicateur-difficulte-case .indicateur-difficulte-barre:nth-child(1) { height: 8px; }
-.indicateur-difficulte-case .indicateur-difficulte-barre:nth-child(2) { height: 15px; }
-.indicateur-difficulte-case .indicateur-difficulte-barre:nth-child(3) { height: 22px; }
+.indicateur-difficulte-case .indicateur-difficulte { gap: 2.7px; height: 20px; }
+.indicateur-difficulte-case .indicateur-difficulte-barre { width: 5.4px; border-width: 1.5px; }
+.indicateur-difficulte-case .indicateur-difficulte-barre:nth-child(1) { height: 7px; }
+.indicateur-difficulte-case .indicateur-difficulte-barre:nth-child(2) { height: 13.5px; }
+.indicateur-difficulte-case .indicateur-difficulte-barre:nth-child(3) { height: 20px; }
 .case-indicateur {
   position: absolute;
   top: calc(50% + 8px);
