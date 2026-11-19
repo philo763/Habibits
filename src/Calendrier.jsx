@@ -2,9 +2,10 @@ import { useState } from "react";
 import { cleDate, grilleDuMois } from "./dates";
 import { couleurObjectif } from "./objectifs";
 import { calculerRecompenses, recompensePourDifficulte } from "./recompenses";
-import { OBJETS, calculerObjets, messageMiroir, pommesBonusObjets } from "./objets";
+import { SENS_MAIN, calculerObjets, messageMiroir, nouveauxCoups, pommesBonusObjets } from "./objets";
 import { tirerDefis } from "./tirage";
 import IndicateurDifficulte from "./IndicateurDifficulte";
+import CaseCalendrier from "./CaseCalendrier";
 
 const NOMS_JOURS = ["L", "M", "M", "J", "V", "S", "D"];
 const DIFFICULTES = ["facile", "moyen", "difficile"];
@@ -95,12 +96,7 @@ export default function Calendrier({
       const joursApres = { ...jours, [selection]: { ...jours[selection], ...patch } };
       const recompensesAvant = calculerRecompenses(jours);
       const recompensesApres = calculerRecompenses(joursApres);
-      const objetsAvant = calculerObjets(jours).gagnes;
-      const objetsApres = calculerObjets(joursApres).gagnes;
-      const objetsGagnes = OBJETS.filter((objet) => objetsApres[objet.id] > objetsAvant[objet.id]).map((objet) => ({
-        ...objet,
-        nombre: objetsApres[objet.id] - objetsAvant[objet.id],
-      }));
+      const objetsGagnes = nouveauxCoups(calculerObjets(jours).evenements, calculerObjets(joursApres).evenements);
       if (await maj(selection, patch)) {
         setConfirmation(null);
         const montant = recompensesApres.recompenses - recompensesAvant.recompenses;
@@ -238,53 +234,36 @@ export default function Calendrier({
           else if (j.nonReussi) etat = "non-reussi";
           else if (j.choisi) etat = "choisi";
           else if ((j.propositions || []).length) etat = "propose";
-          const classes = [
-            "case",
-            etat,
-            j.fait && colonneSemaine > 0 && date.getDate() > 1 &&
-              jours[cleDate(datePrecedente)]?.fait ? "porte-gauche" : "",
-            j.fait && colonneSemaine < 6 && date.getDate() < dernierJourDuMois &&
-              jours[cleDate(dateSuivante)]?.fait ? "porte-droite" : "",
-            porteHaut || porteBas ? "porte-verticale" : "",
-            cle === selection ? "selection" : "",
-            cle === aujourdhui ? "aujourdhui" : "",
-            cle < aujourdhui ? "passe" : "",
-          ].join(" ");
           return (
-            <button key={i} className={classes}
-              style={defi ? { "--couleur": couleurDefi(defi, j.objectifCopie) } : undefined}
+            <CaseCalendrier
+              key={i}
+              etat={etat}
+              couleur={defi ? couleurDefi(defi, j.objectifCopie) : undefined}
+              numero={date.getDate()}
+              portes={{
+                gauche: j.fait && colonneSemaine > 0 && date.getDate() > 1 && jours[cleDate(datePrecedente)]?.fait,
+                droite: j.fait && colonneSemaine < 6 && date.getDate() < dernierJourDuMois && jours[cleDate(dateSuivante)]?.fait,
+                haut: porteHaut,
+                bas: porteBas,
+              }}
+              etoile={Boolean(j.defiDuMomentIdLorsValidation)}
+              difficulte={j.defiCopie?.difficulte || defi?.difficulte}
+              note={Boolean(j.note)}
+              lotus={j.objetUtilise === "lotus" && !j.fait}
+              attente={!j.choisi && !j.fait && !j.nonReussi && (j.propositions || []).length > 0}
+              de={!j.choisi && !j.fait && !j.nonReussi && !(j.propositions || []).length &&
+                !lectureSeule && cle >= aujourdhui && cle <= demain && defis.length > 0 && j.objetUtilise !== "lotus"}
+              className={[
+                cle === selection ? "selection" : "",
+                cle === aujourdhui ? "aujourdhui" : "",
+                cle < aujourdhui ? "passe" : "",
+              ].filter(Boolean).join(" ")}
               onClick={() => {
-              setSelection(cle);
-              setAlerteTirage(false);
-              setErreurTirage("");
-            }}>
-              {porteHaut && <span className="porte porte-haut" aria-hidden="true" />}
-              {porteBas && <span className="porte porte-bas" aria-hidden="true" />}
-              <span className="num">{date.getDate()}</span>
-              {j.fait && j.defiDuMomentIdLorsValidation && (
-                <span className="coche" role="img" aria-label="Défi du moment">⭐</span>
-              )}
-              {j.fait && (
-                <span className="case-indicateur indicateur-difficulte-case">
-                  <IndicateurDifficulte difficulte={j.defiCopie?.difficulte || defi?.difficulte} />
-                </span>
-              )}
-              {j.nonReussi && (
-                <span className="case-indicateur" role="img" aria-label={j.note ? "Défi raté, avec une note" : "Défi raté"}>{j.note ? "📝" : "×"}</span>
-              )}
-              {j.objetUtilise === "lotus" && !j.fait && (
-                <span className="case-indicateur" role="img" aria-label="Jour de repos">🪷</span>
-              )}
-              {!j.choisi && !j.fait && !j.nonReussi && (j.propositions || []).length > 0 && (
-                <span className="case-indicateur" role="img" aria-label="Défis tirés, choix en attente">🤔</span>
-              )}
-              {!j.choisi && !j.fait && !j.nonReussi && !(j.propositions || []).length &&
-                !lectureSeule && cle >= aujourdhui && cle <= demain && defis.length > 0 && j.objetUtilise !== "lotus" && (
-                  <span className="case-indicateur de-a-quatre" role="img" aria-label="Tirer des défis">
-                    🎲
-                  </span>
-                )}
-            </button>
+                setSelection(cle);
+                setAlerteTirage(false);
+                setErreurTirage("");
+              }}
+            />
           );
         })}
       </div>
@@ -518,9 +497,9 @@ export default function Calendrier({
                 {gain.objetsGagnes?.length > 0 && (
                   <div className="gain-objets">
                     <strong>Coup de poker ! 🃏</strong>
-                    {gain.objetsGagnes.map((objet) => (
-                      <p key={objet.id}>
-                        {objet.combinaison} : + {objet.nombre} {objet.nom} <span aria-hidden="true">{objet.emoji}</span>
+                    {gain.objetsGagnes.map((coup) => (
+                      <p key={coup.cle}>
+                        {coup.combinaison} {SENS_MAIN[coup.sens]} → + {coup.nombre} {coup.nom} <span aria-hidden="true">{coup.emoji}</span>
                       </p>
                     ))}
                   </div>

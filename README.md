@@ -6,7 +6,8 @@ Les données restent **sur le téléphone**, dans le navigateur : pas de compte,
 
 ## Fonctionnalités actuelles
 
-- **Calendrier** mensuel : une case par jour, avec le titre du défi choisi et de petits couloirs entre les jours consécutifs validés ; aux coupures entre deux mois, un couloir indique la continuité sur le bord.
+- **Calendrier** mensuel : une case de taille fixe par jour ; un jour réussi affiche la difficulté de son défi (barres) dans la couleur de son objectif. Des portes relient deux jours réussis voisins, en ligne comme en colonne, à l'intérieur du mois.
+- **Coups de poker** : les jours réussis qui se suivent forment des mains (paire, brelan, suite…), en ligne dans la semaine et en colonne d'une semaine à l'autre, et rapportent des objets.
 - **Tirage quotidien** en un clic, pour aujourd’hui ou demain : une carte facile, une moyenne et une difficile, puis choix d'un défi.
 - **Collection** : après avoir validé un défi, on peut ajouter sa carte à sa collection, y compris pour une validation passée en ouvrant cette journée dans le calendrier. Chaque validation apparaît séparément avec sa date ; les cartes utilisent les informations actuelles du défi tant qu’il existe et conservent leur copie si le défi est supprimé. Les filtres par difficulté et les tris récent/ancien reprennent ceux de « Mes défis ».
 - **Mon Bibit** : une créature SVG en couches à personnaliser avec une couleur, un style de corps (les yeux pour le catalogue actuel) et un accessoire. Les sections Couleurs, Corps, Accessoires et Habibits sont partagées avec Le Shop ; Habibits affiche « À venir ».
@@ -30,12 +31,14 @@ Les données restent **sur le téléphone**, dans le navigateur : pas de compte,
 - **Style « blueprint »** : fond bleu nuit, plan quadrillé, tuiles à bordure colorée, titres en majuscules condensées.
 - **Web app installable (PWA)** : manifeste, icônes et service worker pour le fonctionnement hors connexion.
 
-États d'une case du calendrier : bleu = vide, violet pointillé = trois défis tirés, orange = défi choisi, vert avec ✔ = défi validé, rouge avec × = défi non réussi. Un seul tirage est possible par jour ; les propositions sont conservées et ne sont pas retirées à chaque visite.
+États d'une case du calendrier : bleu = vide, 🤔 = trois défis tirés en attente de choix, bordure de la couleur de l'objectif = défi choisi, barres de difficulté = défi validé (⭐ en haut à droite pour le défi du moment), × ou 📝 = défi non réussi (avec ou sans note), 🪷 = jour de repos. Un seul tirage est possible par jour ; les propositions sont conservées et ne sont pas retirées à chaque visite.
 
 ## Règles du calendrier
 
 - Un tirage par jour, pour aujourd’hui ou demain, propose un défi facile, un moyen et un difficile ; les cartes restent disponibles après le tirage. Si le défi du moment est activé, il remplace la carte aléatoire de sa difficulté. Les autres dates ne créent aucune donnée de tirage.
 - Chaque validation rapporte 1, 3 ou 5 cacas selon la difficulté. Le bonus du défi du moment est attribué une fois par semaine calendaire (lundi-dimanche), dès que l’objectif défini est atteint ; il équivaut à la somme des gains de ce défi pour la semaine. Le seuil est celui enregistré à la première validation du défi dans la semaine.
+- Coups de poker : chaque jour réussi est une carte (valeur = difficulté, couleur = objectif). Les mains se forment en ligne (une semaine du lundi au dimanche) et en colonne (le même jour de la semaine dans le mois) ; une carte compte dans les deux. Une main est limitée au mois. Un défi raté ou un jour sans défi réussi casse la série ; un jour de repos (Lotus) est neutre. Chaque main rapporte son objet dès qu'elle est atteinte, une fois par série (la paire : une Boule disco par paire). Le message de gain précise la main et son sens.
+- Bascule des règles du poker (`DATE_BASCULE_POKER` dans `src/objets.js`, lundi 23 novembre 2026) : les semaines plus anciennes gardent l'ancienne règle (toute la semaine forme une main, sans trous ni coupure au mois) pour ne retirer aucun objet déjà gagné. Les colonnes s'appliquent à tout l'historique.
 - Les achats dans Le Shop sont débités de Mes popommes, pas des cacas ou cœurs affichés dans le calendrier et la Collection. Chaque article disponible est achetable une seule fois et reste débloqué définitivement. Les anciennes récompenses sont converties à raison d’une pomme par caca et par cœur gagné, en déduisant les achats déjà effectués. Une validation corrigée peut faire passer le solde de popommes sous zéro ; les prochains gains le réduisent et les achats sont bloqués tant que le solde ne couvre pas leur prix.
 - Si un niveau n'est pas représenté, un message conseille de créer un défi de cette difficulté et donne accès à « Mes défis ». Il est aussi possible de continuer : chaque carte manquante est alors tirée au hasard parmi les défis encore disponibles, sans modifier sa difficulté enregistrée.
 - Trois défis distincts au minimum sont nécessaires. On choisit une seule carte par jour ; une confirmation est demandée avant chaque choix et validation. Un défi déjà choisi peut être validé ou marqué comme non réussi, y compris pour un jour passé.
@@ -62,6 +65,9 @@ src/
   App.jsx               Écran principal et navigation
   Accueil.jsx           Présentation et réglages de première utilisation
   Calendrier.jsx        Calendrier, tirage, choix et validation
+  CaseCalendrier.jsx    Case du calendrier, réutilisée par les illustrations des règles
+  Regles.jsx            Page des règles du jeu
+  objets.js             Coups de poker (mains en ligne et en colonne) et objets
   recompenses.js        Calcul des cacas et des bonus hebdomadaires
   Collection.jsx        Collection des cartes de défis validés
   MonBibit.jsx          Personnalisation de la créature
@@ -127,7 +133,7 @@ npm run lint
 
 Deux sauvegardes fictives, à la racine du dépôt, se restaurent depuis **Paramètres** :
 
-- `sauvegarde-test-calendrier.json` : calendrier d'août à novembre 2026 bien rempli, pour tester l'affichage, les récompenses et les objets. 11 défis sur trois objectifs, 84 jours réussis des trois difficultés (avec portes horizontales et verticales), 15 jours ratés avec et sans note, deux étoiles « défi du moment », des objets utilisés (Lotus le 14/09, Chameau le 07/10, Fusée le 21/10, Boule disco le 26/08), un défi choisi non validé (17/11) et un tirage en attente de choix (18/11). Les récompenses sont calculées par l'appli : 265 cacas, 15 cœurs, 285 popommes et un sac bien rempli.
+- `sauvegarde-test-calendrier.json` : calendrier d'août à novembre 2026 bien rempli, pour tester l'affichage, les récompenses et les objets. 11 défis sur trois objectifs, 84 jours réussis des trois difficultés (avec portes horizontales et verticales), 15 jours ratés avec et sans note, deux étoiles « défi du moment », des objets utilisés (Lotus le 14/09, Chameau le 07/10, Fusée le 21/10, Boule disco le 26/08), un défi choisi non validé (17/11) et un tirage en attente de choix (18/11). Les récompenses sont calculées par l'appli : 265 cacas, 15 cœurs, 285 popommes et un sac bien rempli (dont 98 boules disco, 13 chameaux et 16 dauphins avec les mains en colonne).
 - `sauvegarde-test-tirage.json` : 8 défis, un jour réussi (10/11), un tirage sans choix (15/11) et un tirage avec défi choisi non validé (18/11), pour tester les tirages.
 
 Les dates sont fixes (2026) : plus tard, navigue jusqu'aux mois concernés dans le calendrier pour les voir.

@@ -103,26 +103,31 @@ function categorieDuJour(jour, date) {
 
 const NIVEAU_DIFFICULTE = { facile: 1, moyen: 2, difficile: 3 };
 
-export function calculerObjets(jours) {
-  const gagnes = Object.fromEntries(IDS.map((id) => [id, 0]));
-  const evenements = [];
-  const semaines = new Map();
+// Premier lundi où les semaines suivent les nouvelles règles (trous qui cassent la série,
+// semaine coupée au changement de mois). Les semaines plus anciennes gardent l'ancienne
+// règle pour qu'aucun objet déjà gagné ne disparaisse. Les colonnes, elles, comptent
+// pour tout l'historique.
+export const DATE_BASCULE_POKER = "2026-11-23";
 
-  const ajouter = (date, combinaison, objet, nombre = 1) => {
-    gagnes[objet] += nombre;
-    evenements.push({ date, combinaison, objet, nombre });
-  };
+export const SENS_MAIN = {
+  semaine: "sur la semaine",
+  colonne: "en colonne",
+};
 
-  Object.keys(jours || {}).filter((date) => FORMAT_DATE.test(date)).sort().forEach((date) => {
-    const jour = jours[date];
-    if (!jour?.fait) return;
+// Une carte : un jour réussi. Un jour de repos (lotus) est neutre ; tout autre jour
+// (raté, vide, pas encore validé) est un trou.
+function natureDuJour(jour) {
+  if (jour?.fait) return "carte";
+  if (jour?.objetUtilise === "lotus") return "neutre";
+  return "trou";
+}
+
+// Évalue une main (cartes dans l'ordre chronologique) et appelle `ajouter` dès qu'un coup est atteint.
+function evaluerMain(cartes, ajouter) {
+  const etat = { valeurs: {}, paires: {}, categories: {}, categoriesValeurs: {}, obtenus: new Set() };
+  cartes.forEach(({ date, jour }) => {
     const difficulte = jour.defiCopie?.difficulte;
     const categorie = categorieDuJour(jour, date);
-    const semaine = debutSemaine(date);
-    if (!semaines.has(semaine)) {
-      semaines.set(semaine, { valeurs: {}, paires: {}, categories: {}, categoriesValeurs: {}, obtenus: new Set() });
-    }
-    const etat = semaines.get(semaine);
     const unique = (cle, combinaison, objet) => {
       if (etat.obtenus.has(cle)) return;
       etat.obtenus.add(cle);
@@ -154,6 +159,68 @@ export function calculerObjets(jours) {
     if (Object.keys(NIVEAU_DIFFICULTE).every((nom) => etat.valeurs[nom] > 0)) unique("suite", "Suite", "lotus");
     if (etat.categoriesValeurs[categorie].size === 3) unique("suite-couleur", "Suite couleur", "diamant");
   });
+}
+
+// Découpe une suite de dates en séries de cartes : un trou termine la série, un jour neutre est ignoré.
+function series(dates, jours) {
+  const resultat = [];
+  let courante = [];
+  dates.forEach((date) => {
+    const nature = natureDuJour(jours[date]);
+    if (nature === "carte") courante.push({ date, jour: jours[date] });
+    else if (nature === "trou" && courante.length) {
+      resultat.push(courante);
+      courante = [];
+    }
+  });
+  if (courante.length) resultat.push(courante);
+  return resultat;
+}
+
+const moisDe = (date) => date.slice(0, 7);
+
+export function calculerObjets(jours) {
+  const gagnes = Object.fromEntries(IDS.map((id) => [id, 0]));
+  const evenements = [];
+  const datesReussies = Object.keys(jours || {}).filter((date) => FORMAT_DATE.test(date) && jours[date]?.fait).sort();
+
+  const ajouterPour = (sens) => (date, combinaison, objet, nombre = 1) => {
+    gagnes[objet] += nombre;
+    evenements.push({ date, combinaison, objet, nombre, sens });
+  };
+
+  // Lignes : une semaine du lundi au dimanche
+  const semaines = [...new Set(datesReussies.map(debutSemaine))];
+  semaines.forEach((lundi) => {
+    const datesSemaine = Array.from({ length: 7 }, (_, i) => decalerJour(lundi, i));
+    if (lundi < DATE_BASCULE_POKER) {
+      // Ancienne règle : toutes les cartes de la semaine forment une seule main
+      const cartes = datesSemaine.filter((date) => jours[date]?.fait).map((date) => ({ date, jour: jours[date] }));
+      evaluerMain(cartes, ajouterPour("semaine"));
+      return;
+    }
+    // Nouvelle règle : la semaine est coupée au changement de mois, puis à chaque trou
+    [...new Set(datesSemaine.map(moisDe))].forEach((mois) => {
+      series(datesSemaine.filter((date) => moisDe(date) === mois), jours)
+        .forEach((serie) => evaluerMain(serie, ajouterPour("semaine")));
+    });
+  });
+
+  // Colonnes : le même jour de la semaine dans un mois, sur tout l'historique
+  const mois = [...new Set(datesReussies.map(moisDe))];
+  mois.forEach((cleMois) => {
+    const [annee, numeroMois] = cleMois.split("-").map(Number);
+    const nombreJours = new Date(annee, numeroMois, 0).getDate();
+    for (let premier = 1; premier <= 7; premier++) {
+      const dates = [];
+      for (let jour = premier; jour <= nombreJours; jour += 7) {
+        dates.push(`${cleMois}-${String(jour).padStart(2, "0")}`);
+      }
+      series(dates, jours).forEach((serie) => evaluerMain(serie, ajouterPour("colonne")));
+    }
+  });
+
+  evenements.sort((a, b) => a.date.localeCompare(b.date));
 
   const utilises = Object.fromEntries(IDS.map((id) => [id, 0]));
   Object.values(jours || {}).forEach((jour) => {
@@ -166,6 +233,22 @@ export function calculerObjets(jours) {
   const inventaire = Object.fromEntries(IDS.map((id) => [id, Math.max(0, gagnes[id] - utilises[id])]));
 
   return { gagnes, inventaire, evenements };
+}
+
+// Coups de poker gagnés entre deux calculs : regroupés par sens, main et objet.
+export function nouveauxCoups(evenementsAvant, evenementsApres) {
+  const compter = (evenements) => evenements.reduce((totaux, { sens, combinaison, objet, nombre }) => {
+    const cle = `${sens}|${combinaison}|${objet}`;
+    totaux.set(cle, (totaux.get(cle) || 0) + nombre);
+    return totaux;
+  }, new Map());
+  const avant = compter(evenementsAvant);
+  return [...compter(evenementsApres)]
+    .filter(([cle, nombre]) => nombre > (avant.get(cle) || 0))
+    .map(([cle, nombre]) => {
+      const [sens, combinaison, objet] = cle.split("|");
+      return { ...OBJETS.find((item) => item.id === objet), cle, sens, combinaison, nombre: nombre - (avant.get(cle) || 0) };
+    });
 }
 
 export function messageMiroir(jours) {
