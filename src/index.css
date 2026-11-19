@@ -225,7 +225,26 @@ select:focus { outline: none; border-color: var(--or); }
 .case.choisi, .case.fait {
   background-color: color-mix(in srgb, var(--couleur) 22%, rgba(10, 22, 49, 0.8));
 }
-.case.porte-droite, .case.porte-gauche { z-index: 2; overflow: visible; }
+.case.porte-droite, .case.porte-gauche, .case.porte-verticale { z-index: 2; overflow: visible; }
+.case .porte {
+  position: absolute;
+  left: calc(50% - 7px);
+  width: 14px;
+  height: 6px;
+  background: var(--nuit);
+  border: 2px solid var(--couleur);
+  pointer-events: none;
+}
+.case .porte-haut {
+  top: -5px;
+  border-top: 0;
+  border-radius: 0 0 2px 2px;
+}
+.case .porte-bas {
+  bottom: -5px;
+  border-bottom: 0;
+  border-radius: 2px 2px 0 0;
+}
 .case.porte-droite::after, .case.porte-gauche::before {
   position: absolute;
   top: 50%;
@@ -252,7 +271,7 @@ select:focus { outline: none; border-color: var(--or); }
 .case.passe:not(.fait) { opacity: 0.55; }
 .case.aujourdhui .num { color: var(--or); }
 .case.selection { box-shadow: 0 0 0 2px var(--or); }
-.case.selection.porte-droite, .case.selection.porte-gauche { z-index: 1; }
+.case.selection.porte-droite, .case.selection.porte-gauche, .case.selection.porte-verticale { z-index: 1; }
 .num { font-size: 16px; font-weight: 700; }
 .coche { position: absolute; top: 2px; right: 4px; font-size: 14px; color: #fff; }
 .case-indicateur {

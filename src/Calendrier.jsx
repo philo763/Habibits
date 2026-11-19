@@ -227,6 +227,11 @@ export default function Calendrier({
           const dateSuivante = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1);
           const j = cle <= demain || donneesAnciennesVisibles(cle) ? jours[cle] || {} : {};
           const colonneSemaine = (date.getDay() + 6) % 7;
+          const dernierJourDuMois = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+          const porteHaut = j.fait && date.getDate() > 7 &&
+            jours[cleDate(new Date(date.getFullYear(), date.getMonth(), date.getDate() - 7))]?.fait;
+          const porteBas = j.fait && date.getDate() + 7 <= dernierJourDuMois &&
+            jours[cleDate(new Date(date.getFullYear(), date.getMonth(), date.getDate() + 7))]?.fait;
           const defi = j.choisi ? trouver(j.choisi) || j.defiCopie : null;
           let etat = "vide";
           if (j.fait) etat = "fait";
@@ -240,9 +245,10 @@ export default function Calendrier({
               date.getDate() === 1 || jours[cleDate(datePrecedente)]?.fait
             ) ? "porte-gauche" : "",
             j.fait && colonneSemaine < 6 && (
-              date.getDate() === new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate() ||
+              date.getDate() === dernierJourDuMois ||
               jours[cleDate(dateSuivante)]?.fait
             ) ? "porte-droite" : "",
+            porteHaut || porteBas ? "porte-verticale" : "",
             cle === selection ? "selection" : "",
             cle === aujourdhui ? "aujourdhui" : "",
             cle < aujourdhui ? "passe" : "",
@@ -255,6 +261,8 @@ export default function Calendrier({
               setAlerteTirage(false);
               setErreurTirage("");
             }}>
+              {porteHaut && <span className="porte porte-haut" aria-hidden="true" />}
+              {porteBas && <span className="porte porte-bas" aria-hidden="true" />}
               <span className="num" style={j.fait ? { color: { facile: "var(--vert)", moyen: "var(--orange)", difficile: "var(--rouge)" }[j.defiCopie?.difficulte || defi?.difficulte] } : undefined}>{date.getDate()}</span>
               {j.fait && <span className="coche">{j.defiDuMomentIdLorsValidation ? "⭐" : ""}✔</span>}
               {j.nonReussi && <span className="coche">{j.note ? "📝" : "×"}</span>}
