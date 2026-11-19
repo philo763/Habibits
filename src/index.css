@@ -257,7 +257,7 @@ select:focus { outline: none; border-color: var(--or); }
 .coche { position: absolute; top: 2px; right: 4px; font-size: 14px; color: #fff; }
 .case-indicateur {
   position: absolute;
-  top: 50%;
+  top: calc(50% + 8px);
   left: 50%;
   transform: translate(-50%, -50%);
   font-size: 24px;
