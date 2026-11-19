@@ -260,13 +260,19 @@ export default function Calendrier({
             }}>
               {porteHaut && <span className="porte porte-haut" aria-hidden="true" />}
               {porteBas && <span className="porte porte-bas" aria-hidden="true" />}
-              <span className="num" style={j.fait ? { color: { facile: "var(--vert)", moyen: "var(--orange)", difficile: "var(--rouge)" }[j.defiCopie?.difficulte || defi?.difficulte] } : undefined}>{date.getDate()}</span>
-              {j.fait && <span className="coche">{j.defiDuMomentIdLorsValidation ? "⭐" : ""}✔</span>}
+              <span className="num">{date.getDate()}</span>
+              {j.fait && j.defiDuMomentIdLorsValidation && (
+                <span className="coche" role="img" aria-label="Défi du moment">⭐</span>
+              )}
+              {j.fait && (
+                <span className="case-indicateur indicateur-difficulte-case">
+                  <IndicateurDifficulte difficulte={j.defiCopie?.difficulte || defi?.difficulte} />
+                </span>
+              )}
               {j.nonReussi && <span className="coche">{j.note ? "📝" : "×"}</span>}
               {j.objetUtilise === "lotus" && !j.fait && (
                 <span className="case-indicateur" role="img" aria-label="Jour de repos">🪷</span>
               )}
-              <span className="titre-case">{defi && !(j.objetUtilise === "lotus" && !j.fait) ? defi.titre : ""}</span>
               {!j.choisi && !j.fait && !j.nonReussi && (j.propositions || []).length > 0 && (
                 <span className="case-indicateur" role="img" aria-label="Défis tirés, choix en attente">🤔</span>
               )}
