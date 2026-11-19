@@ -228,7 +228,8 @@ select:focus { outline: none; border-color: var(--or); }
 .case.porte-droite, .case.porte-gauche, .case.porte-verticale { z-index: 2; overflow: visible; }
 .case .porte {
   position: absolute;
-  left: calc(50% - 7px);
+  left: calc(50% - 9px);
+  box-sizing: content-box;
   width: 14px;
   height: 6px;
   background: var(--nuit);

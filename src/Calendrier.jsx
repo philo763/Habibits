@@ -241,13 +241,10 @@ export default function Calendrier({
           const classes = [
             "case",
             etat,
-            j.fait && colonneSemaine > 0 && (
-              date.getDate() === 1 || jours[cleDate(datePrecedente)]?.fait
-            ) ? "porte-gauche" : "",
-            j.fait && colonneSemaine < 6 && (
-              date.getDate() === dernierJourDuMois ||
-              jours[cleDate(dateSuivante)]?.fait
-            ) ? "porte-droite" : "",
+            j.fait && colonneSemaine > 0 && date.getDate() > 1 &&
+              jours[cleDate(datePrecedente)]?.fait ? "porte-gauche" : "",
+            j.fait && colonneSemaine < 6 && date.getDate() < dernierJourDuMois &&
+              jours[cleDate(dateSuivante)]?.fait ? "porte-droite" : "",
             porteHaut || porteBas ? "porte-verticale" : "",
             cle === selection ? "selection" : "",
             cle === aujourdhui ? "aujourdhui" : "",
