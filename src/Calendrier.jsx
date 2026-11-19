@@ -260,7 +260,7 @@ export default function Calendrier({
             }}>
               {porteHaut && <span className="porte porte-haut" aria-hidden="true" />}
               {porteBas && <span className="porte porte-bas" aria-hidden="true" />}
-              <span className="num" style={j.fait ? { color: { facile: "var(--vert)", moyen: "var(--orange)", difficile: "var(--rouge)" }[j.defiCopie?.difficulte || defi?.difficulte] } : undefined}>{date.getDate()}</span>
+              <span className="num">{date.getDate()}</span>
               {j.fait && j.defiDuMomentIdLorsValidation && (
                 <span className="coche" role="img" aria-label="Défi du moment">⭐</span>
               )}
