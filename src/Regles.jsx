@@ -1,17 +1,53 @@
-const C = "♥";
-const P = "♠";
-const K = "♦";
-const T = "♣";
+import CaseCalendrier from "./CaseCalendrier";
+import { couleurObjectif } from "./objectifs";
+
+// Couleurs d'exemple pour les cases des règles (une couleur = un objectif)
+const V = couleurObjectif("violet");
+const T = couleurObjectif("turquoise");
+const R = couleurObjectif("rose");
+const DIFFICULTE = { F: "facile", M: "moyen", D: "difficile" };
+
 const COUPS = [
-  { nom: "Paire", objet: "🪩 boule disco (×1 facile, ×2 moyen, ×3 difficile)", cartes: [["F", C], ["F", P]] },
-  { nom: "Double paire", objet: "🐫 chameau", cartes: [["F", C], ["F", P], ["M", K], ["M", T]] },
-  { nom: "Brelan", objet: "🐬 dauphin", cartes: [["M", K], ["M", C], ["M", T]] },
-  { nom: "Suite", objet: "🪷 lotus", cartes: [["F", P], ["M", C], ["D", K]] },
+  { nom: "Paire", objet: "🪩 boule disco (×1 facile, ×2 moyen, ×3 difficile)", cartes: [["F", V], ["F", T]] },
+  { nom: "Double paire", objet: "🐫 chameau", cartes: [["F", V], ["F", T], ["M", R], ["M", V]] },
+  { nom: "Brelan", objet: "🐬 dauphin", cartes: [["M", R], ["M", V], ["M", T]] },
+  { nom: "Suite", objet: "🪷 lotus", cartes: [["F", T], ["M", V], ["D", R]] },
   { nom: "Couleur", objet: "🪄 baguette magique", cartes: [["F", T], ["D", T], ["M", T], ["F", T], ["D", T]] },
-  { nom: "Full", objet: "🔮 boule de cristal", cartes: [["D", C], ["D", P], ["D", K], ["F", T], ["F", C]] },
-  { nom: "Carré", objet: "🚀 fusée", cartes: [["F", C], ["F", P], ["F", K], ["F", T]] },
-  { nom: "Suite couleur", objet: "💎 diamant (objet au choix)", cartes: [["F", C], ["M", C], ["D", C]] },
+  { nom: "Full", objet: "🔮 boule de cristal", cartes: [["D", V], ["D", T], ["D", R], ["F", T], ["F", V]] },
+  { nom: "Carré", objet: "🚀 fusée", cartes: [["F", V], ["F", T], ["F", R], ["F", V]] },
+  { nom: "Suite couleur", objet: "💎 diamant (objet au choix)", cartes: [["F", R], ["M", R], ["D", R]] },
 ];
+
+// Une carte : [difficulté, couleur] ; "rate" pour un défi raté, "lotus" pour un jour de repos.
+function estCarte(carte) {
+  return Array.isArray(carte);
+}
+
+// Une suite de cases d'exemple, en ligne ou en colonne, reliées par des portes entre deux jours réussis.
+function CasesExemple({ cartes, vertical = false }) {
+  return (
+    <span className={`regles-cases ${vertical ? "verticales" : ""}`} aria-hidden="true">
+      {cartes.map((carte, i) => {
+        const avant = estCarte(cartes[i - 1]);
+        const apres = estCarte(cartes[i + 1]);
+        if (carte === "rate") return <CaseCalendrier key={i} element="span" etat="non-reussi" className="sans-numero" />;
+        if (carte === "lotus") return <CaseCalendrier key={i} element="span" lotus className="sans-numero" />;
+        const [valeur, couleur] = carte;
+        return (
+          <CaseCalendrier
+            key={i}
+            element="span"
+            etat="fait"
+            couleur={couleur}
+            difficulte={DIFFICULTE[valeur]}
+            className="sans-numero"
+            portes={vertical ? { haut: avant, bas: apres } : { gauche: avant, droite: apres }}
+          />
+        );
+      })}
+    </span>
+  );
+}
 
 export default function Regles() {
   return (
@@ -47,25 +83,37 @@ export default function Regles() {
       <details className="regles-section">
         <summary><h3>Coups de poker</h3></summary>
         <ul>
-          <li>Chaque défi réussi est une carte : sa <strong>valeur</strong> est sa difficulté (F facile, M moyen, D difficile) et sa <strong>couleur</strong> est sa catégorie.</li>
-          <li>Les cartes de la semaine (lundi–dimanche) forment des mains. Chaque main te donne un objet dès qu’elle est atteinte, et tout repart à zéro à la fin de la semaine.</li>
-          <li>Un jour de repos 🪷 est neutre. Un seul objet utilisable par jour.</li>
+          <li>Chaque défi réussi est une carte : sa <strong>valeur</strong> est sa difficulté (barres) et sa <strong>couleur</strong> est son objectif.</li>
+          <li>Les cartes qui se suivent forment des mains, <strong>en ligne</strong> (dans la semaine) comme <strong>en colonne</strong> (le même jour de la semaine, d’une semaine à l’autre). Une carte compte dans sa ligne et dans sa colonne.</li>
+          <li>Une main reste dans le mois : elle repart à zéro au changement de mois, et chaque semaine aussi pour les lignes.</li>
+          <li>Un défi raté ou un jour sans défi réussi casse la série. Un jour de repos 🪷 est neutre : il ne casse rien.</li>
+          <li>Chaque main te donne un objet dès qu’elle est atteinte. Un seul objet utilisable par jour.</li>
         </ul>
         <ul className="regles-poker">
           {COUPS.map((coup) => (
             <li key={coup.nom}>
-              <span className="cartes-mini" aria-hidden="true">
-                {coup.cartes.map(([valeur, symbole], i) => (
-                  <span key={i} className={`carte-mini ${symbole === C || symbole === K ? "rouge" : ""}`}>
-                    <small>{valeur}</small>{symbole}
-                  </span>
-                ))}
-              </span>
+              <CasesExemple cartes={coup.cartes} />
               <span><strong>{coup.nom}</strong> → {coup.objet}</span>
             </li>
           ))}
         </ul>
-        <p className="regles-poker-note">Double paire : deux paires. Suite : facile + moyen + difficile. Couleur : 5 défis de la même catégorie. Full : brelan + paire. Suite couleur : facile + moyen + difficile de la même catégorie. Fusée : après la validation, un bouton 🚀 permet de valider le défi une 2ème fois.</p>
+        <p className="regles-poker-note">Double paire : deux paires. Suite : facile + moyen + difficile. Couleur : 5 défis du même objectif. Full : brelan + paire. Suite couleur : facile + moyen + difficile du même objectif. Fusée : après la validation, un bouton 🚀 permet de valider le défi une 2ème fois.</p>
+
+        <h4 className="regles-exemples-titre">Exemples</h4>
+        <ul className="regles-poker regles-exemples">
+          <li>
+            <CasesExemple cartes={[["F", V], ["M", T], ["D", R]]} vertical />
+            <span><strong>En colonne</strong> : trois lundis de suite (facile, moyen, difficile) → Suite 🪷.</span>
+          </li>
+          <li>
+            <CasesExemple cartes={[["F", V], ["F", T], "rate", ["M", R], ["M", V]]} />
+            <span><strong>Le raté casse la série</strong> : deux paires séparées → 2 boules disco 🪩, mais pas de double paire.</span>
+          </li>
+          <li>
+            <CasesExemple cartes={[["D", T], "lotus", ["D", R]]} />
+            <span><strong>Le repos ne casse rien</strong> : paire de difficiles → 🪩 ×3.</span>
+          </li>
+        </ul>
       </details>
 
     </article>

@@ -7,6 +7,7 @@ Appli React + Vite (PWA) ; les données sont dans le localStorage (préfixe `hab
 - Toujours partir de la dernière version GitHub : `git pull origin main` sur `main` avant de commencer.
 - Une branche par sujet, nommée `philo763-<sujet>`, puis une PR vers `main`. Merger avec un commit de merge, seulement sur demande.
 - Échanges, commits et PR en français.
+- Les objets du poker sont recalculés à partir de tout l'historique : un changement de règle peut retirer des objets déjà gagnés. Pour éviter ça, `DATE_BASCULE_POKER` (`src/objets.js`) doit être un lundi pas encore passé au moment du merge ; vérifier la date avant de merger un changement de ces règles.
 
 ## Sauvegardes de test
 

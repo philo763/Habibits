@@ -851,10 +851,14 @@ select:focus { outline: none; border-color: var(--or); }
 .objet-sac-raison { color:#ffad55; margin:6px 0 0; font-size:.9rem; }
 .objet-sac-succes { margin:6px 0 0; font-size:.9rem; }
 .regles-poker { list-style:none; padding:0; display:grid; gap:6px; }
-.regles-poker li { display:flex; align-items:center; gap:10px; }
-.cartes-mini { display:inline-flex; min-width:112px; }
-.carte-mini { background:#fff; color:#222; border-radius:4px; width:20px; height:28px; display:inline-flex; align-items:center; justify-content:center; font-size:.95rem; margin-right:-4px; box-shadow:0 0 0 1px #0003; }
-.carte-mini.rouge { color:#d33; }
+.regles-poker li { display:flex; align-items:center; gap:12px; }
+.regles-poker { gap:14px; }
+.regles-poker li { flex-direction:column-reverse; align-items:flex-start; gap:6px; }
+.regles-cases { display:inline-flex; flex:none; gap:4px; }
+.regles-cases.verticales { flex-direction:column; }
+.regles-cases .case { width:40px; height:44px; flex:none; cursor:default; }
+.regles-cases .case.sans-numero .case-indicateur { top:50%; }
+.regles-exemples-titre { margin:16px 0 8px; }
 .regles-poker-note { font-size:.85rem; opacity:.8; }
 
 .objet-sac { padding:0; }
@@ -866,9 +870,6 @@ select:focus { outline: none; border-color: var(--or); }
 
 .objet-sac-info { font-style:normal; transform:none; }
 .message-miroir { font-style:italic; text-align:center; white-space:pre-wrap; }
-.carte-mini { flex-direction:column; line-height:1; width:24px; height:34px; }
-.carte-mini small { font-size:.6rem; font-weight:700; }
-.cartes-mini { min-width:130px; }
 
 .objet-sac-avenir { font-size: 0.65rem; font-weight: 700; color: #ffad55; margin-right: 4px; }
 
