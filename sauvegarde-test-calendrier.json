@@ -1,0 +1,400 @@
+{
+  "app": "habibits",
+  "version": 3,
+  "exporteLe": "2026-11-19T19:00:00.000Z",
+  "donnees": {
+    "defis": [
+      {
+        "id": "d1",
+        "titre": "Boire un grand verre d'eau au réveil",
+        "description": "Avant le café, avant le téléphone.",
+        "difficulte": "facile",
+        "objectifId": "o-hydratation",
+        "image": null,
+        "dateCreation": "2026-11-01T08:00:00.000Z"
+      },
+      {
+        "id": "d2",
+        "titre": "Marcher 10 minutes dehors",
+        "description": "Pas besoin d'aller loin, juste prendre l'air.",
+        "difficulte": "facile",
+        "objectifId": "o-sport",
+        "image": null,
+        "dateCreation": "2026-11-01T08:00:00.000Z"
+      },
+      {
+        "id": "d3",
+        "titre": "Ranger un seul tiroir",
+        "description": "Un seul, pas toute la maison.",
+        "difficulte": "facile",
+        "objectifId": "o-maison",
+        "image": null,
+        "dateCreation": "2026-11-01T08:00:00.000Z"
+      },
+      {
+        "id": "d4",
+        "titre": "Lire 15 minutes",
+        "description": "Choisis un livre et prends un moment au calme.",
+        "difficulte": "moyen",
+        "objectifId": "o-maison",
+        "image": null,
+        "dateCreation": "2026-11-01T08:00:00.000Z"
+      },
+      {
+        "id": "d5",
+        "titre": "Faire 30 minutes d'activité physique",
+        "description": "Choisis une activité adaptée à ton rythme.",
+        "difficulte": "difficile",
+        "objectifId": "o-sport",
+        "image": null,
+        "dateCreation": "2026-11-01T08:00:00.000Z"
+      },
+      {
+        "id": "L1",
+        "titre": "Aucun aliment industriel de toute la journée",
+        "description": "",
+        "difficulte": "moyen",
+        "objectifId": "o-sport",
+        "image": null,
+        "dateCreation": "2026-11-01T08:00:00.000Z"
+      },
+      {
+        "id": "L2",
+        "titre": "Faire 45min de séance à la salle 🏋️",
+        "description": "",
+        "difficulte": "difficile",
+        "objectifId": "o-sport",
+        "image": null,
+        "dateCreation": "2026-11-01T08:00:00.000Z"
+      },
+      {
+        "id": "L3",
+        "titre": "Manger un repas qui contient des légumes",
+        "description": "",
+        "difficulte": "facile",
+        "objectifId": "o-sport",
+        "image": null,
+        "dateCreation": "2026-11-01T08:00:00.000Z"
+      }
+    ],
+    "objectifs": [
+      {
+        "id": "o-hydratation",
+        "nom": "Hydratation",
+        "couleur": "cyan"
+      },
+      {
+        "id": "o-sport",
+        "nom": "Sport",
+        "couleur": "vert"
+      },
+      {
+        "id": "o-maison",
+        "nom": "Maison",
+        "couleur": "orange"
+      }
+    ],
+    "jours": {
+      "2026-11-01": {
+        "propositions": [
+          "L2"
+        ],
+        "choisi": "L2",
+        "defiCopie": {
+          "id": "L2",
+          "titre": "Faire 45min de séance à la salle 🏋️",
+          "description": "",
+          "difficulte": "difficile",
+          "objectifId": "o-sport",
+          "image": null,
+          "dateCreation": "2026-11-01T08:00:00.000Z"
+        },
+        "fait": true
+      },
+      "2026-11-02": {
+        "propositions": [
+          "L3"
+        ],
+        "choisi": "L3",
+        "defiCopie": {
+          "id": "L3",
+          "titre": "Manger un repas qui contient des légumes",
+          "description": "",
+          "difficulte": "facile",
+          "objectifId": "o-sport",
+          "image": null,
+          "dateCreation": "2026-11-01T08:00:00.000Z"
+        },
+        "fait": true
+      },
+      "2026-11-03": {
+        "propositions": [
+          "L1"
+        ],
+        "choisi": "L1",
+        "defiCopie": {
+          "id": "L1",
+          "titre": "Aucun aliment industriel de toute la journée",
+          "description": "",
+          "difficulte": "moyen",
+          "objectifId": "o-sport",
+          "image": null,
+          "dateCreation": "2026-11-01T08:00:00.000Z"
+        },
+        "fait": true
+      },
+      "2026-11-04": {
+        "propositions": [
+          "L2"
+        ],
+        "choisi": "L2",
+        "defiCopie": {
+          "id": "L2",
+          "titre": "Faire 45min de séance à la salle 🏋️",
+          "description": "",
+          "difficulte": "difficile",
+          "objectifId": "o-sport",
+          "image": null,
+          "dateCreation": "2026-11-01T08:00:00.000Z"
+        },
+        "nonReussi": true
+      },
+      "2026-11-05": {
+        "propositions": [
+          "L3"
+        ],
+        "choisi": "L3",
+        "defiCopie": {
+          "id": "L3",
+          "titre": "Manger un repas qui contient des légumes",
+          "description": "",
+          "difficulte": "facile",
+          "objectifId": "o-sport",
+          "image": null,
+          "dateCreation": "2026-11-01T08:00:00.000Z"
+        },
+        "fait": true,
+        "defiDuMomentIdLorsValidation": "L3"
+      },
+      "2026-11-06": {
+        "propositions": [
+          "L1"
+        ],
+        "choisi": "L1",
+        "defiCopie": {
+          "id": "L1",
+          "titre": "Aucun aliment industriel de toute la journée",
+          "description": "",
+          "difficulte": "moyen",
+          "objectifId": "o-sport",
+          "image": null,
+          "dateCreation": "2026-11-01T08:00:00.000Z"
+        },
+        "fait": true
+      },
+      "2026-11-07": {
+        "propositions": [
+          "L2"
+        ],
+        "choisi": "L2",
+        "defiCopie": {
+          "id": "L2",
+          "titre": "Faire 45min de séance à la salle 🏋️",
+          "description": "",
+          "difficulte": "difficile",
+          "objectifId": "o-sport",
+          "image": null,
+          "dateCreation": "2026-11-01T08:00:00.000Z"
+        },
+        "fait": true
+      },
+      "2026-11-08": {
+        "propositions": [
+          "L3"
+        ],
+        "choisi": "L3",
+        "defiCopie": {
+          "id": "L3",
+          "titre": "Manger un repas qui contient des légumes",
+          "description": "",
+          "difficulte": "facile",
+          "objectifId": "o-sport",
+          "image": null,
+          "dateCreation": "2026-11-01T08:00:00.000Z"
+        },
+        "nonReussi": true,
+        "note": "Trop fatiguée"
+      },
+      "2026-11-09": {
+        "propositions": [
+          "L1"
+        ],
+        "choisi": "L1",
+        "defiCopie": {
+          "id": "L1",
+          "titre": "Aucun aliment industriel de toute la journée",
+          "description": "",
+          "difficulte": "moyen",
+          "objectifId": "o-sport",
+          "image": null,
+          "dateCreation": "2026-11-01T08:00:00.000Z"
+        },
+        "fait": true
+      },
+      "2026-11-10": {
+        "propositions": [
+          "L2"
+        ],
+        "choisi": "L2",
+        "defiCopie": {
+          "id": "L2",
+          "titre": "Faire 45min de séance à la salle 🏋️",
+          "description": "",
+          "difficulte": "difficile",
+          "objectifId": "o-sport",
+          "image": null,
+          "dateCreation": "2026-11-01T08:00:00.000Z"
+        },
+        "fait": true
+      },
+      "2026-11-11": {
+        "propositions": [
+          "L3"
+        ],
+        "choisi": "L3",
+        "defiCopie": {
+          "id": "L3",
+          "titre": "Manger un repas qui contient des légumes",
+          "description": "",
+          "difficulte": "facile",
+          "objectifId": "o-sport",
+          "image": null,
+          "dateCreation": "2026-11-01T08:00:00.000Z"
+        },
+        "fait": true
+      },
+      "2026-11-12": {
+        "propositions": [
+          "L1"
+        ],
+        "choisi": "L1",
+        "defiCopie": {
+          "id": "L1",
+          "titre": "Aucun aliment industriel de toute la journée",
+          "description": "",
+          "difficulte": "moyen",
+          "objectifId": "o-sport",
+          "image": null,
+          "dateCreation": "2026-11-01T08:00:00.000Z"
+        },
+        "nonReussi": true
+      },
+      "2026-11-13": {
+        "propositions": [
+          "L2"
+        ],
+        "choisi": "L2",
+        "defiCopie": {
+          "id": "L2",
+          "titre": "Faire 45min de séance à la salle 🏋️",
+          "description": "",
+          "difficulte": "difficile",
+          "objectifId": "o-sport",
+          "image": null,
+          "dateCreation": "2026-11-01T08:00:00.000Z"
+        },
+        "fait": true,
+        "defiDuMomentIdLorsValidation": "L2"
+      },
+      "2026-11-14": {
+        "propositions": [
+          "L3"
+        ],
+        "choisi": "L3",
+        "defiCopie": {
+          "id": "L3",
+          "titre": "Manger un repas qui contient des légumes",
+          "description": "",
+          "difficulte": "facile",
+          "objectifId": "o-sport",
+          "image": null,
+          "dateCreation": "2026-11-01T08:00:00.000Z"
+        },
+        "fait": true
+      },
+      "2026-11-15": {
+        "propositions": [
+          "L1"
+        ],
+        "choisi": "L1",
+        "defiCopie": {
+          "id": "L1",
+          "titre": "Aucun aliment industriel de toute la journée",
+          "description": "",
+          "difficulte": "moyen",
+          "objectifId": "o-sport",
+          "image": null,
+          "dateCreation": "2026-11-01T08:00:00.000Z"
+        },
+        "fait": true
+      },
+      "2026-11-16": {
+        "propositions": [
+          "L2"
+        ],
+        "choisi": "L2",
+        "defiCopie": {
+          "id": "L2",
+          "titre": "Faire 45min de séance à la salle 🏋️",
+          "description": "",
+          "difficulte": "difficile",
+          "objectifId": "o-sport",
+          "image": null,
+          "dateCreation": "2026-11-01T08:00:00.000Z"
+        },
+        "nonReussi": true
+      },
+      "2026-11-17": {
+        "propositions": [
+          "L1",
+          "L2",
+          "L3"
+        ],
+        "choisi": "L2"
+      },
+      "2026-11-18": {
+        "propositions": [
+          "L1",
+          "L2",
+          "L3"
+        ]
+      }
+    },
+    "rappel": {
+      "heure": 20,
+      "minute": 0
+    },
+    "gestionDefis": {
+      "defiDuMomentId": "",
+      "defiDuMomentActif": false,
+      "frequencesHebdo": {}
+    },
+    "bibit": {
+      "achats": [],
+      "equipe": {
+        "couleur": "rose",
+        "yeux": "simples",
+        "joues": "joues-classiques",
+        "bouche": "bouche-classique",
+        "oreilles": "oreilles-classiques",
+        "bras": "bras-classiques",
+        "dos": "aucun",
+        "queue": "aucun",
+        "pieds": "pieds-classiques",
+        "accessoire": "aucun",
+        "habit": "aucun",
+        "fond": "fond-classique"
+      }
+    }
+  }
+}

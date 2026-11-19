@@ -1,0 +1,33 @@
+# Habibits : consignes pour Claude
+
+Appli React + Vite (PWA) ; les données sont dans le localStorage (préfixe `habibits.`). Le format des sauvegardes `.json` est dans `src/sauvegarde.js`. Le README décrit le projet en détail.
+
+## Façon de travailler
+
+- Toujours partir de la dernière version GitHub : `git pull origin main` sur `main` avant de commencer.
+- Une branche par sujet, nommée `philo763-<sujet>`, puis une PR vers `main`. Merger avec un commit de merge, seulement sur demande.
+- Échanges, commits et PR en français.
+
+## Sauvegardes de test
+
+À la racine du dépôt (détail dans la section « Sauvegardes de test » du README) :
+
+- `sauvegarde-test-calendrier.json` : calendrier de novembre 2026 très rempli (difficultés, portes, étoiles, jours ratés avec et sans note, tirages en cours, titres longs). À utiliser par défaut pour vérifier un changement visuel.
+- `sauvegarde-test-tirage.json` : cas de tirage (tirage sans choix, défi choisi non validé).
+
+Pour les charger dans la preview (`npm run dev`), sans passer par le sélecteur de fichier, exécuter dans la page :
+
+```js
+localStorage.clear();
+const m = await import('/src/sauvegarde.js');
+const texte = await (await fetch('/sauvegarde-test-calendrier.json')).text();
+const choix = await m.lireFichierChoisi(new File([texte], 'sauvegarde-test-calendrier.json'));
+if (!choix.ok) throw new Error(choix.erreur);
+await m.confirmerRestauration(choix, { continuerDansCeFichier: false });
+m.ecrireAccueil({ termine: true });
+location.reload();
+```
+
+Ce code passe par la vraie vérification et la vraie restauration de l'appli. Les dates sont en novembre 2026 : après ce mois, il faut naviguer jusqu'à novembre 2026 dans le calendrier.
+
+Si un changement de format des données rend ces fichiers invalides, les mettre à jour dans la même PR.

@@ -123,6 +123,15 @@ L'appli s'ouvre sur `http://localhost:5173`. Pour vérifier le code avec Oxlint 
 npm run lint
 ```
 
+### Sauvegardes de test
+
+Deux sauvegardes fictives, à la racine du dépôt, se restaurent depuis **Paramètres** :
+
+- `sauvegarde-test-calendrier.json` : calendrier de novembre 2026 bien rempli, pour tester l'affichage. Jours réussis des trois difficultés (avec portes horizontales et verticales), deux étoiles « défi du moment », jours ratés avec et sans note, un défi choisi non validé (17/11), un tirage en attente de choix (18/11), des titres de défis longs et trois objectifs.
+- `sauvegarde-test-tirage.json` : 8 défis, un jour réussi (10/11), un tirage sans choix (15/11) et un tirage avec défi choisi non validé (18/11), pour tester les tirages.
+
+Les deux contiennent des dates de novembre 2026 : après ce mois, navigue jusqu'à novembre 2026 dans le calendrier pour les voir.
+
 ## Build et publication
 
 ```
