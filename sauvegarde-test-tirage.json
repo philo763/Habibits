@@ -1,0 +1,37 @@
+{
+  "app": "habibits",
+  "version": 1,
+  "exporteLe": "2026-11-19T09:00:00.000Z",
+  "donnees": {
+    "objectifs": [
+      { "id": "o-sante", "nom": "Santé", "couleur": "cyan" },
+      { "id": "o-maison", "nom": "Maison", "couleur": "orange" },
+      { "id": "o-sport", "nom": "Sport", "couleur": "vert" }
+    ],
+    "defis": [
+      { "id": "d1", "titre": "Boire un grand verre d'eau au réveil", "description": "Avant le café, avant le téléphone.", "image": null, "objectifId": "o-sante", "difficulte": "facile", "dateCreation": "2026-11-01T08:00:00.000Z" },
+      { "id": "d2", "titre": "Marcher 10 minutes dehors", "description": "Pas besoin d'aller loin, juste prendre l'air.", "image": null, "objectifId": "o-sport", "difficulte": "facile", "dateCreation": "2026-11-01T08:01:00.000Z" },
+      { "id": "d3", "titre": "Ranger un seul tiroir", "description": "Un seul, pas toute la maison.", "image": null, "objectifId": "o-maison", "difficulte": "facile", "dateCreation": "2026-11-01T08:02:00.000Z" },
+      { "id": "d4", "titre": "Lire 15 minutes", "description": "Choisis un livre et prends un moment au calme.", "image": null, "objectifId": "o-maison", "difficulte": "moyen", "dateCreation": "2026-11-01T08:03:00.000Z" },
+      { "id": "d5", "titre": "Faire 30 minutes d'activité physique", "description": "Choisis une activité adaptée à ton rythme.", "image": null, "objectifId": "o-sport", "difficulte": "difficile", "dateCreation": "2026-11-01T08:04:00.000Z" },
+      { "id": "d6", "titre": "Se coucher avant 23 h", "description": "Téléphone posé à 22 h 30.", "image": null, "objectifId": "o-sante", "difficulte": "moyen", "dateCreation": "2026-11-01T08:05:00.000Z" },
+      { "id": "d7", "titre": "Cuisiner un repas maison", "description": "Même simple, tant que c'est fait maison.", "image": null, "objectifId": "o-maison", "difficulte": "moyen", "dateCreation": "2026-11-01T08:06:00.000Z" },
+      { "id": "d8", "titre": "Courir 5 km", "description": "À ton rythme, sans t'arrêter si possible.", "image": null, "objectifId": "o-sport", "difficulte": "difficile", "dateCreation": "2026-11-01T08:07:00.000Z" }
+    ],
+    "jours": {
+      "2026-11-10": {
+        "propositions": ["d3", "d6", "d5"],
+        "choisi": "d3",
+        "fait": true,
+        "defiCopie": { "id": "d3", "titre": "Ranger un seul tiroir", "description": "Un seul, pas toute la maison.", "image": null, "objectifId": "o-maison", "difficulte": "facile" },
+        "objectifCopie": { "id": "o-maison", "nom": "Maison", "couleur": "orange" },
+        "recompenseCaca": 1
+      },
+      "2026-11-15": { "propositions": ["d1", "d4", "d5"] },
+      "2026-11-18": { "propositions": ["d2", "d6", "d8"], "choisi": "d6" }
+    },
+    "rappel": { "heure": 20, "minute": 0 },
+    "gestionDefis": { "defiDuMomentId": "", "defiDuMomentActif": false, "frequencesHebdo": {} },
+    "bibit": { "achats": [] }
+  }
+}

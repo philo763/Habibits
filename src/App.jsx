@@ -26,6 +26,7 @@ import DefiDuMoment from "./DefiDuMoment";
 import Notes from "./Notes";
 import ObjetsSac from "./ObjetsSac";
 import { calculerObjets, limiteTirage, pommesBonusObjets } from "./objets";
+import { melanger } from "./tirage";
 import { Bandeaux, Indicateur } from "./Bandeaux";
 import { COULEURS_OBJECTIF, couleurObjectif } from "./objectifs";
 import IndicateurDifficulte from "./IndicateurDifficulte";
@@ -71,6 +72,29 @@ function datesAvecTirageInterdit(jours, dateLimite) {
     )
     .map(([date]) => date)
     .sort();
+}
+
+// Quand un défi est supprimé, les tirages pas encore terminés (pas de defiCopie : ni validé ni raté)
+// qui le contiennent reçoivent un autre défi à sa place, de même difficulté si possible.
+// S'il avait été choisi, le choix est annulé pour qu'on puisse rechoisir parmi 3 cartes.
+function remplacerDansTirages(jours, defiSupprime, defisRestants) {
+  let modifie = false;
+  const nouveauxJours = { ...jours };
+  for (const [date, jour] of Object.entries(jours)) {
+    const propositions = Array.isArray(jour?.propositions) ? jour.propositions : [];
+    if (jour?.defiCopie || !propositions.includes(defiSupprime.id)) continue;
+    const candidats = defisRestants.filter((defi) => !propositions.includes(defi.id));
+    const memeDifficulte = candidats.filter((defi) => defi.difficulte === defiSupprime.difficulte);
+    const remplacant = melanger(memeDifficulte.length > 0 ? memeDifficulte : candidats)[0];
+    const nouveauJour = {
+      ...jour,
+      propositions: propositions.flatMap((id) => (id !== defiSupprime.id ? [id] : remplacant ? [remplacant.id] : [])),
+    };
+    if (jour.choisi === defiSupprime.id) delete nouveauJour.choisi;
+    nouveauxJours[date] = nouveauJour;
+    modifie = true;
+  }
+  return modifie ? nouveauxJours : jours;
 }
 
 export default function App() {
@@ -329,8 +353,14 @@ export default function App() {
   }
 
   async function supprimerDefi(id) {
+    const defiSupprime = defis.find((d) => d.id === id);
     const liste = defis.filter((d) => d.id !== id);
     try {
+      const nouveauxJours = defiSupprime ? remplacerDansTirages(jours, defiSupprime, liste) : jours;
+      if (nouveauxJours !== jours) {
+        await sauvegarderJours(nouveauxJours);
+        setJours(nouveauxJours);
+      }
       await sauvegarderDefis(liste);
       setDefis(liste);
       if (gestionDefis.defiDuMomentId === id) {
