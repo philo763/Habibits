@@ -548,8 +548,8 @@ export default function App() {
             datesTiragesAConfirmer={datesTiragesAConfirmer}
             lectureSeule={datesTiragesAConfirmer.length > 0}
             onMajJour={majJour}
+            onMajJours={majJours}
             limite={limite}
-            onAllerObjets={() => aller("objets")}
             onAllerDefis={() => aller("defis")}
             onAllerCollection={() => aller("collection")}
             onAllerNotes={() => aller("notes")}

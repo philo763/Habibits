@@ -87,7 +87,7 @@ export default function Regles() {
           <li>Les cartes qui se suivent forment des mains, <strong>en ligne</strong> (dans la semaine) comme <strong>en colonne</strong> (le même jour de la semaine, d’une semaine à l’autre). Une carte compte dans sa ligne et dans sa colonne.</li>
           <li>Une main reste dans le mois : elle repart à zéro au changement de mois, et chaque semaine aussi pour les lignes.</li>
           <li>Un défi raté ou un jour sans défi réussi casse la série. Un jour de repos 🪷 est neutre : il ne casse rien.</li>
-          <li>Chaque main te donne un objet dès qu’elle est atteinte. Un seul objet utilisable par jour.</li>
+          <li>Chaque main te donne un objet dès qu’elle est atteinte. Tu peux en utiliser autant que tu veux dans la journée.</li>
         </ul>
         <ul className="regles-poker">
           {COUPS.map((coup) => (

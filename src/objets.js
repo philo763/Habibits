@@ -77,6 +77,8 @@ export const OBJETS = [
 ];
 
 export const OBJETS_POKER = ["de", "pomme", "baguette", "fusee", "lotus", "arc", "dauphin"];
+// Une deuxième utilisation le même jour n'apporterait rien.
+const OBJETS_EFFET_UNIQUE = ["pomme", "fusee", "lotus", "arc"];
 
 const IDS = OBJETS.map((objet) => objet.id);
 const FORMAT_DATE = /^\d{4}-\d{2}-\d{2}$/;
@@ -87,10 +89,24 @@ export function decalerJour(cle, nombre) {
   return cleDate(date);
 }
 
+// Objets utilisés un jour donné. Les anciens jours n'ont qu'un champ `objetUtilise`.
+export function objetsUtilisesDuJour(jour) {
+  if (Array.isArray(jour?.objetsUtilises)) return jour.objetsUtilises;
+  return jour?.objetUtilise ? [jour.objetUtilise] : [];
+}
+
+export const aUtilise = (jour, id) => objetsUtilisesDuJour(jour).includes(id);
+
+// Objets obtenus avec un diamant ce jour-là. Les anciens jours n'ont qu'un champ `diamantChoix`.
+export function diamantsDuJour(jour) {
+  if (Array.isArray(jour?.diamantsChoisis)) return jour.diamantsChoisis;
+  return jour?.diamantChoix ? [jour.diamantChoix] : [];
+}
+
 export function limiteTirage(jours, aujourdhui) {
   let limite = decalerJour(aujourdhui, 1);
   Object.entries(jours || {}).forEach(([date, jour]) => {
-    if (jour?.objetUtilise !== "arc" || !FORMAT_DATE.test(date)) return;
+    if (!aUtilise(jour, "arc") || !FORMAT_DATE.test(date)) return;
     const fin = decalerJour(date, 7);
     if (fin > limite) limite = fin;
   });
@@ -118,7 +134,7 @@ export const SENS_MAIN = {
 // (raté, vide, pas encore validé) est un trou.
 function natureDuJour(jour) {
   if (jour?.fait) return "carte";
-  if (jour?.objetUtilise === "lotus") return "neutre";
+  if (aUtilise(jour, "lotus")) return "neutre";
   return "trou";
 }
 
@@ -224,11 +240,14 @@ export function calculerObjets(jours) {
 
   const utilises = Object.fromEntries(IDS.map((id) => [id, 0]));
   Object.values(jours || {}).forEach((jour) => {
-    if (IDS.includes(jour?.objetUtilise)) utilises[jour.objetUtilise] += 1;
-    if (OBJETS_POKER.includes(jour?.diamantChoix)) {
+    objetsUtilisesDuJour(jour).forEach((id) => {
+      if (IDS.includes(id)) utilises[id] += 1;
+    });
+    diamantsDuJour(jour).forEach((id) => {
+      if (!OBJETS_POKER.includes(id)) return;
       utilises.diamant += 1;
-      gagnes[jour.diamantChoix] += 1;
-    }
+      gagnes[id] += 1;
+    });
   });
   const inventaire = Object.fromEntries(IDS.map((id) => [id, Math.max(0, gagnes[id] - utilises[id])]));
 
@@ -253,13 +272,13 @@ export function nouveauxCoups(evenementsAvant, evenementsApres) {
 
 export function messageMiroir(jours) {
   const dates = Object.keys(jours || {}).filter((date) => FORMAT_DATE.test(date) &&
-    jours[date]?.objetUtilise === "miroir" && typeof jours[date].miroirMessage === "string" &&
+    aUtilise(jours[date], "miroir") && typeof jours[date].miroirMessage === "string" &&
     jours[date].miroirMessage.trim()).sort();
   return dates.length ? jours[dates[dates.length - 1]].miroirMessage.trim() : "";
 }
 export function pommesBonusObjets(jours) {
   return Object.values(jours || {}).reduce((total, jour) => (
-    jour?.objetUtilise === "pomme" && jour.fait && Number.isInteger(jour.recompenseCaca)
+    aUtilise(jour, "pomme") && jour.fait && Number.isInteger(jour.recompenseCaca)
       ? total + Math.max(0, jour.recompenseCaca)
       : total
   ), 0);
@@ -274,12 +293,17 @@ export function statutObjet(id, { jours, aujourdhui, inventaire, defiChoisiExist
 
   if (id === "miroir" || id === "pinceau") return { ok: false, raison: "Cet objet est à venir : on ne peut pas encore l’obtenir." };
   if (id === "diamant") {
-    if (jour.diamantChoix) return { ok: false, raison: "Tu as déjà consommé un diamant aujourd’hui." };
     if (!inventaire.diamant) return { ok: false, raison: "Tu n’as pas de diamant. Forme une suite couleur pour en gagner un." };
     return { ok: true, raison: "" };
   }
-  if (jour.objetUtilise) return { ok: false, raison: "Tu as déjà utilisé un objet aujourd’hui. Reviens demain !" };
   if (!inventaire[id]) return { ok: false, raison: "Tu n’as pas encore cet objet. Forme une combinaison pour le gagner." };
+  // Pas de limite par jour, mais on évite de dépenser un objet qui n'aurait aucun effet.
+  if (OBJETS_EFFET_UNIQUE.includes(id) && aUtilise(jour, id)) {
+    return { ok: false, raison: "Cet objet est déjà actif aujourd’hui : en utiliser un autre ne changerait rien." };
+  }
+  if (id !== "arc" && aUtilise(jour, "lotus") && !jour.fait) {
+    return { ok: false, raison: "Aujourd’hui est un jour de repos : pas de défi à modifier." };
+  }
 
   if (id === "de") {
     if (jour.choisi) return { ok: false, raison: "Tu as déjà choisi ton défi du jour : la boule disco ne sert qu’avant de choisir." };
@@ -296,6 +320,7 @@ export function statutObjet(id, { jours, aujourdhui, inventaire, defiChoisiExist
   } else if (id === "dauphin") {
     if (!jour.choisi || !defiChoisiExiste) return { ok: false, raison: "Choisis d’abord un défi parmi les trois dans le calendrier." };
     if (demain.choisi) return { ok: false, raison: "Le défi de demain est déjà choisi." };
+    if (demain.dauphinDefiId === jour.choisi) return { ok: false, raison: "Ce défi est déjà prévu dans le tirage de demain." };
   }
   return { ok: true, raison: "" };
 }

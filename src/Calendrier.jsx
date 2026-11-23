@@ -2,10 +2,11 @@ import { useMemo, useState } from "react";
 import { cleDate, grilleDuMois } from "./dates";
 import { couleurObjectif } from "./objectifs";
 import { calculerRecompenses, recompensePourDifficulte } from "./recompenses";
-import { OBJETS, SENS_MAIN, calculerObjets, messageMiroir, nouveauxCoups, pommesBonusObjets } from "./objets";
+import { OBJETS, SENS_MAIN, aUtilise, calculerObjets, messageMiroir, nouveauxCoups, pommesBonusObjets } from "./objets";
 import { tirerDefis } from "./tirage";
 import IndicateurDifficulte from "./IndicateurDifficulte";
 import CaseCalendrier from "./CaseCalendrier";
+import ObjetsDuJour from "./ObjetsDuJour";
 
 const NOMS_JOURS = ["L", "M", "M", "J", "V", "S", "D"];
 const DIFFICULTES = ["facile", "moyen", "difficile"];
@@ -63,10 +64,10 @@ export default function Calendrier({
   limite,
   lectureSeule = false,
   onMajJour,
+  onMajJours,
   onAllerDefis,
   onAllerCollection,
   onAllerNotes,
-  onAllerObjets,
 }) {
   const [mois, setMois] = useState(() => {
     const n = new Date();
@@ -175,8 +176,8 @@ export default function Calendrier({
       objectifs.find((objectif) => objectif.id === defi?.objectifId)?.couleur || objectifCopie?.couleur
     );
   const cases = grilleDuMois(mois.getFullYear(), mois.getMonth());
-  const evenementsPoker = useMemo(() => calculerObjets(jours).evenements, [jours]);
-  const coupsDuJour = nouveauxCoups([], evenementsPoker.filter(({ date }) => date === selection))
+  const objetsPoker = useMemo(() => calculerObjets(jours), [jours]);
+  const coupsDuJour = nouveauxCoups([], objetsPoker.evenements.filter(({ date }) => date === selection))
     .sort((a, b) => rangObjet(a.id) - rangObjet(b.id));
   const jour = selection <= demain || donneesAnciennesVisibles(selection) ? jours[selection] || {} : {};
   const defiChoisi = jour.choisi ? trouver(jour.choisi) || jour.defiCopie : null;
@@ -184,7 +185,7 @@ export default function Calendrier({
   const modifiable = !lectureSeule && selection >= aujourdhui && selection <= demain;
   const jourPasseAvecTirage = !lectureSeule && selection < aujourdhui &&
     Boolean(jour.choisi || propositions.length > 0);
-  const jourRepos = jour.objetUtilise === "lotus" && !jour.fait;
+  const jourRepos = aUtilise(jour, "lotus") && !jour.fait;
   const peutModifierEtat = !lectureSeule && selection <= aujourdhui && Boolean(jour.choisi) && !jourRepos;
   const defiImpose = jour.dauphinDefiId ? trouver(jour.dauphinDefiId) || null : null;
   const difficultesManquantes = DIFFICULTES.filter(
@@ -269,10 +270,10 @@ export default function Calendrier({
               etoile={Boolean(j.defiDuMomentIdLorsValidation)}
               difficulte={j.defiCopie?.difficulte || defi?.difficulte}
               note={Boolean(j.note)}
-              lotus={j.objetUtilise === "lotus" && !j.fait}
+              lotus={aUtilise(j, "lotus") && !j.fait}
               attente={!j.choisi && !j.fait && !j.nonReussi && (j.propositions || []).length > 0}
               de={!j.choisi && !j.fait && !j.nonReussi && !(j.propositions || []).length &&
-                !lectureSeule && cle >= aujourdhui && cle <= demain && defis.length > 0 && j.objetUtilise !== "lotus"}
+                !lectureSeule && cle >= aujourdhui && cle <= demain && defis.length > 0 && !aUtilise(j, "lotus")}
               className={[
                 cle === selection ? "selection" : "",
                 cle === aujourdhui ? "aujourdhui" : "",
@@ -298,14 +299,22 @@ export default function Calendrier({
             <strong>{recompenses?.coeurs || 0}</strong>
           </span>
         </span>
-        <button className="btn petit bouton-utiliser-objet" onClick={onAllerObjets}>
-          <span aria-hidden="true">🎒</span> Utiliser un objet
-        </button>
       </div>
 
       <h3 className="jour-titre">
         {new Date(selection + "T00:00").toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long" })}
       </h3>
+
+      {selection === aujourdhui && !lectureSeule && (
+        <ObjetsDuJour
+          aujourdhui={aujourdhui}
+          defis={defis}
+          jours={jours}
+          inventaire={objetsPoker.inventaire}
+          defiDuMoment={defiDuMoment}
+          onMajJours={onMajJours}
+        />
+      )}
 
       {erreurTirage && <p className="alerte-tirage" role="alert">{erreurTirage}</p>}
 
@@ -335,7 +344,7 @@ export default function Calendrier({
           {jour.fait && (
             <>
               <p className="accompli">Bravo, défi accompli !</p>
-              {jour.objetUtilise === "fusee" && !jour.fuseeValidee && peutModifierEtat && (
+              {aUtilise(jour, "fusee") && !jour.fuseeValidee && peutModifierEtat && (
                 <button className="btn" onClick={() => setConfirmation({ type: "valider2" })}>
                   Valider une 2ème fois <span aria-hidden="true">🚀</span>
                 </button>
