@@ -1,7 +1,7 @@
 {
   "app": "habibits",
   "version": 3,
-  "exporteLe": "2026-11-19T19:00:00.000Z",
+  "exporteLe": "2026-11-23T19:00:00.000Z",
   "donnees": {
     "defis": [
       {
@@ -2583,28 +2583,28 @@
       },
       "2026-11-02": {
         "propositions": [
-          "L3",
+          "d3",
           "L1",
           "d4"
         ],
-        "choisi": "L3",
+        "choisi": "d3",
         "fait": true,
         "collectionProposable": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
-          "id": "L3",
-          "titre": "Manger un repas qui contient des légumes",
-          "description": "",
+          "id": "d3",
+          "titre": "Ranger un seul tiroir",
+          "description": "Un seul, pas toute la maison.",
           "difficulte": "facile",
-          "objectifId": "o-sport",
+          "objectifId": "o-maison",
           "image": null,
           "dateCreation": "2026-07-25T08:00:00.000Z"
         },
         "objectifCopie": {
-          "id": "o-sport",
-          "nom": "Sport",
-          "couleur": "vert"
+          "id": "o-maison",
+          "nom": "Maison",
+          "couleur": "orange"
         },
         "recompenseCaca": 1,
         "defiDuMomentIdLorsValidation": null,
@@ -2612,28 +2612,28 @@
       },
       "2026-11-03": {
         "propositions": [
-          "L1",
+          "d6",
           "L3",
           "d8"
         ],
-        "choisi": "L1",
+        "choisi": "d6",
         "fait": true,
         "collectionProposable": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
-          "id": "L1",
-          "titre": "Aucun aliment industriel de toute la journée",
-          "description": "",
+          "id": "d6",
+          "titre": "Boire 1,5 litre d'eau dans la journée",
+          "description": "Une gourde sur le bureau aide beaucoup.",
           "difficulte": "moyen",
-          "objectifId": "o-sport",
+          "objectifId": "o-hydratation",
           "image": null,
           "dateCreation": "2026-07-25T08:00:00.000Z"
         },
         "objectifCopie": {
-          "id": "o-sport",
-          "nom": "Sport",
-          "couleur": "vert"
+          "id": "o-hydratation",
+          "nom": "Hydratation",
+          "couleur": "cyan"
         },
         "recompenseCaca": 3,
         "defiDuMomentIdLorsValidation": null,
@@ -2641,29 +2641,29 @@
       },
       "2026-11-04": {
         "propositions": [
-          "L2",
+          "d8",
           "d6",
           "L1"
         ],
-        "choisi": "L2",
+        "choisi": "d8",
         "fait": false,
         "nonReussi": true,
         "note": "",
         "collectionProposable": false,
         "collectionne": false,
         "defiCopie": {
-          "id": "L2",
-          "titre": "Faire 45min de séance à la salle 🏋️",
+          "id": "d8",
+          "titre": "Passer l'aspirateur dans toute la maison",
           "description": "",
           "difficulte": "difficile",
-          "objectifId": "o-sport",
+          "objectifId": "o-maison",
           "image": null,
           "dateCreation": "2026-07-25T08:00:00.000Z"
         },
         "objectifCopie": {
-          "id": "o-sport",
-          "nom": "Sport",
-          "couleur": "vert"
+          "id": "o-maison",
+          "nom": "Maison",
+          "couleur": "orange"
         },
         "recompenseCaca": 0,
         "defiDuMomentIdLorsValidation": null,
@@ -2700,28 +2700,28 @@
       },
       "2026-11-06": {
         "propositions": [
-          "L1",
+          "d4",
           "d1",
           "d6"
         ],
-        "choisi": "L1",
+        "choisi": "d4",
         "fait": true,
         "collectionProposable": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
-          "id": "L1",
-          "titre": "Aucun aliment industriel de toute la journée",
-          "description": "",
+          "id": "d4",
+          "titre": "Lire 15 minutes",
+          "description": "Choisis un livre et prends un moment au calme.",
           "difficulte": "moyen",
-          "objectifId": "o-sport",
+          "objectifId": "o-maison",
           "image": null,
           "dateCreation": "2026-07-25T08:00:00.000Z"
         },
         "objectifCopie": {
-          "id": "o-sport",
-          "nom": "Sport",
-          "couleur": "vert"
+          "id": "o-maison",
+          "nom": "Maison",
+          "couleur": "orange"
         },
         "recompenseCaca": 3,
         "defiDuMomentIdLorsValidation": null,
@@ -2729,28 +2729,28 @@
       },
       "2026-11-07": {
         "propositions": [
-          "L2",
+          "d7",
           "d3",
           "d1"
         ],
-        "choisi": "L2",
+        "choisi": "d7",
         "fait": true,
         "collectionProposable": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
-          "id": "L2",
-          "titre": "Faire 45min de séance à la salle 🏋️",
+          "id": "d7",
+          "titre": "Aucun soda ni jus de toute la semaine",
           "description": "",
           "difficulte": "difficile",
-          "objectifId": "o-sport",
+          "objectifId": "o-hydratation",
           "image": null,
           "dateCreation": "2026-07-25T08:00:00.000Z"
         },
         "objectifCopie": {
-          "id": "o-sport",
-          "nom": "Sport",
-          "couleur": "vert"
+          "id": "o-hydratation",
+          "nom": "Hydratation",
+          "couleur": "cyan"
         },
         "recompenseCaca": 5,
         "defiDuMomentIdLorsValidation": null,
@@ -2758,29 +2758,29 @@
       },
       "2026-11-08": {
         "propositions": [
-          "L3",
+          "d1",
           "d6",
           "d8"
         ],
-        "choisi": "L3",
+        "choisi": "d1",
         "fait": false,
         "nonReussi": true,
         "note": "Trop fatiguée",
         "collectionProposable": false,
         "collectionne": false,
         "defiCopie": {
-          "id": "L3",
-          "titre": "Manger un repas qui contient des légumes",
-          "description": "",
+          "id": "d1",
+          "titre": "Boire un grand verre d'eau au réveil",
+          "description": "Avant le café, avant le téléphone.",
           "difficulte": "facile",
-          "objectifId": "o-sport",
+          "objectifId": "o-hydratation",
           "image": null,
           "dateCreation": "2026-07-25T08:00:00.000Z"
         },
         "objectifCopie": {
-          "id": "o-sport",
-          "nom": "Sport",
-          "couleur": "vert"
+          "id": "o-hydratation",
+          "nom": "Hydratation",
+          "couleur": "cyan"
         },
         "recompenseCaca": 0,
         "defiDuMomentIdLorsValidation": null,
@@ -2788,28 +2788,28 @@
       },
       "2026-11-09": {
         "propositions": [
-          "L1",
+          "d4",
           "d7",
           "d2"
         ],
-        "choisi": "L1",
+        "choisi": "d4",
         "fait": true,
         "collectionProposable": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
-          "id": "L1",
-          "titre": "Aucun aliment industriel de toute la journée",
-          "description": "",
+          "id": "d4",
+          "titre": "Lire 15 minutes",
+          "description": "Choisis un livre et prends un moment au calme.",
           "difficulte": "moyen",
-          "objectifId": "o-sport",
+          "objectifId": "o-maison",
           "image": null,
           "dateCreation": "2026-07-25T08:00:00.000Z"
         },
         "objectifCopie": {
-          "id": "o-sport",
-          "nom": "Sport",
-          "couleur": "vert"
+          "id": "o-maison",
+          "nom": "Maison",
+          "couleur": "orange"
         },
         "recompenseCaca": 3,
         "defiDuMomentIdLorsValidation": null,
@@ -2817,28 +2817,28 @@
       },
       "2026-11-10": {
         "propositions": [
-          "L2",
           "d8",
-          "d5"
+          "d5",
+          "d1"
         ],
-        "choisi": "L2",
+        "choisi": "d8",
         "fait": true,
         "collectionProposable": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
-          "id": "L2",
-          "titre": "Faire 45min de séance à la salle 🏋️",
+          "id": "d8",
+          "titre": "Passer l'aspirateur dans toute la maison",
           "description": "",
           "difficulte": "difficile",
-          "objectifId": "o-sport",
+          "objectifId": "o-maison",
           "image": null,
           "dateCreation": "2026-07-25T08:00:00.000Z"
         },
         "objectifCopie": {
-          "id": "o-sport",
-          "nom": "Sport",
-          "couleur": "vert"
+          "id": "o-maison",
+          "nom": "Maison",
+          "couleur": "orange"
         },
         "recompenseCaca": 5,
         "defiDuMomentIdLorsValidation": null,
@@ -2846,28 +2846,28 @@
       },
       "2026-11-11": {
         "propositions": [
-          "L3",
+          "d1",
           "d2",
           "d6"
         ],
-        "choisi": "L3",
+        "choisi": "d1",
         "fait": true,
         "collectionProposable": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
-          "id": "L3",
-          "titre": "Manger un repas qui contient des légumes",
-          "description": "",
+          "id": "d1",
+          "titre": "Boire un grand verre d'eau au réveil",
+          "description": "Avant le café, avant le téléphone.",
           "difficulte": "facile",
-          "objectifId": "o-sport",
+          "objectifId": "o-hydratation",
           "image": null,
           "dateCreation": "2026-07-25T08:00:00.000Z"
         },
         "objectifCopie": {
-          "id": "o-sport",
-          "nom": "Sport",
-          "couleur": "vert"
+          "id": "o-hydratation",
+          "nom": "Hydratation",
+          "couleur": "cyan"
         },
         "recompenseCaca": 1,
         "defiDuMomentIdLorsValidation": null,
@@ -2875,29 +2875,29 @@
       },
       "2026-11-12": {
         "propositions": [
-          "L1",
+          "d4",
           "d2",
           "d6"
         ],
-        "choisi": "L1",
+        "choisi": "d4",
         "fait": false,
         "nonReussi": true,
         "note": "",
         "collectionProposable": false,
         "collectionne": false,
         "defiCopie": {
-          "id": "L1",
-          "titre": "Aucun aliment industriel de toute la journée",
-          "description": "",
+          "id": "d4",
+          "titre": "Lire 15 minutes",
+          "description": "Choisis un livre et prends un moment au calme.",
           "difficulte": "moyen",
-          "objectifId": "o-sport",
+          "objectifId": "o-maison",
           "image": null,
           "dateCreation": "2026-07-25T08:00:00.000Z"
         },
         "objectifCopie": {
-          "id": "o-sport",
-          "nom": "Sport",
-          "couleur": "vert"
+          "id": "o-maison",
+          "nom": "Maison",
+          "couleur": "orange"
         },
         "recompenseCaca": 0,
         "defiDuMomentIdLorsValidation": null,
@@ -2934,28 +2934,28 @@
       },
       "2026-11-14": {
         "propositions": [
-          "L3",
           "d3",
-          "d4"
+          "d4",
+          "d1"
         ],
-        "choisi": "L3",
+        "choisi": "d3",
         "fait": true,
         "collectionProposable": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
-          "id": "L3",
-          "titre": "Manger un repas qui contient des légumes",
-          "description": "",
+          "id": "d3",
+          "titre": "Ranger un seul tiroir",
+          "description": "Un seul, pas toute la maison.",
           "difficulte": "facile",
-          "objectifId": "o-sport",
+          "objectifId": "o-maison",
           "image": null,
           "dateCreation": "2026-07-25T08:00:00.000Z"
         },
         "objectifCopie": {
-          "id": "o-sport",
-          "nom": "Sport",
-          "couleur": "vert"
+          "id": "o-maison",
+          "nom": "Maison",
+          "couleur": "orange"
         },
         "recompenseCaca": 1,
         "defiDuMomentIdLorsValidation": null,
@@ -2963,28 +2963,28 @@
       },
       "2026-11-15": {
         "propositions": [
-          "L1",
+          "d6",
           "d2",
-          "d6"
+          "d3"
         ],
-        "choisi": "L1",
+        "choisi": "d6",
         "fait": true,
         "collectionProposable": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
-          "id": "L1",
-          "titre": "Aucun aliment industriel de toute la journée",
-          "description": "",
+          "id": "d6",
+          "titre": "Boire 1,5 litre d'eau dans la journée",
+          "description": "Une gourde sur le bureau aide beaucoup.",
           "difficulte": "moyen",
-          "objectifId": "o-sport",
+          "objectifId": "o-hydratation",
           "image": null,
           "dateCreation": "2026-07-25T08:00:00.000Z"
         },
         "objectifCopie": {
-          "id": "o-sport",
-          "nom": "Sport",
-          "couleur": "vert"
+          "id": "o-hydratation",
+          "nom": "Hydratation",
+          "couleur": "cyan"
         },
         "recompenseCaca": 3,
         "defiDuMomentIdLorsValidation": null,
@@ -2992,20 +2992,20 @@
       },
       "2026-11-16": {
         "propositions": [
-          "L2",
+          "d5",
           "L1",
-          "d5"
+          "d1"
         ],
-        "choisi": "L2",
+        "choisi": "d5",
         "fait": false,
         "nonReussi": true,
         "note": "",
         "collectionProposable": false,
         "collectionne": false,
         "defiCopie": {
-          "id": "L2",
-          "titre": "Faire 45min de séance à la salle 🏋️",
-          "description": "",
+          "id": "d5",
+          "titre": "Faire 30 minutes d'activité physique",
+          "description": "Choisis une activité adaptée à ton rythme.",
           "difficulte": "difficile",
           "objectifId": "o-sport",
           "image": null,
@@ -3022,18 +3022,207 @@
       },
       "2026-11-17": {
         "propositions": [
-          "L1",
-          "L2",
-          "L3"
+          "d2",
+          "d1",
+          "d3"
         ],
-        "choisi": "L2"
+        "choisi": "d2",
+        "fait": true,
+        "collectionProposable": true,
+        "nonReussi": false,
+        "note": "",
+        "defiCopie": {
+          "id": "d2",
+          "titre": "Marcher 10 minutes dehors",
+          "description": "Pas besoin d'aller loin, juste prendre l'air.",
+          "difficulte": "facile",
+          "objectifId": "o-sport",
+          "image": null,
+          "dateCreation": "2026-07-25T08:00:00.000Z"
+        },
+        "objectifCopie": {
+          "id": "o-sport",
+          "nom": "Sport",
+          "couleur": "vert"
+        },
+        "recompenseCaca": 1,
+        "defiDuMomentIdLorsValidation": null,
+        "objectifHebdoDefiMoment": null
       },
       "2026-11-18": {
         "propositions": [
-          "L1",
-          "L2",
-          "L3"
-        ]
+          "d7",
+          "d2",
+          "d3"
+        ],
+        "choisi": "d7",
+        "fait": true,
+        "collectionProposable": true,
+        "nonReussi": false,
+        "note": "",
+        "defiCopie": {
+          "id": "d7",
+          "titre": "Aucun soda ni jus de toute la semaine",
+          "description": "",
+          "difficulte": "difficile",
+          "objectifId": "o-hydratation",
+          "image": null,
+          "dateCreation": "2026-07-25T08:00:00.000Z"
+        },
+        "objectifCopie": {
+          "id": "o-hydratation",
+          "nom": "Hydratation",
+          "couleur": "cyan"
+        },
+        "recompenseCaca": 5,
+        "defiDuMomentIdLorsValidation": null,
+        "objectifHebdoDefiMoment": null
+      },
+      "2026-11-19": {
+        "propositions": [
+          "d4",
+          "d1",
+          "d2"
+        ],
+        "choisi": "d4",
+        "fait": true,
+        "collectionProposable": true,
+        "nonReussi": false,
+        "note": "",
+        "defiCopie": {
+          "id": "d4",
+          "titre": "Lire 15 minutes",
+          "description": "Choisis un livre et prends un moment au calme.",
+          "difficulte": "moyen",
+          "objectifId": "o-maison",
+          "image": null,
+          "dateCreation": "2026-07-25T08:00:00.000Z"
+        },
+        "objectifCopie": {
+          "id": "o-maison",
+          "nom": "Maison",
+          "couleur": "orange"
+        },
+        "recompenseCaca": 3,
+        "defiDuMomentIdLorsValidation": null,
+        "objectifHebdoDefiMoment": null
+      },
+      "2026-11-20": {
+        "propositions": [
+          "d8",
+          "d1",
+          "d2"
+        ],
+        "choisi": "d8",
+        "fait": false,
+        "nonReussi": true,
+        "note": "Journée trop chargée",
+        "collectionProposable": false,
+        "collectionne": false,
+        "defiCopie": {
+          "id": "d8",
+          "titre": "Passer l'aspirateur dans toute la maison",
+          "description": "",
+          "difficulte": "difficile",
+          "objectifId": "o-maison",
+          "image": null,
+          "dateCreation": "2026-07-25T08:00:00.000Z"
+        },
+        "objectifCopie": {
+          "id": "o-maison",
+          "nom": "Maison",
+          "couleur": "orange"
+        },
+        "recompenseCaca": 0,
+        "defiDuMomentIdLorsValidation": null,
+        "objectifHebdoDefiMoment": null
+      },
+      "2026-11-21": {
+        "propositions": [
+          "d1",
+          "d2",
+          "d3"
+        ],
+        "choisi": "d1",
+        "fait": true,
+        "collectionProposable": true,
+        "nonReussi": false,
+        "note": "",
+        "defiCopie": {
+          "id": "d1",
+          "titre": "Boire un grand verre d'eau au réveil",
+          "description": "Avant le café, avant le téléphone.",
+          "difficulte": "facile",
+          "objectifId": "o-hydratation",
+          "image": null,
+          "dateCreation": "2026-07-25T08:00:00.000Z"
+        },
+        "objectifCopie": {
+          "id": "o-hydratation",
+          "nom": "Hydratation",
+          "couleur": "cyan"
+        },
+        "recompenseCaca": 1,
+        "defiDuMomentIdLorsValidation": null,
+        "objectifHebdoDefiMoment": null
+      },
+      "2026-11-22": {
+        "propositions": [
+          "d5",
+          "d1",
+          "d3"
+        ],
+        "choisi": "d5",
+        "fait": true,
+        "collectionProposable": true,
+        "nonReussi": false,
+        "note": "",
+        "defiCopie": {
+          "id": "d5",
+          "titre": "Faire 30 minutes d'activité physique",
+          "description": "Choisis une activité adaptée à ton rythme.",
+          "difficulte": "difficile",
+          "objectifId": "o-sport",
+          "image": null,
+          "dateCreation": "2026-07-25T08:00:00.000Z"
+        },
+        "objectifCopie": {
+          "id": "o-sport",
+          "nom": "Sport",
+          "couleur": "vert"
+        },
+        "recompenseCaca": 5,
+        "defiDuMomentIdLorsValidation": null,
+        "objectifHebdoDefiMoment": null
+      },
+      "2026-11-23": {
+        "propositions": [
+          "d6",
+          "d2",
+          "d3"
+        ],
+        "choisi": "d6",
+        "fait": true,
+        "collectionProposable": true,
+        "nonReussi": false,
+        "note": "",
+        "defiCopie": {
+          "id": "d6",
+          "titre": "Boire 1,5 litre d'eau dans la journée",
+          "description": "Une gourde sur le bureau aide beaucoup.",
+          "difficulte": "moyen",
+          "objectifId": "o-hydratation",
+          "image": null,
+          "dateCreation": "2026-07-25T08:00:00.000Z"
+        },
+        "objectifCopie": {
+          "id": "o-hydratation",
+          "nom": "Hydratation",
+          "couleur": "cyan"
+        },
+        "recompenseCaca": 3,
+        "defiDuMomentIdLorsValidation": null,
+        "objectifHebdoDefiMoment": null
       }
     },
     "rappel": {
