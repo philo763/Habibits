@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { cleDate, grilleDuMois } from "./dates";
 import { couleurObjectif } from "./objectifs";
 import { calculerRecompenses, recompensePourDifficulte } from "./recompenses";
-import { SENS_MAIN, calculerObjets, messageMiroir, nouveauxCoups, pommesBonusObjets } from "./objets";
+import { OBJETS, SENS_MAIN, calculerObjets, messageMiroir, nouveauxCoups, pommesBonusObjets } from "./objets";
 import { tirerDefis } from "./tirage";
 import IndicateurDifficulte from "./IndicateurDifficulte";
 import CaseCalendrier from "./CaseCalendrier";
@@ -34,6 +34,23 @@ const FACES_DE = [
   <BarresDe key="moyen" nombre={2} couleur="#e08a2d" />,
   <BarresDe key="difficile" nombre={3} couleur="#d0483f" />,
 ];
+
+const rangObjet = (id) => OBJETS.findIndex((objet) => objet.id === id);
+
+// Même présentation dans la notification de gain et sur le jour qui a déclenché le coup.
+function CoupsPoker({ coups }) {
+  if (!coups?.length) return null;
+  return (
+    <div className="gain-objets">
+      <strong>Coup de poker ! 🃏</strong>
+      {coups.map((coup) => (
+        <p key={coup.cle}>
+          {coup.combinaison} {SENS_MAIN[coup.sens]} → + {coup.nombre} {coup.nom} <span aria-hidden="true">{coup.emoji}</span>
+        </p>
+      ))}
+    </div>
+  );
+}
 
 export default function Calendrier({
   defis,
@@ -158,6 +175,9 @@ export default function Calendrier({
       objectifs.find((objectif) => objectif.id === defi?.objectifId)?.couleur || objectifCopie?.couleur
     );
   const cases = grilleDuMois(mois.getFullYear(), mois.getMonth());
+  const evenementsPoker = useMemo(() => calculerObjets(jours).evenements, [jours]);
+  const coupsDuJour = nouveauxCoups([], evenementsPoker.filter(({ date }) => date === selection))
+    .sort((a, b) => rangObjet(a.id) - rangObjet(b.id));
   const jour = selection <= demain || donneesAnciennesVisibles(selection) ? jours[selection] || {} : {};
   const defiChoisi = jour.choisi ? trouver(jour.choisi) || jour.defiCopie : null;
   const propositions = (jour.propositions || []).map(trouver).filter(Boolean);
@@ -420,6 +440,7 @@ export default function Calendrier({
       ) : (
         <p>Aucun défi ce jour-là.</p>
       )}
+      {jour.fait && <CoupsPoker coups={coupsDuJour} />}
       {confirmation && (
         <div className="completion-defi" role="dialog" aria-modal="true" aria-labelledby="titre-confirmation-defi">
           <div className="tuile">
@@ -494,16 +515,7 @@ export default function Calendrier({
                       : "Aucun ajustement net de pommes"}
                   <span aria-hidden="true">🍎</span>
                 </p>
-                {gain.objetsGagnes?.length > 0 && (
-                  <div className="gain-objets">
-                    <strong>Coup de poker ! 🃏</strong>
-                    {gain.objetsGagnes.map((coup) => (
-                      <p key={coup.cle}>
-                        {coup.combinaison} {SENS_MAIN[coup.sens]} → + {coup.nombre} {coup.nom} <span aria-hidden="true">{coup.emoji}</span>
-                      </p>
-                    ))}
-                  </div>
-                )}
+                <CoupsPoker coups={gain.objetsGagnes} />
                 <button className="btn bouton-fermer-gain" onClick={() => setGain(null)}>Miam 😋</button>
               </>
             ) : (
