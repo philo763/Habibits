@@ -30,6 +30,7 @@ const CLE_META = "habibits.sauvegarde";
 const CLE_ACCUEIL = "habibits.accueil";
 const CLE_AVANT_IMPORT = "habibits.avant-import";
 const CLE_LIEN_FICHIER = "fichier-sauvegarde";
+const DELAI_SANS_REPONSE = 15000;
 
 const OPTIONS_FICHIER = {
   types: [{ description: "Sauvegarde Habibits", accept: { "application/json": [".json"] } }],
@@ -325,6 +326,11 @@ export async function sauvegarderMaintenant() {
     return;
   }
   enCours = true;
+  // Si le téléphone ne répond pas, on le signale. L'écriture en cours n'est pas doublée :
+  // enCours reste actif jusqu'à sa fin, et le statut redevient "ok" si elle finit par réussir.
+  const alerteSansReponse = setTimeout(() => {
+    if (etat.statut === "ok") maj({ statut: "erreur" });
+  }, DELAI_SANS_REPONSE);
   try {
     const permission = await lien.queryPermission({ mode: "readwrite" });
     if (permission !== "granted") {
@@ -354,6 +360,7 @@ export async function sauvegarderMaintenant() {
   } catch (erreur) {
     maj({ statut: statutDepuisErreur(erreur) });
   } finally {
+    clearTimeout(alerteSansReponse);
     enCours = false;
     if (aRecommencer) {
       aRecommencer = false;
