@@ -133,7 +133,7 @@ npm run lint
 
 Deux sauvegardes fictives, à la racine du dépôt, se restaurent depuis **Paramètres** :
 
-- `sauvegarde-test-calendrier.json` : calendrier d'août à novembre 2026 bien rempli, pour tester l'affichage, les récompenses et les objets. 11 défis sur trois objectifs, 84 jours réussis des trois difficultés (avec portes horizontales et verticales), 15 jours ratés avec et sans note, deux étoiles « défi du moment », des objets utilisés (Lotus le 14/09, Chameau le 07/10, Fusée le 21/10, Boule disco le 26/08), un défi choisi non validé (17/11) et un tirage en attente de choix (18/11). Les récompenses sont calculées par l'appli : 265 cacas, 15 cœurs, 285 popommes et un sac bien rempli (dont 98 boules disco, 13 chameaux et 16 dauphins avec les mains en colonne).
+- `sauvegarde-test-calendrier.json` : calendrier rempli du 1er août au 23 novembre 2026, pour tester l'affichage, les récompenses et les objets. 11 défis sur trois objectifs, 90 jours réussis des trois difficultés (avec portes horizontales et verticales), 16 jours ratés avec et sans note, deux étoiles « défi du moment », des objets utilisés (Lotus le 14/09, Chameau le 07/10, Fusée le 21/10, Boule disco le 26/08). Les récompenses sont calculées par l'appli : 283 cacas, 16 cœurs, 304 popommes et un sac bien rempli (dont 103 boules disco, 14 chameaux et 16 dauphins avec les mains en colonne).
 - `sauvegarde-test-tirage.json` : 8 défis, un jour réussi (10/11), un tirage sans choix (15/11) et un tirage avec défi choisi non validé (18/11), pour tester les tirages.
 
 Les dates sont fixes (2026) : plus tard, navigue jusqu'aux mois concernés dans le calendrier pour les voir.
