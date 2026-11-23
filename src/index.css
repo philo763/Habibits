@@ -834,7 +834,18 @@ select:focus { outline: none; border-color: var(--or); }
 
 
 
-.bouton-utiliser-objet { margin:0; font-size:1rem; }
+.objets-jour { margin: 0 0 12px; }
+.objets-jour-rangee { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px; }
+.objets-jour-icone { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; min-width: 0; min-height: 52px; padding: 4px 0; border: 1px solid var(--trait); border-radius: 8px; background: rgba(143, 184, 255, 0.08); color: var(--papier); font-size: 1.45rem; line-height: 1; cursor: pointer; }
+.objets-jour-icone small { font-size: .75rem; font-weight: 700; }
+.objets-jour-icone.ouvert { border-color: var(--or); background: rgba(245, 197, 66, 0.14); }
+.objets-jour-icone.ouvert small { color: var(--or); }
+.objets-jour-detail { margin-top: 6px; padding: 8px 10px; border: 1px solid var(--or); border-radius: 8px; background: rgba(143, 184, 255, 0.08); }
+.objets-jour-detail strong { font-size: .98rem; }
+.objets-jour-detail p { margin: 4px 0 6px; font-size: .88rem; line-height: 1.35; }
+.objets-jour-action { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.objets-jour-action small { font-size: .82rem; opacity: .8; }
+.objets-jour-utiliser { flex: none; margin: 0; padding: 5px 12px; font-size: .95rem; }
 .jour-repos { text-align:center; }
 .gain-objets { margin:10px 0; text-align:center; }
 .gain-objets p { margin:4px 0; }
