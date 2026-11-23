@@ -138,10 +138,6 @@ export default function App() {
   useEffect(() => {
     async function initialiser() {
       try {
-        await initialiserSauvegarde();
-        // Si l'utilisateur a déjà demandé la protection, on redemande discrètement à chaque lancement
-        if (lireAccueil().persistantDemande) await demanderPersistant(false);
-        else await rafraichirPersistant();
         const donnees = await chargerDonneesDefis();
         const joursCharges = await chargerJours();
         const gestionDefisChargee = await chargerGestionDefis();
@@ -156,7 +152,14 @@ export default function App() {
       } catch (erreur) {
         console.error("Impossible de charger les données de l'application.", erreur);
         setErreurChargement("Impossible de charger les données de l’application. Tes données existantes n’ont pas été supprimées ; recharge l’application pour réessayer.");
+        return;
       }
+      // Fichier de sauvegarde et protection dépendent du téléphone et peuvent ne jamais répondre :
+      // ils tournent en arrière-plan pour ne pas bloquer l'affichage des données.
+      initialiserSauvegarde().catch((erreur) => console.error("Sauvegarde automatique indisponible.", erreur));
+      // Si l'utilisateur a déjà demandé la protection, on redemande discrètement à chaque lancement
+      if (lireAccueil().persistantDemande) demanderPersistant(false);
+      else rafraichirPersistant();
     }
     initialiser();
   }, []);
