@@ -338,38 +338,6 @@ export default function Calendrier({
         >
           <h3>{defiChoisi.titre}</h3>
           <p>{defiChoisi.description}</p>
-          {peutModifierEtat && !jour.fait && !jour.nonReussi && (
-            <div className="actions actions-validation">
-              <button className="btn" onClick={() => setConfirmation({ type: "valider" })}>Valider le défi ✔</button>
-              <button className="btn discret" onClick={() => {
-                setNoteEchec("");
-                setConfirmation({ type: "echec" });
-              }}>
-                Je n’ai pas réussi
-              </button>
-            </div>
-          )}
-          {jour.fait && (
-            <>
-              <p className="accompli">Bravo, défi accompli !</p>
-              {aUtilise(jour, "fusee") && !jour.fuseeValidee && peutModifierEtat && (
-                <button className="btn" onClick={() => setConfirmation({ type: "valider2" })}>
-                  Valider une 2ème fois <span aria-hidden="true">🚀</span>
-                </button>
-              )}
-              {!jour.collectionne && jour.defiDuMomentIdLorsValidation !== jour.choisi && !lectureSeule && (
-                <button className="btn" onClick={() => maj(selection, { collectionne: true })}>
-                  Ajouter ma carte à la collection
-                </button>
-              )}
-              {jour.collectionne && (
-                <>
-                  <p>Cette carte est dans ta collection.</p>
-                  <button className="btn" onClick={onAllerCollection}>Voir ma collection</button>
-                </>
-              )}
-            </>
-          )}
           {jour.nonReussi && (
             <>
               <p className="attention">Ce défi n’a pas été réussi.</p>
@@ -457,7 +425,48 @@ export default function Calendrier({
       ) : (
         <p>Aucun défi ce jour-là.</p>
       )}
-      {jour.fait && <CoupsPoker coups={coupsDuJour} />}
+      {/* Hors de la carte : la carte du défi doit ressembler à une carte à collectionner. */}
+      {!jourRepos && defiChoisi && peutModifierEtat && !jour.fait && !jour.nonReussi && (
+        <div className="actions actions-validation">
+          <button className="btn" onClick={() => setConfirmation({ type: "valider" })}>Valider le défi ✔</button>
+          <button className="btn discret" onClick={() => {
+            setNoteEchec("");
+            setConfirmation({ type: "echec" });
+          }}>
+            Je n’ai pas réussi
+          </button>
+        </div>
+      )}
+      {!jourRepos && defiChoisi && jour.fait && (
+        <div className="apres-carte-defi">
+          <section className="apres-carte-section">
+            <p className="accompli">Bravo, défi accompli !</p>
+            {aUtilise(jour, "fusee") && !jour.fuseeValidee && peutModifierEtat && (
+              <button className="btn bouton-fusee" onClick={() => setConfirmation({ type: "valider2" })}>
+                Valider une 2ème fois <span aria-hidden="true">🚀</span>
+              </button>
+            )}
+          </section>
+          {jour.collectionne ? (
+            <section className="apres-carte-section apres-carte-ligne">
+              <p>Cette carte est dans ta collection.</p>
+              <button className="btn" onClick={onAllerCollection}>Voir ma collection</button>
+            </section>
+          ) : jour.defiDuMomentIdLorsValidation !== jour.choisi && !lectureSeule && (
+            <section className="apres-carte-section">
+              <button className="btn" onClick={() => maj(selection, { collectionne: true })}>
+                Ajouter ma carte à la collection
+              </button>
+            </section>
+          )}
+          {coupsDuJour?.length > 0 && (
+            <section className="apres-carte-section">
+              <CoupsPoker coups={coupsDuJour} />
+            </section>
+          )}
+        </div>
+      )}
+      {jour.fait && (jourRepos || !defiChoisi) && <CoupsPoker coups={coupsDuJour} />}
       {confirmation && (
         <div className="completion-defi" role="dialog" aria-modal="true" aria-labelledby="titre-confirmation-defi">
           <div className="tuile">

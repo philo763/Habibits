@@ -310,6 +310,15 @@ select:focus { outline: none; border-color: var(--or); }
 .tuile.fait { --couleur: var(--vert); }
 .tuile.non-reussi { --couleur: var(--rouge); }
 .accompli { color: #7dffb8; font-weight: 700; }
+.apres-carte-defi { margin-top: 12px; text-align: center; }
+.apres-carte-section { padding: 10px 0; border-top: 1px solid var(--trait); }
+.apres-carte-section:first-child { padding-top: 0; border-top: 0; }
+.apres-carte-section p { margin: 0; }
+.apres-carte-section .gain-objets { margin: 0; }
+.apres-carte-section .gain-objets p { margin: 4px 0 0; }
+.apres-carte-ligne { display: flex; align-items: center; justify-content: center; gap: 12px; text-align: left; }
+.apres-carte-ligne p { flex: 0 1 auto; }
+.apres-carte-ligne .btn { flex: 0 0 auto; padding: 6px 12px; font-size: 16px; }
 .defis-entete, .entete-section { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px; }
 .defis-entete .jour-titre { margin-bottom: 0; }
 .separateur-section { margin: 18px 0; border: 0; border-top: 1px solid var(--trait); }
@@ -644,7 +653,9 @@ select:focus { outline: none; border-color: var(--or); }
   .filtres-tri .filtre-difficulte { padding-right: 3px; padding-left: 3px; }
 }
 .defi-tuile .actions { margin-bottom: 0; }
-.actions-validation { margin-top: 14px; }
+.actions-validation { flex-wrap: nowrap; justify-content: center; margin-top: 12px; }
+.actions-validation .btn { flex: 1 1 0; min-width: 0; max-width: 220px; padding: 8px 10px; font-size: 16px; }
+.bouton-fusee { margin-top: 10px; }
 .actions-modifier-choix { justify-content: center; margin-top: 28px; }
 .bouton-correction-defi { width: auto; max-width: 320px; }
 .carte-collection-entete { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
