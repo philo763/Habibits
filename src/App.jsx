@@ -123,6 +123,8 @@ export default function App() {
   const [objectifsFiltres, setObjectifsFiltres] = useState([]);
   const [difficultesFiltrees, setDifficultesFiltrees] = useState([]);
   const [defiEnEdition, setDefiEnEdition] = useState(null);
+  // { type: "defi" | "objectif", element } : suppression en attente de confirmation.
+  const [suppressionAConfirmer, setSuppressionAConfirmer] = useState(null);
   const [formObjectif, setFormObjectif] = useState(null);
   const [nomObjectif, setNomObjectif] = useState("");
   const [couleurObjectifChoisie, setCouleurObjectifChoisie] = useState("bleu");
@@ -428,14 +430,24 @@ export default function App() {
     }
   }
 
-  async function supprimerObjectif(objectif) {
+  function demanderSuppressionObjectif(objectif) {
     const nbDefis = defis.filter((defi) => defi.objectifId === objectif.id).length;
     if (nbDefis > 0) {
       ouvrirEditionObjectif(objectif);
       setObjectifErreur(`Impossible de supprimer « ${objectif.nom} » : ${nbDefis} défi${nbDefis > 1 ? "s y sont rattachés" : " y est rattaché"}. Tu peux plutôt le renommer.`);
       return;
     }
-    if (!window.confirm(`Supprimer l’objectif « ${objectif.nom} » ?`)) return;
+    setSuppressionAConfirmer({ type: "objectif", element: objectif });
+  }
+
+  function confirmerSuppression() {
+    const { type, element } = suppressionAConfirmer;
+    setSuppressionAConfirmer(null);
+    if (type === "defi") supprimerDefi(element.id);
+    else supprimerObjectif(element);
+  }
+
+  async function supprimerObjectif(objectif) {
     const liste = objectifs.filter((element) => element.id !== objectif.id);
     try {
       await sauvegarderObjectifs(liste);
@@ -678,7 +690,7 @@ export default function App() {
                       <div className="actions-hors-carte">
                         <button className="btn discret action-defi" onClick={() => ouvrirEditionObjectif(objectif)}
                           aria-label={`Modifier l’objectif ${objectif.nom}`} title="Modifier">✏️</button>
-                        <button className="btn danger action-defi" onClick={() => supprimerObjectif(objectif)}
+                        <button className="btn danger action-defi" onClick={() => demanderSuppressionObjectif(objectif)}
                           aria-label={`Supprimer l’objectif ${objectif.nom}`} title="Supprimer">🗑️</button>
                       </div>
                     </div>
@@ -837,7 +849,7 @@ export default function App() {
                       <div className="actions-hors-carte">
                         <button className="btn discret action-defi" onClick={() => commencerEditionDefi(defi)}
                           aria-label={`Modifier le défi ${defi.titre}`} title="Modifier">✏️</button>
-                        <button className="btn danger action-defi" onClick={() => supprimerDefi(defi.id)}
+                        <button className="btn danger action-defi" onClick={() => setSuppressionAConfirmer({ type: "defi", element: defi })}
                           aria-label={`Supprimer le défi ${defi.titre}`} title="Supprimer">🗑️</button>
                       </div>
                     </div>
@@ -886,6 +898,26 @@ export default function App() {
       </main>
 
       {accueilOuvert && datesTiragesAConfirmer.length === 0 && <Accueil onTermine={terminerAccueil} />}
+      {suppressionAConfirmer && (
+        <div className="completion-defi" role="dialog" aria-modal="true" aria-labelledby="titre-suppression">
+          <div className="tuile">
+            <h2 id="titre-suppression">
+              {suppressionAConfirmer.type === "defi" ? "Supprimer ce défi ?" : "Supprimer cet objectif ?"}
+            </h2>
+            <p>
+              « {suppressionAConfirmer.type === "defi" ? suppressionAConfirmer.element.titre : suppressionAConfirmer.element.nom} » sera
+              supprimé définitivement.
+            </p>
+            {suppressionAConfirmer.type === "defi" && gestionDefis.defiDuMomentId === suppressionAConfirmer.element.id && (
+              <p className="attention">C’est ton défi du moment : il ne le sera plus.</p>
+            )}
+            <div className="actions">
+              <button className="btn danger" onClick={confirmerSuppression}>Supprimer</button>
+              <button className="btn discret" onClick={() => setSuppressionAConfirmer(null)} autoFocus>Annuler</button>
+            </div>
+          </div>
+        </div>
+      )}
       {defiACompleter && !completionSuspendue && datesTiragesAConfirmer.length === 0 && (
         <div className="completion-defi" role="dialog" aria-modal="true" aria-labelledby="titre-completion">
           <div className="tuile">
