@@ -68,6 +68,7 @@ export default function Calendrier({
   onAllerDefis,
   onAllerCollection,
   onAllerNotes,
+  onAllerObjets,
 }) {
   const [mois, setMois] = useState(() => {
     const n = new Date();
@@ -162,8 +163,10 @@ export default function Calendrier({
         setNoteEchec("");
         setMiroirAffiche(messageMiroir(jours));
         const montant = recompensesApres.coeurs - recompensesAvant.coeurs;
+        const joursApres = { ...jours, [selection]: { ...jours[selection], ...patch } };
         const pommes = recompensesApres.solde + recompensesApres.coeurs -
-          recompensesAvant.solde - recompensesAvant.coeurs;
+          recompensesAvant.solde - recompensesAvant.coeurs +
+          pommesBonusObjets(joursApres) - pommesBonusObjets(jours);
         if (montant > 0) setGain({ type: "coeur", montant, pommes });
       }
     }
@@ -271,7 +274,7 @@ export default function Calendrier({
               difficulte={j.defiCopie?.difficulte || defi?.difficulte}
               note={Boolean(j.note)}
               lotus={aUtilise(j, "lotus") && !j.fait}
-              attente={!j.choisi && !j.fait && !j.nonReussi && (j.propositions || []).length > 0}
+              attente={!j.choisi && !j.fait && !j.nonReussi && (j.propositions || []).length > 0 && !aUtilise(j, "lotus")}
               de={!j.choisi && !j.fait && !j.nonReussi && !(j.propositions || []).length &&
                 !lectureSeule && cle >= aujourdhui && cle <= demain && defis.length > 0 && !aUtilise(j, "lotus")}
               className={[
@@ -305,14 +308,19 @@ export default function Calendrier({
         {new Date(selection + "T00:00").toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long" })}
       </h3>
 
-      {selection === aujourdhui && !lectureSeule && (
+      {/* Objets utilisables sur aujourd'hui et sur les jours à venir encore modifiables. */}
+      {selection >= aujourdhui && selection <= limite && !lectureSeule && (
         <ObjetsDuJour
-          aujourdhui={aujourdhui}
+          key={selection}
+          cle={selection}
+          estAujourdhui={selection === aujourdhui}
+          limite={limite}
           defis={defis}
           jours={jours}
           inventaire={objetsPoker.inventaire}
           defiDuMoment={defiDuMoment}
           onMajJours={onMajJours}
+          onAllerObjets={onAllerObjets}
         />
       )}
 
@@ -466,7 +474,7 @@ export default function Calendrier({
             ) : confirmation.type === "valider2" ? (
               <>
                 <h2 id="titre-confirmation-defi">Deuxième validation 🚀</h2>
-                <p>As-tu vraiment réalisé « {defiChoisi?.titre} » une deuxième fois aujourd’hui ? Tu regagneras les cacas et pommes du défi.</p>
+                <p>As-tu vraiment réalisé « {defiChoisi?.titre} » une deuxième fois aujourd’hui ? Tu regagneras les cacas et popommes du défi.</p>
               </>
             ) : (
               <>
@@ -518,10 +526,10 @@ export default function Calendrier({
                 )}
                 <p className="gain-pommes">
                   {gain.pommes > 0
-                    ? <>Tu reçois aussi {gain.pommes} pomme{gain.pommes > 1 ? "s" : ""}</>
+                    ? <>Tu reçois aussi {gain.pommes} popomme{gain.pommes > 1 ? "s" : ""}</>
                     : gain.pommes < 0
-                      ? <>Ajustement du solde : {gain.pommes} pomme{gain.pommes < -1 ? "s" : ""}</>
-                      : "Aucun ajustement net de pommes"}
+                      ? <>Ajustement du solde : {gain.pommes} popomme{gain.pommes < -1 ? "s" : ""}</>
+                      : "Aucun ajustement net de popommes"}
                   <span aria-hidden="true">🍎</span>
                 </p>
                 <CoupsPoker coups={gain.objetsGagnes} />
@@ -532,10 +540,10 @@ export default function Calendrier({
                 <h2 id="titre-gain">+ {gain.montant} cœur{gain.montant > 1 ? "s" : ""} ❤️‍🩹</h2>
                 <p className="gain-pommes">
                   {gain.pommes > 0
-                    ? <>Tu reçois aussi {gain.pommes} pomme{gain.pommes > 1 ? "s" : ""}</>
+                    ? <>Tu reçois aussi {gain.pommes} popomme{gain.pommes > 1 ? "s" : ""}</>
                     : gain.pommes < 0
-                      ? <>Ajustement du solde : {gain.pommes} pomme{gain.pommes < -1 ? "s" : ""}</>
-                      : "Aucun ajustement net de pommes"}
+                      ? <>Ajustement du solde : {gain.pommes} popomme{gain.pommes < -1 ? "s" : ""}</>
+                      : "Aucun ajustement net de popommes"}
                   <span aria-hidden="true">🍎</span>
                 </p>
                 <button className="btn bouton-fermer-gain" onClick={() => setGain(null)}>I Love myself</button>

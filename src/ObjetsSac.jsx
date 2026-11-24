@@ -1,51 +1,89 @@
-import { useState } from "react";
-import { cleDate } from "./dates";
+import { Fragment, useState } from "react";
 import { OBJETS } from "./objets";
-import { useUtilisationObjet } from "./UtilisationObjet";
 
-export default function Objets({ defis, jours, inventaire, defiDuMoment = null, onMajJours }) {
-  const [aujourdhui] = useState(() => cleDate(new Date()));
+// Page « Objets » du sac à dos : on y consulte ses objets ; on les utilise depuis le calendrier.
+export default function ObjetsSac({ inventaire, recompenses, onAller }) {
   const [infoOuverte, setInfoOuverte] = useState(null);
-  const { statutDe, utiliser, message, dialogue } = useUtilisationObjet({
-    aujourdhui, defis, jours, inventaire, defiDuMoment, onMajJours,
-  });
+  const objetsPoker = OBJETS.filter((objet) => !objet.avenir);
+  const objetsAVenir = OBJETS.filter((objet) => objet.avenir);
+  const coeurs = recompenses?.coeurs || 0;
+  const pommes = recompenses?.pommes || 0;
 
   return (
-    <ul className="liste-objets-sac">
-      {OBJETS.map((objet) => {
-        const statut = statutDe(objet.id);
-        return (
-          <li key={objet.id} className="objet-sac">
-            <div className="objet-sac-ligne">
-              <span className="objet-sac-emoji" aria-hidden="true">{objet.emoji}</span>
-              {objet.avenir && <span className="objet-sac-avenir">À VENIR</span>}
-              <strong className="objet-sac-nombre" aria-label={`${objet.nom} : ${inventaire[objet.id]} en stock`}>{inventaire[objet.id]}</strong>
-              {!objet.avenir && (
-                <button
-                  className={`btn petit objet-sac-utiliser ${statut.ok ? "" : "grise"}`}
-                  aria-disabled={!statut.ok}
-                  onClick={() => utiliser(objet)}
-                >
-                  Utiliser
-                </button>
-              )}
+    <div className="sac">
+      <div className="sac-recompenses">
+        <button className="sac-recompense" onClick={() => onAller("notes")} aria-label={`${coeurs} cœurs bandés : aller dans mes notes`}>
+          <span className="sac-recompense-emoji" aria-hidden="true">❤️‍🩹</span>
+          <strong>{coeurs}</strong>
+          <small>Mes notes ›</small>
+        </button>
+        <button className="sac-recompense" onClick={() => onAller("shop")} aria-label={`${pommes} popommes : aller au shop`}>
+          <span className="sac-recompense-emoji" aria-hidden="true">🍎</span>
+          <strong>{pommes}</strong>
+          <small>Le shop ›</small>
+        </button>
+      </div>
+
+      <hr className="sac-separation" />
+
+      <ul className="sac-grille">
+        {objetsPoker.map((objet, index) => {
+          const nombre = inventaire[objet.id] || 0;
+          const ouvert = infoOuverte === objet.id;
+          // L'explication s'affiche en pleine largeur, à la fin de la rangée (2 cartes) de l'objet ouvert.
+          const objetOuvert = objetsPoker.find((element) => element.id === infoOuverte);
+          const indexOuvert = objetsPoker.indexOf(objetOuvert);
+          const finDeRangee = index === Math.min(indexOuvert - (indexOuvert % 2) + 1, objetsPoker.length - 1);
+          return (
+            <Fragment key={objet.id}>
+            <li className={`sac-objet ${nombre === 0 ? "vide" : ""} ${ouvert ? "ouvert" : ""}`}>
               <button
-                className="objet-sac-info"
-                aria-expanded={infoOuverte === objet.id}
-                aria-label={`Informations sur ${objet.nom}`}
-                onClick={() => setInfoOuverte(infoOuverte === objet.id ? null : objet.id)}
+                className="sac-objet-carte"
+                aria-expanded={ouvert}
+                aria-label={`${objet.nom} : ${nombre} en stock. Afficher l’explication`}
+                onClick={() => setInfoOuverte(ouvert ? null : objet.id)}
               >
-                ℹ️
+                <span className="sac-objet-emoji" aria-hidden="true">{objet.emoji}</span>
+                <span className="sac-objet-nombre" aria-hidden="true">×{nombre}</span>
+                <strong className="sac-objet-nom">{objet.nom}</strong>
               </button>
-            </div>
-            {infoOuverte === objet.id && <p className="objet-sac-description"><strong>{objet.nom}</strong> : {objet.info}</p>}
-            {message.id === objet.id && message.texte && (
-              <p className={message.reussite ? "objet-sac-succes" : "objet-sac-raison"} role="status">{message.texte}</p>
+            </li>
+            {objetOuvert && finDeRangee && (
+              <li className="sac-objet-info">
+                <strong>{objetOuvert.emoji} {objetOuvert.nom}</strong>
+                <small className="sac-objet-combinaison">
+                  Gagné avec : {objetOuvert.combinaison}
+                  <button
+                    className="sac-objet-regles"
+                    aria-label="Voir les règles des coups de poker"
+                    onClick={() => onAller("regles", "poker")}
+                  >
+                    ℹ️
+                  </button>
+                </small>
+                <span>{objetOuvert.info}</span>
+              </li>
             )}
-          </li>
-        );
-      })}
-      {dialogue}
-    </ul>
+            </Fragment>
+          );
+        })}
+      </ul>
+
+      <p className="sac-astuce">Tous les objets s’utilisent depuis le calendrier.</p>
+
+      {objetsAVenir.length > 0 && (
+        <>
+          <h3 className="sac-sous-titre">Bientôt</h3>
+          <ul className="sac-avenir">
+            {objetsAVenir.map((objet) => (
+              <li key={objet.id}>
+                <span className="sac-avenir-emoji" aria-hidden="true">{objet.emoji}</span>
+                <span><strong>{objet.nom}</strong> : {objet.info}</span>
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
+    </div>
   );
 }

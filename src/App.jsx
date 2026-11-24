@@ -189,8 +189,12 @@ export default function App() {
     setJours(nouveau);
   }
 
-  function aller(id) {
+  // Section des règles à ouvrir directement (ex. « poker » depuis le sac à dos).
+  const [sectionRegles, setSectionRegles] = useState(null);
+
+  function aller(id, section = null) {
     setOnglet(id);
+    setSectionRegles(section);
     setMenuOuvert(false);
   }
 
@@ -256,7 +260,7 @@ export default function App() {
       recompenses.pommes < article.prix || achatBibitEnCours) return;
     const soldeApresAchat = recompenses.pommes - article.prix;
     const confirme = window.confirm(
-      `Acheter « ${article.nom} » pour ${article.prix} pommes ? Il te restera ${soldeApresAchat} pommes.`
+      `Acheter « ${article.nom} » pour ${article.prix} popommes ? Il te restera ${soldeApresAchat} popommes.`
     );
     if (!confirme) return;
     setAchatBibitEnCours(true);
@@ -553,10 +557,11 @@ export default function App() {
             onAllerDefis={() => aller("defis")}
             onAllerCollection={() => aller("collection")}
             onAllerNotes={() => aller("notes")}
+            onAllerObjets={() => aller("objets")}
           />
         )}
 
-        {onglet === "regles" && <Regles />}
+        {onglet === "regles" && <Regles sectionOuverte={sectionRegles} />}
         {onglet === "bibit" && (
           <MonBibit
             bibit={bibit}
@@ -613,27 +618,7 @@ export default function App() {
         {onglet === "objets" && (
           <section aria-labelledby="titre-sous-sac">
             <h2 id="titre-sous-sac" className="jour-titre">{SECTIONS.find((s) => s.id === "objets").label}</h2>
-            <div className="comptes-recompenses liste-objets" aria-label={`${recompenses?.coeurs || 0} cœurs bandés et ${recompenses?.pommes || 0} popommes`}>
-              <div className="objet-sac-ligne">
-                <span className="objet-sac-emoji" aria-hidden="true">❤️‍🩹</span>
-                <strong className="objet-sac-nombre">{recompenses?.coeurs || 0}</strong>
-                <button className="btn petit objet-sac-utiliser" onClick={() => aller("notes")}>Aller dans mes notes</button>
-              </div>
-              <div className="objet-sac-ligne">
-                <span className="objet-sac-emoji" aria-hidden="true">🍎</span>
-                <strong className="objet-sac-nombre">{recompenses?.pommes || 0}</strong>
-                <button className="btn petit objet-sac-utiliser" onClick={() => aller("shop")}>Aller au shop</button>
-              </div>
-            </div>
-            <ObjetsSac
-              defis={defis}
-              jours={jours}
-              inventaire={objets.inventaire}
-              defiDuMoment={gestionDefis.defiDuMomentActif
-                ? defis.find((defi) => defi.id === gestionDefis.defiDuMomentId) || null
-                : null}
-              onMajJours={majJours}
-            />
+            <ObjetsSac inventaire={objets.inventaire} recompenses={recompenses} onAller={aller} />
           </section>
         )}
         {onglet === "collection" && (
