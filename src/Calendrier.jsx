@@ -349,26 +349,10 @@ export default function Calendrier({
               </button>
             </div>
           )}
-          {jour.fait && (
-            <>
-              <p className="accompli">Bravo, défi accompli !</p>
-              {aUtilise(jour, "fusee") && !jour.fuseeValidee && peutModifierEtat && (
-                <button className="btn" onClick={() => setConfirmation({ type: "valider2" })}>
-                  Valider une 2ème fois <span aria-hidden="true">🚀</span>
-                </button>
-              )}
-              {!jour.collectionne && jour.defiDuMomentIdLorsValidation !== jour.choisi && !lectureSeule && (
-                <button className="btn" onClick={() => maj(selection, { collectionne: true })}>
-                  Ajouter ma carte à la collection
-                </button>
-              )}
-              {jour.collectionne && (
-                <>
-                  <p>Cette carte est dans ta collection.</p>
-                  <button className="btn" onClick={onAllerCollection}>Voir ma collection</button>
-                </>
-              )}
-            </>
+          {jour.fait && aUtilise(jour, "fusee") && !jour.fuseeValidee && peutModifierEtat && (
+            <button className="btn" onClick={() => setConfirmation({ type: "valider2" })}>
+              Valider une 2ème fois <span aria-hidden="true">🚀</span>
+            </button>
           )}
           {jour.nonReussi && (
             <>
@@ -456,6 +440,23 @@ export default function Calendrier({
         <p>Le tirage n’est pas encore possible pour ce jour. Une boule de cristal 🔮 permet de tirer jusqu’à 7 jours à l’avance.</p>
       ) : (
         <p>Aucun défi ce jour-là.</p>
+      )}
+      {/* Hors de la carte : la carte du défi doit ressembler à une carte à collectionner. */}
+      {!jourRepos && defiChoisi && jour.fait && (
+        <div className="apres-carte-defi">
+          <p className="accompli">Bravo, défi accompli !</p>
+          {!jour.collectionne && jour.defiDuMomentIdLorsValidation !== jour.choisi && !lectureSeule && (
+            <button className="btn" onClick={() => maj(selection, { collectionne: true })}>
+              Ajouter ma carte à la collection
+            </button>
+          )}
+          {jour.collectionne && (
+            <>
+              <p>Cette carte est dans ta collection.</p>
+              <button className="btn" onClick={onAllerCollection}>Voir ma collection</button>
+            </>
+          )}
+        </div>
       )}
       {jour.fait && <CoupsPoker coups={coupsDuJour} />}
       {confirmation && (
