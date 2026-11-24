@@ -444,21 +444,29 @@ export default function Calendrier({
       {/* Hors de la carte : la carte du défi doit ressembler à une carte à collectionner. */}
       {!jourRepos && defiChoisi && jour.fait && (
         <div className="apres-carte-defi">
-          <p className="accompli">Bravo, défi accompli !</p>
-          {!jour.collectionne && jour.defiDuMomentIdLorsValidation !== jour.choisi && !lectureSeule && (
-            <button className="btn" onClick={() => maj(selection, { collectionne: true })}>
-              Ajouter ma carte à la collection
-            </button>
-          )}
-          {jour.collectionne && (
-            <>
+          <section className="apres-carte-section">
+            <p className="accompli">Bravo, défi accompli !</p>
+          </section>
+          {jour.collectionne ? (
+            <section className="apres-carte-section apres-carte-ligne">
               <p>Cette carte est dans ta collection.</p>
               <button className="btn" onClick={onAllerCollection}>Voir ma collection</button>
-            </>
+            </section>
+          ) : jour.defiDuMomentIdLorsValidation !== jour.choisi && !lectureSeule && (
+            <section className="apres-carte-section">
+              <button className="btn" onClick={() => maj(selection, { collectionne: true })}>
+                Ajouter ma carte à la collection
+              </button>
+            </section>
+          )}
+          {coupsDuJour?.length > 0 && (
+            <section className="apres-carte-section">
+              <CoupsPoker coups={coupsDuJour} />
+            </section>
           )}
         </div>
       )}
-      {jour.fait && <CoupsPoker coups={coupsDuJour} />}
+      {jour.fait && (jourRepos || !defiChoisi) && <CoupsPoker coups={coupsDuJour} />}
       {confirmation && (
         <div className="completion-defi" role="dialog" aria-modal="true" aria-labelledby="titre-confirmation-defi">
           <div className="tuile">
