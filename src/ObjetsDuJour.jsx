@@ -5,16 +5,17 @@ import { useUtilisationObjet } from "./UtilisationObjet";
 // Sous la date du jour : une rangée d'icônes des objets utilisables maintenant.
 // Un clic sur une icône ouvre son détail juste en dessous.
 export default function ObjetsDuJour(props) {
-  const { inventaire } = props;
-  const { statutDe, utiliser, message, dialogue } = useUtilisationObjet(props);
+  const { inventaire, onAllerObjets } = props;
   const [ouvertId, setOuvertId] = useState(null);
+  // Une fois l'objet utilisé, son détail se referme.
+  const { statutDe, utiliser, message, dialogue } = useUtilisationObjet({ ...props, onObjetUtilise: () => setOuvertId(null) });
   const disponibles = OBJETS.filter((objet) => statutDe(objet.id).ok);
   const ouvert = disponibles.find((objet) => objet.id === ouvertId);
 
   if (!disponibles.length && !message.texte) return null;
 
   return (
-    <section className="objets-jour" aria-label="Objets utilisables aujourd’hui">
+    <section className="objets-jour" aria-label="Objets utilisables ce jour-là">
       {disponibles.length > 0 && (
         <div className="objets-jour-rangee">
           {disponibles.map((objet) => (
@@ -37,6 +38,11 @@ export default function ObjetsDuJour(props) {
           <p>{ouvert.info}</p>
           <div className="objets-jour-action">
             <small>Il t’en restera {inventaire[ouvert.id] - 1}</small>
+            {onAllerObjets && (
+              <button className="objets-jour-sac" aria-label="Voir mes objets dans le sac à dos" onClick={onAllerObjets}>
+                <span aria-hidden="true">🎒</span>
+              </button>
+            )}
             <button className="btn petit objets-jour-utiliser" aria-label={`Utiliser ${ouvert.nom}`} onClick={() => utiliser(ouvert)}>
               Utiliser
             </button>

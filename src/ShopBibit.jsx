@@ -46,7 +46,7 @@ export default function ShopBibit({ bibit, soldePommes, erreur, achatEnCours, on
           <strong>{soldePommes}</strong>
         </div>
       </div>
-      {soldePommes < 0 && <p className="note solde-negatif">Ton solde de pommes est négatif. Gagne des pommes pour le faire remonter avant de nouveaux achats.</p>}
+      {soldePommes < 0 && <p className="note solde-negatif">Ton solde de popommes est négatif. Gagne des popommes pour le faire remonter avant de nouveaux achats.</p>}
       {introOuverte && <p id="intro-shop" className="intro-shop">Achète une personnalisation pour la débloquer définitivement. Tu pourras l’équiper ou la retirer dans Mon Bibit.</p>}
 
       <div className="onglets-bibit" role="tablist" aria-label="Catégories du Shop">

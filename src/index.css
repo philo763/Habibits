@@ -317,7 +317,6 @@ select:focus { outline: none; border-color: var(--or); }
 .compte-geant .compte-recompense { font-size: clamp(64px, 22vw, 160px); line-height: 1; gap: 0.15em; justify-content: center; }
 .compte-geant .compte-recompense strong { font-size: 1em; }
 .compte-geant .compte-recompense > span { font-size: 0.8em; }
-.liste-objets { display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-start; gap: 10px; margin-top: 16px; }
 .bouton-badges { display: block; width: 100%; margin-top: 12px; padding: 10px; font-size: 18px; }
 .grille-sac { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .grille-sac .tuile-sac {
@@ -845,20 +844,36 @@ select:focus { outline: none; border-color: var(--or); }
 .objets-jour-detail p { margin: 4px 0 6px; font-size: .88rem; line-height: 1.35; }
 .objets-jour-action { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
 .objets-jour-action small { font-size: .82rem; opacity: .8; }
+.objets-jour-action small { margin-right: auto; }
+.objets-jour-sac { flex: none; display: inline-flex; align-items: center; justify-content: center; width: 38px; height: 38px; min-height: 0; padding: 0; border: 1px solid var(--trait); border-radius: 8px; background: rgba(143, 184, 255, 0.08); font-size: 1.2rem; line-height: 1; cursor: pointer; }
 .objets-jour-utiliser { flex: none; margin: 0; padding: 5px 12px; font-size: .95rem; }
 .jour-repos { text-align:center; }
 .gain-objets { margin:10px 0; text-align:center; }
 .gain-objets p { margin:4px 0; }
-.liste-objets-sac { list-style:none; padding:0; margin:14px 0 0; display:grid; gap:10px; }
-.objet-sac-entete { display:flex; align-items:center; gap:10px; }
-.objet-sac-emoji { font-size:2rem; }
-.objet-sac-titre { flex:1; display:flex; flex-direction:column; }
-.objet-sac-combinaison { font-size:.8rem; opacity:.7; }
-.objet-sac-nombre { font-weight:700; font-size:1.2rem; }
-.objet-sac-info { width:28px; height:28px; min-height:0; padding:0; border-radius:50%; font-style:italic; }
-.objet-sac-description { margin:8px 0 0; font-size:.9rem; }
-.objet-sac-utiliser { width:100%; margin-top:8px; }
-.objet-sac-utiliser.grise { opacity:.45; }
+/* Page Objets du sac à dos */
+.sac-recompenses { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 12px 0 6px; }
+.sac-recompense { display: grid; grid-template-columns: auto 1fr; grid-template-rows: auto auto; align-items: center; column-gap: 10px; min-height: 0; padding: 10px 12px; border: 1px solid var(--trait); border-radius: 12px; background: rgba(143, 184, 255, 0.08); color: var(--papier); text-align: left; cursor: pointer; }
+.sac-recompense-emoji { grid-row: span 2; font-size: 2rem; line-height: 1; }
+.sac-recompense strong { font-size: 1.6rem; line-height: 1; }
+.sac-recompense small { font-size: .82rem; color: var(--bleu-clair); }
+.sac-astuce { margin: 12px 0 0; font-size: .88rem; opacity: .75; text-align: center; }
+.sac-separation { margin: 14px 0 16px; border: 0; border-top: 1px solid var(--trait); }
+.sac-grille { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.sac-objet { border: 1px solid var(--trait); border-radius: 12px; background: rgba(143, 184, 255, 0.08); overflow: hidden; }
+.sac-objet.ouvert { border-color: var(--or); }
+.sac-objet.vide { opacity: .5; }
+.sac-objet-carte { position: relative; display: flex; flex-direction: column; align-items: center; gap: 2px; width: 100%; min-height: 0; padding: 14px 8px 10px; border: 0; background: none; color: var(--papier); cursor: pointer; }
+.sac-objet-emoji { font-size: 2.4rem; line-height: 1.1; }
+.sac-objet-nombre { position: absolute; top: 6px; right: 8px; padding: 1px 7px; border-radius: 999px; background: var(--or); color: var(--nuit); font-size: .85rem; font-weight: 700; }
+.sac-objet.vide .sac-objet-nombre { background: var(--trait); color: var(--papier); }
+.sac-objet-nom { font-size: 1rem; text-align: center; }
+.sac-objet-combinaison { font-size: .75rem; letter-spacing: .04em; text-transform: uppercase; color: var(--bleu-clair); }
+.sac-objet-info { grid-column: 1 / -1; margin: -2px 0 2px; padding: 10px 12px; border: 1px solid var(--or); border-radius: 12px; background: rgba(245, 197, 66, 0.1); font-size: .9rem; line-height: 1.4; display: flex; flex-direction: column; gap: 4px; }
+.sac-objet-regles { margin-left: 6px; padding: 0; min-height: 0; width: auto; border: 0; background: none; font-size: 1rem; line-height: 1; vertical-align: middle; cursor: pointer; }
+.sac-sous-titre { margin: 18px 0 8px; font-size: 1rem; color: var(--bleu-clair); }
+.sac-avenir { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
+.sac-avenir li { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border: 1px dashed var(--trait); border-radius: 12px; font-size: .85rem; opacity: .7; }
+.sac-avenir-emoji { font-size: 1.6rem; }
 .objet-sac-raison { color:#ffad55; margin:6px 0 0; font-size:.9rem; }
 .objet-sac-succes { margin:6px 0 0; font-size:.9rem; }
 .regles-poker { list-style:none; padding:0; display:grid; gap:6px; }
@@ -870,19 +885,12 @@ select:focus { outline: none; border-color: var(--or); }
 .regles-cases .case { width:40px; height:44px; flex:none; cursor:default; }
 .regles-cases .case.sans-numero .case-indicateur { top:50%; }
 .regles-exemples-titre { margin:16px 0 8px; }
-.regles-poker-note { font-size:.85rem; opacity:.8; }
+.regles-main { display: flex; align-items: center; gap: 10px; }
+.regles-main-definition { font-size: .85rem; opacity: .8; line-height: 1.3; }
 
-.objet-sac { padding:0; }
-.objet-sac-ligne { display:flex; align-items:center; gap:12px; }
-.objet-sac-emoji { font-size:2.2rem; }
-.objet-sac-nombre { font-size:1.6rem; min-width:4ch; }
-.objet-sac-utiliser { flex:0 0 190px; width:190px; margin-top:0; }
-.objet-sac-info { background:none; border:0; padding:0; font-size:1.5rem; cursor:pointer; min-height:0; width:auto; }
 
-.objet-sac-info { font-style:normal; transform:none; }
 .message-miroir { font-style:italic; text-align:center; white-space:pre-wrap; }
 
-.objet-sac-avenir { font-size: 0.65rem; font-weight: 700; color: #ffad55; margin-right: 4px; }
 
 .regles-section { margin: 12px 0; }
 .regles-section > summary { cursor: pointer; list-style: none; }

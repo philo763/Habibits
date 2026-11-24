@@ -7,21 +7,21 @@ export const OBJETS = [
     emoji: "🪩",
     nom: "Boule disco",
     combinaison: "Paire",
-    info: "Permet de relancer le tirage du jour une fois.",
+    info: "Permet de relancer le tirage de ce jour-là une fois.",
   },
   {
     id: "pomme",
     emoji: "🐫",
     nom: "Chameau",
     combinaison: "Double paire",
-    info: "Double les pommes reçues en validant le défi du jour.",
+    info: "Double les popommes reçues ce jour-là, que le défi soit réussi ou non.",
   },
   {
     id: "baguette",
-    emoji: "🐬",
-    nom: "Dauphin",
+    emoji: "🪄",
+    nom: "Baguette magique",
     combinaison: "Brelan",
-    info: "Permet de changer le défi que tu as choisi aujourd’hui.",
+    info: "Permet de changer le défi que tu as choisi pour ce jour-là.",
   },
   {
     id: "fusee",
@@ -46,10 +46,10 @@ export const OBJETS = [
   },
   {
     id: "dauphin",
-    emoji: "🪄",
-    nom: "Baguette magique",
+    emoji: "🐬",
+    nom: "Dauphin",
     combinaison: "Couleur",
-    info: "Le défi choisi aujourd’hui sera dans le tirage de demain.",
+    info: "Le défi choisi ce jour-là sera dans le tirage du lendemain.",
   },
   {
     id: "diamant",
@@ -78,7 +78,8 @@ export const OBJETS = [
 
 export const OBJETS_POKER = ["de", "pomme", "baguette", "fusee", "lotus", "arc", "dauphin"];
 // Une deuxième utilisation le même jour n'apporterait rien.
-const OBJETS_EFFET_UNIQUE = ["pomme", "fusee", "lotus", "arc"];
+// Le dauphin aussi : un deuxième remplacerait le défi prévu pour demain par le premier.
+const OBJETS_EFFET_UNIQUE = ["pomme", "fusee", "lotus", "arc", "dauphin"];
 
 const IDS = OBJETS.map((objet) => objet.id);
 const FORMAT_DATE = /^\d{4}-\d{2}-\d{2}$/;
@@ -276,16 +277,20 @@ export function messageMiroir(jours) {
     jours[date].miroirMessage.trim()).sort();
   return dates.length ? jours[dates[dates.length - 1]].miroirMessage.trim() : "";
 }
+// Chameau : double les popommes du jour. Défi réussi : une popomme par caca gagné ;
+// défi raté : la popomme du cœur bandé.
 export function pommesBonusObjets(jours) {
-  return Object.values(jours || {}).reduce((total, jour) => (
-    aUtilise(jour, "pomme") && jour.fait && Number.isInteger(jour.recompenseCaca)
-      ? total + Math.max(0, jour.recompenseCaca)
-      : total
-  ), 0);
+  return Object.values(jours || {}).reduce((total, jour) => {
+    if (!aUtilise(jour, "pomme")) return total;
+    if (jour.fait && Number.isInteger(jour.recompenseCaca)) return total + Math.max(0, jour.recompenseCaca);
+    if (jour.nonReussi === true) return total + 1;
+    return total;
+  }, 0);
 }
 
 // Renvoie { ok, raison } pour un objet à utiliser aujourd'hui.
-export function statutObjet(id, { jours, aujourdhui, inventaire, defiChoisiExiste }) {
+// `aujourdhui` : le jour sur lequel on utilise l’objet (aujourd’hui ou un jour à venir).
+export function statutObjet(id, { jours, aujourdhui, limite = null, inventaire, defiChoisiExiste }) {
   const jour = jours[aujourdhui] || {};
   const demain = jours[decalerJour(aujourdhui, 1)] || {};
   const propositions = Array.isArray(jour.propositions) ? jour.propositions : [];
@@ -298,11 +303,14 @@ export function statutObjet(id, { jours, aujourdhui, inventaire, defiChoisiExist
   }
   if (!inventaire[id]) return { ok: false, raison: "Tu n’as pas encore cet objet. Forme une combinaison pour le gagner." };
   // Pas de limite par jour, mais on évite de dépenser un objet qui n'aurait aucun effet.
+  if (id === "dauphin" && aUtilise(jour, id)) {
+    return { ok: false, raison: "Un seul dauphin par jour : un deuxième remplacerait le défi déjà prévu pour demain." };
+  }
   if (OBJETS_EFFET_UNIQUE.includes(id) && aUtilise(jour, id)) {
-    return { ok: false, raison: "Cet objet est déjà actif aujourd’hui : en utiliser un autre ne changerait rien." };
+    return { ok: false, raison: "Cet objet est déjà actif ce jour-là : en utiliser un autre ne changerait rien." };
   }
   if (id !== "arc" && aUtilise(jour, "lotus") && !jour.fait) {
-    return { ok: false, raison: "Aujourd’hui est un jour de repos : pas de défi à modifier." };
+    return { ok: false, raison: "Ce jour est un jour de repos : pas de défi à modifier." };
   }
 
   if (id === "de") {
@@ -316,10 +324,11 @@ export function statutObjet(id, { jours, aujourdhui, inventaire, defiChoisiExist
     if (!jour.choisi) return { ok: false, raison: "Choisis d’abord un défi parmi les trois dans le calendrier." };
     if (termine) return { ok: false, raison: "Le défi du jour est déjà validé : cet objet doit être utilisé avant la validation." };
   } else if (id === "lotus") {
-    if (termine) return { ok: false, raison: "Tu as déjà validé ou invalidé un défi aujourd’hui." };
+    if (termine) return { ok: false, raison: "Tu as déjà validé ou invalidé le défi de ce jour." };
   } else if (id === "dauphin") {
     if (!jour.choisi || !defiChoisiExiste) return { ok: false, raison: "Choisis d’abord un défi parmi les trois dans le calendrier." };
-    if (demain.choisi) return { ok: false, raison: "Le défi de demain est déjà choisi." };
+    if (limite && decalerJour(aujourdhui, 1) > limite) return { ok: false, raison: "Le lendemain est trop loin dans le calendrier : le dauphin ne peut pas encore y placer ce défi." };
+    if (demain.choisi) return { ok: false, raison: "Le défi du lendemain est déjà choisi." };
     if (demain.dauphinDefiId === jour.choisi) return { ok: false, raison: "Ce défi est déjà prévu dans le tirage de demain." };
   }
   return { ok: true, raison: "" };
