@@ -411,6 +411,11 @@ select:focus { outline: none; border-color: var(--or); }
 .defi-contenu { min-width: 0; }
 .defi-contenu h3 { overflow-wrap: anywhere; }
 .defi-contenu p { margin-bottom: 0; }
+.carte-et-actions { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 6px; margin-bottom: 12px; }
+.carte-et-actions > .tuile { margin: 0; }
+.liste-objectifs .carte-et-actions { margin-bottom: 0; }
+.liste-objectifs .actions-hors-carte { flex-direction: row; }
+.actions-hors-carte { display: flex; flex-direction: column; gap: 4px; }
 .defi-actions { display: flex; flex-direction: column; align-items: flex-end; gap: 5px; }
 .defi-actions .actions { gap: 4px; margin: 0; }
 .action-defi { padding: 3px 7px; font-size: 13px; line-height: 1.1; }

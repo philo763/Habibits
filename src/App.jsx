@@ -659,26 +659,27 @@ export default function App() {
                 {objectifs.map((objectif) => {
                   const nombre = defis.filter((defi) => defi.objectifId === objectif.id).length;
                   return (
-                    <div
-                      key={objectif.id}
-                      className={`tuile objectif-tuile ${objectifsFiltres.includes(objectif.id) ? "selectionne" : ""}`}
-                      style={{ "--couleur": couleurObjectif(objectif.couleur) }}
-                    >
-                      <div className="objectif-ligne">
-                        <button
-                          className="objectif-filtre"
-                          onClick={() => basculerObjectifFiltre(objectif.id)}
-                          aria-pressed={objectifsFiltres.includes(objectif.id)}
-                        >
-                          <span className="objectif-nom" style={{ color: couleurObjectif(objectif.couleur) }}>{objectif.nom}</span>
-                          <span className="objectif-compte">{nombre}</span>
-                        </button>
-                        <div className="actions">
-                          <button className="btn petit discret" onClick={() => ouvrirEditionObjectif(objectif)}
-                            aria-label={`Modifier l’objectif ${objectif.nom}`} title="Modifier">✏️</button>
-                          <button className="btn petit danger" onClick={() => supprimerObjectif(objectif)}
-                            aria-label={`Supprimer l’objectif ${objectif.nom}`} title="Supprimer">🗑️</button>
+                    <div key={objectif.id} className="carte-et-actions">
+                      <div
+                        className={`tuile objectif-tuile ${objectifsFiltres.includes(objectif.id) ? "selectionne" : ""}`}
+                        style={{ "--couleur": couleurObjectif(objectif.couleur) }}
+                      >
+                        <div className="objectif-ligne">
+                          <button
+                            className="objectif-filtre"
+                            onClick={() => basculerObjectifFiltre(objectif.id)}
+                            aria-pressed={objectifsFiltres.includes(objectif.id)}
+                          >
+                            <span className="objectif-nom" style={{ color: couleurObjectif(objectif.couleur) }}>{objectif.nom}</span>
+                            <span className="objectif-compte">{nombre}</span>
+                          </button>
                         </div>
+                      </div>
+                      <div className="actions-hors-carte">
+                        <button className="btn discret action-defi" onClick={() => ouvrirEditionObjectif(objectif)}
+                          aria-label={`Modifier l’objectif ${objectif.nom}`} title="Modifier">✏️</button>
+                        <button className="btn danger action-defi" onClick={() => supprimerObjectif(objectif)}
+                          aria-label={`Supprimer l’objectif ${objectif.nom}`} title="Supprimer">🗑️</button>
                       </div>
                     </div>
                   );
@@ -790,10 +791,9 @@ export default function App() {
                 .map((defi) => {
                   const objectif = objectifs.find((element) => element.id === defi.objectifId);
                   const enEdition = defiEnEdition?.id === defi.id;
-                  return (
-                    <div key={defi.id} className="tuile defi-tuile" style={{ "--couleur": couleurObjectif(objectif?.couleur) }}>
-                      {enEdition ? (
-                        <>
+                  const styleCarte = { "--couleur": couleurObjectif(objectif?.couleur) };
+                  return enEdition ? (
+                    <div key={defi.id} className="tuile defi-tuile" style={styleCarte}>
                           <h3>Modifier le défi</h3>
                           <label className="champ-label" htmlFor={`titre-${defi.id}`}>Nom</label>
                           <input id={`titre-${defi.id}`} value={defiEnEdition.titre}
@@ -819,28 +819,27 @@ export default function App() {
                             </button>
                             <button className="btn petit discret" onClick={() => setDefiEnEdition(null)}>Annuler</button>
                           </div>
-                        </>
-                      ) : (
-                        <>
-                          <div className="defi-corps">
-                            <div className="defi-contenu">
-                              <h3>{defi.titre}</h3>
-                              {defi.description && <p>{defi.description}</p>}
-                            </div>
-                            <div className="defi-actions">
-                              <span className="defi-difficulte" aria-label={`Difficulté ${defi.difficulte}`} title={`Difficulté ${defi.difficulte}`}>
-                                <IndicateurDifficulte difficulte={defi.difficulte} />
-                              </span>
-                              <div className="actions">
-                                <button className="btn discret action-defi" onClick={() => commencerEditionDefi(defi)}
-                                  aria-label={`Modifier le défi ${defi.titre}`} title="Modifier">✏️</button>
-                                <button className="btn danger action-defi" onClick={() => supprimerDefi(defi.id)}
-                                  aria-label={`Supprimer le défi ${defi.titre}`} title="Supprimer">🗑️</button>
-                              </div>
-                            </div>
+                    </div>
+                  ) : (
+                    // Boutons hors de la carte : la carte ressemble à une carte à collectionner.
+                    <div key={defi.id} className="carte-et-actions">
+                      <div className="tuile defi-tuile" style={styleCarte}>
+                        <div className="defi-corps">
+                          <div className="defi-contenu">
+                            <h3>{defi.titre}</h3>
+                            {defi.description && <p>{defi.description}</p>}
                           </div>
-                        </>
-                      )}
+                          <span className="defi-difficulte" aria-label={`Difficulté ${defi.difficulte}`} title={`Difficulté ${defi.difficulte}`}>
+                            <IndicateurDifficulte difficulte={defi.difficulte} />
+                          </span>
+                        </div>
+                      </div>
+                      <div className="actions-hors-carte">
+                        <button className="btn discret action-defi" onClick={() => commencerEditionDefi(defi)}
+                          aria-label={`Modifier le défi ${defi.titre}`} title="Modifier">✏️</button>
+                        <button className="btn danger action-defi" onClick={() => supprimerDefi(defi.id)}
+                          aria-label={`Supprimer le défi ${defi.titre}`} title="Supprimer">🗑️</button>
+                      </div>
                     </div>
                   );
                 })}
