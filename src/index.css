@@ -653,7 +653,8 @@ select:focus { outline: none; border-color: var(--or); }
   .filtres-tri .filtre-difficulte { padding-right: 3px; padding-left: 3px; }
 }
 .defi-tuile .actions { margin-bottom: 0; }
-.actions-validation { margin-top: 14px; }
+.actions-validation { justify-content: center; margin-top: 12px; }
+.bouton-fusee { margin-top: 10px; }
 .actions-modifier-choix { justify-content: center; margin-top: 28px; }
 .bouton-correction-defi { width: auto; max-width: 320px; }
 .carte-collection-entete { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }

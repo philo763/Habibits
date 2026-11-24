@@ -338,22 +338,6 @@ export default function Calendrier({
         >
           <h3>{defiChoisi.titre}</h3>
           <p>{defiChoisi.description}</p>
-          {peutModifierEtat && !jour.fait && !jour.nonReussi && (
-            <div className="actions actions-validation">
-              <button className="btn" onClick={() => setConfirmation({ type: "valider" })}>Valider le défi ✔</button>
-              <button className="btn discret" onClick={() => {
-                setNoteEchec("");
-                setConfirmation({ type: "echec" });
-              }}>
-                Je n’ai pas réussi
-              </button>
-            </div>
-          )}
-          {jour.fait && aUtilise(jour, "fusee") && !jour.fuseeValidee && peutModifierEtat && (
-            <button className="btn" onClick={() => setConfirmation({ type: "valider2" })}>
-              Valider une 2ème fois <span aria-hidden="true">🚀</span>
-            </button>
-          )}
           {jour.nonReussi && (
             <>
               <p className="attention">Ce défi n’a pas été réussi.</p>
@@ -442,10 +426,26 @@ export default function Calendrier({
         <p>Aucun défi ce jour-là.</p>
       )}
       {/* Hors de la carte : la carte du défi doit ressembler à une carte à collectionner. */}
+      {!jourRepos && defiChoisi && peutModifierEtat && !jour.fait && !jour.nonReussi && (
+        <div className="actions actions-validation">
+          <button className="btn" onClick={() => setConfirmation({ type: "valider" })}>Valider le défi ✔</button>
+          <button className="btn discret" onClick={() => {
+            setNoteEchec("");
+            setConfirmation({ type: "echec" });
+          }}>
+            Je n’ai pas réussi
+          </button>
+        </div>
+      )}
       {!jourRepos && defiChoisi && jour.fait && (
         <div className="apres-carte-defi">
           <section className="apres-carte-section">
             <p className="accompli">Bravo, défi accompli !</p>
+            {aUtilise(jour, "fusee") && !jour.fuseeValidee && peutModifierEtat && (
+              <button className="btn bouton-fusee" onClick={() => setConfirmation({ type: "valider2" })}>
+                Valider une 2ème fois <span aria-hidden="true">🚀</span>
+              </button>
+            )}
           </section>
           {jour.collectionne ? (
             <section className="apres-carte-section apres-carte-ligne">
