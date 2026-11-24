@@ -44,7 +44,7 @@ import "./sauvegarde.css";
 
 const SECTIONS = [
   { id: "calendrier", label: "📅 Calendrier" },
-  { id: "defis", label: "🎯 Objectifs & défis" },
+  { id: "defis", label: "🎯 Mes objectifs" },
   { id: "defiMoment", label: "⭐ Défi du moment" },
   { id: "sac", label: "🎒 Sac à dos" },
   { id: "collection", label: "🃏 Collection" },
@@ -904,7 +904,7 @@ export default function App() {
             )}
             {objectifs.length === 0 && (
               <>
-                <p className="attention">Crée d’abord un objectif dans la section « Objectifs & défis ».</p>
+                <p className="attention">Crée d’abord un objectif dans la section « Mes objectifs ».</p>
                 <button className="btn" onClick={() => {
                   setCompletionSuspendue(true);
                   setOnglet("defis");

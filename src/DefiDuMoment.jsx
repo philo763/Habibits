@@ -109,7 +109,7 @@ export default function DefiDuMoment({
           </>
         )}
         {erreurGestionDefis &&  <p className="attention" role="alert">{erreurGestionDefis}</p>}
-        {!defis.length && <p className="note">Crée d’abord un défi dans « Objectifs & défis ».</p>}
+        {!defis.length && <p className="note">Crée d’abord un défi dans « Mes objectifs ».</p>}
         <hr className="separateur-section" />
         <details className="explications-defi-moment">
           <summary>Règles</summary>

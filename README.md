@@ -166,7 +166,7 @@ Sur téléphone, ouvre l'adresse publiée puis ajoute Habibits à l'écran d'acc
 
 ## Feuille de route
 
-- [x] **Objectifs et défis** : objectifs personnalisables, difficulté (facile, moyen, difficile), date de création, tri et filtres multiples.
+- [x] **Mes objectifs** (objectifs et défis) : objectifs personnalisables, difficulté (facile, moyen, difficile), date de création, tri et filtres multiples.
 - [ ] **Tirage adaptatif** : choisir deux jours de suite le défi facile augmente les chances de tirer des défis plus difficiles le lendemain.
 - [ ] **Défi doré** : une fois complété, il valide le défi du jour J+5.
 - [ ] **Arc-en-ciel** : valider chaque objectif sur autant de jours consécutifs qu'il y a d'objectifs donne un prochain tirage entièrement doré.
