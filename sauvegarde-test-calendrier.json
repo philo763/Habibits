@@ -131,6 +131,7 @@
         "choisi": "d5",
         "fait": true,
         "collectionProposable": true,
+        "collectionne": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
@@ -160,6 +161,7 @@
         "choisi": "L2",
         "fait": true,
         "collectionProposable": true,
+        "collectionne": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
@@ -189,6 +191,7 @@
         "choisi": "d2",
         "fait": true,
         "collectionProposable": true,
+        "collectionne": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
@@ -218,6 +221,7 @@
         "choisi": "d6",
         "fait": true,
         "collectionProposable": true,
+        "collectionne": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
@@ -247,6 +251,7 @@
         "choisi": "d8",
         "fait": true,
         "collectionProposable": true,
+        "collectionne": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
@@ -305,6 +310,7 @@
         "choisi": "L1",
         "fait": true,
         "collectionProposable": true,
+        "collectionne": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
@@ -334,6 +340,7 @@
         "choisi": "d6",
         "fait": true,
         "collectionProposable": true,
+        "collectionne": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
@@ -363,6 +370,7 @@
         "choisi": "L1",
         "fait": true,
         "collectionProposable": true,
+        "collectionne": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
@@ -392,6 +400,7 @@
         "choisi": "d6",
         "fait": true,
         "collectionProposable": true,
+        "collectionne": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
@@ -451,6 +460,7 @@
         "choisi": "d6",
         "fait": true,
         "collectionProposable": true,
+        "collectionne": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
@@ -480,6 +490,7 @@
         "choisi": "d1",
         "fait": true,
         "collectionProposable": true,
+        "collectionne": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
@@ -509,6 +520,7 @@
         "choisi": "d8",
         "fait": true,
         "collectionProposable": true,
+        "collectionne": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
@@ -538,6 +550,7 @@
         "choisi": "L1",
         "fait": true,
         "collectionProposable": true,
+        "collectionne": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
@@ -567,6 +580,7 @@
         "choisi": "d3",
         "fait": true,
         "collectionProposable": true,
+        "collectionne": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
@@ -625,6 +639,7 @@
         "choisi": "L2",
         "fait": true,
         "collectionProposable": true,
+        "collectionne": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
@@ -654,6 +669,7 @@
         "choisi": "d5",
         "fait": true,
         "collectionProposable": true,
+        "collectionne": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
@@ -683,6 +699,7 @@
         "choisi": "L2",
         "fait": true,
         "collectionProposable": true,
+        "collectionne": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
@@ -742,6 +759,7 @@
         "choisi": "d7",
         "fait": true,
         "collectionProposable": true,
+        "collectionne": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
@@ -771,6 +789,7 @@
         "choisi": "L2",
         "fait": true,
         "collectionProposable": true,
+        "collectionne": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
@@ -800,6 +819,7 @@
         "choisi": "d1",
         "fait": true,
         "collectionProposable": true,
+        "collectionne": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
@@ -830,6 +850,7 @@
         "choisi": "d3",
         "fait": true,
         "collectionProposable": true,
+        "collectionne": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
@@ -859,6 +880,7 @@
         "choisi": "d1",
         "fait": true,
         "collectionProposable": true,
+        "collectionne": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
@@ -888,6 +910,7 @@
         "choisi": "d8",
         "fait": true,
         "collectionProposable": true,
+        "collectionne": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
@@ -946,6 +969,7 @@
         "choisi": "d6",
         "fait": true,
         "collectionProposable": true,
+        "collectionne": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
@@ -975,6 +999,7 @@
         "choisi": "L1",
         "fait": true,
         "collectionProposable": true,
+        "collectionne": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
@@ -1004,6 +1029,7 @@
         "choisi": "d2",
         "fait": true,
         "collectionProposable": true,
+        "collectionne": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
@@ -1033,6 +1059,7 @@
         "choisi": "d5",
         "fait": true,
         "collectionProposable": true,
+        "collectionne": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
@@ -1062,6 +1089,7 @@
         "choisi": "L1",
         "fait": true,
         "collectionProposable": true,
+        "collectionne": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
@@ -1091,6 +1119,7 @@
         "choisi": "d3",
         "fait": true,
         "collectionProposable": true,
+        "collectionne": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
@@ -1120,6 +1149,7 @@
         "choisi": "L1",
         "fait": true,
         "collectionProposable": true,
+        "collectionne": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
@@ -1149,6 +1179,7 @@
         "choisi": "d1",
         "fait": true,
         "collectionProposable": true,
+        "collectionne": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
@@ -1178,6 +1209,7 @@
         "choisi": "d2",
         "fait": true,
         "collectionProposable": true,
+        "collectionne": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
@@ -1236,6 +1268,7 @@
         "choisi": "d1",
         "fait": true,
         "collectionProposable": true,
+        "collectionne": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
@@ -1265,6 +1298,7 @@
         "choisi": "d4",
         "fait": true,
         "collectionProposable": true,
+        "collectionne": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
@@ -1332,6 +1366,7 @@
         "choisi": "L2",
         "fait": true,
         "collectionProposable": true,
+        "collectionne": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
@@ -1421,6 +1456,7 @@
         "choisi": "d2",
         "fait": true,
         "collectionProposable": true,
+        "collectionne": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
@@ -1480,6 +1516,7 @@
         "choisi": "d1",
         "fait": true,
         "collectionProposable": true,
+        "collectionne": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
@@ -1509,6 +1546,7 @@
         "choisi": "d6",
         "fait": true,
         "collectionProposable": true,
+        "collectionne": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
@@ -1538,6 +1576,7 @@
         "choisi": "d6",
         "fait": true,
         "collectionProposable": true,
+        "collectionne": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
@@ -1567,6 +1606,7 @@
         "choisi": "d8",
         "fait": true,
         "collectionProposable": true,
+        "collectionne": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
@@ -1596,6 +1636,7 @@
         "choisi": "d5",
         "fait": true,
         "collectionProposable": true,
+        "collectionne": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
@@ -1654,6 +1695,7 @@
         "choisi": "d8",
         "fait": true,
         "collectionProposable": true,
+        "collectionne": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
@@ -1683,6 +1725,7 @@
         "choisi": "d1",
         "fait": true,
         "collectionProposable": true,
+        "collectionne": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
@@ -1712,6 +1755,7 @@
         "choisi": "d2",
         "fait": true,
         "collectionProposable": true,
+        "collectionne": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
@@ -1741,6 +1785,7 @@
         "choisi": "L2",
         "fait": true,
         "collectionProposable": true,
+        "collectionne": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
@@ -1770,6 +1815,7 @@
         "choisi": "d7",
         "fait": true,
         "collectionProposable": true,
+        "collectionne": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
@@ -1799,6 +1845,7 @@
         "choisi": "d3",
         "fait": true,
         "collectionProposable": true,
+        "collectionne": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
@@ -1828,6 +1875,7 @@
         "choisi": "L2",
         "fait": true,
         "collectionProposable": true,
+        "collectionne": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
@@ -1858,6 +1906,7 @@
         "choisi": "L2",
         "fait": true,
         "collectionProposable": true,
+        "collectionne": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
@@ -1887,6 +1936,7 @@
         "choisi": "d5",
         "fait": true,
         "collectionProposable": true,
+        "collectionne": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
@@ -1975,6 +2025,7 @@
         "choisi": "d1",
         "fait": true,
         "collectionProposable": true,
+        "collectionne": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
@@ -2034,6 +2085,7 @@
         "choisi": "L2",
         "fait": true,
         "collectionProposable": true,
+        "collectionne": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
@@ -2063,6 +2115,7 @@
         "choisi": "d1",
         "fait": true,
         "collectionProposable": true,
+        "collectionne": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
@@ -2092,6 +2145,7 @@
         "choisi": "d5",
         "fait": true,
         "collectionProposable": true,
+        "collectionne": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
@@ -2151,6 +2205,7 @@
         "choisi": "d8",
         "fait": true,
         "collectionProposable": true,
+        "collectionne": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
@@ -2210,6 +2265,7 @@
         "choisi": "d3",
         "fait": true,
         "collectionProposable": true,
+        "collectionne": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
@@ -2239,6 +2295,7 @@
         "choisi": "d5",
         "fait": true,
         "collectionProposable": true,
+        "collectionne": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
@@ -2270,6 +2327,7 @@
         "choisi": "d2",
         "fait": true,
         "collectionProposable": true,
+        "collectionne": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
@@ -2299,6 +2357,7 @@
         "choisi": "d8",
         "fait": true,
         "collectionProposable": true,
+        "collectionne": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
@@ -2357,6 +2416,7 @@
         "choisi": "d4",
         "fait": true,
         "collectionProposable": true,
+        "collectionne": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
@@ -2386,6 +2446,7 @@
         "choisi": "d2",
         "fait": true,
         "collectionProposable": true,
+        "collectionne": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
@@ -2415,6 +2476,7 @@
         "choisi": "L1",
         "fait": true,
         "collectionProposable": true,
+        "collectionne": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
@@ -2474,6 +2536,7 @@
         "choisi": "d2",
         "fait": true,
         "collectionProposable": true,
+        "collectionne": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
@@ -2503,6 +2566,7 @@
         "choisi": "d7",
         "fait": true,
         "collectionProposable": true,
+        "collectionne": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
@@ -2532,6 +2596,7 @@
         "choisi": "d6",
         "fait": true,
         "collectionProposable": true,
+        "collectionne": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
@@ -2561,6 +2626,7 @@
         "choisi": "L2",
         "fait": true,
         "collectionProposable": true,
+        "collectionne": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
@@ -2590,6 +2656,7 @@
         "choisi": "d3",
         "fait": true,
         "collectionProposable": true,
+        "collectionne": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
@@ -2619,6 +2686,7 @@
         "choisi": "d6",
         "fait": true,
         "collectionProposable": true,
+        "collectionne": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
@@ -2736,6 +2804,7 @@
         "choisi": "d7",
         "fait": true,
         "collectionProposable": true,
+        "collectionne": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
@@ -2795,6 +2864,7 @@
         "choisi": "d4",
         "fait": true,
         "collectionProposable": true,
+        "collectionne": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
@@ -2824,6 +2894,7 @@
         "choisi": "d8",
         "fait": true,
         "collectionProposable": true,
+        "collectionne": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
@@ -2853,6 +2924,7 @@
         "choisi": "d1",
         "fait": true,
         "collectionProposable": true,
+        "collectionne": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
@@ -2941,6 +3013,7 @@
         "choisi": "d3",
         "fait": true,
         "collectionProposable": true,
+        "collectionne": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
@@ -2970,6 +3043,7 @@
         "choisi": "d6",
         "fait": true,
         "collectionProposable": true,
+        "collectionne": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
@@ -3029,6 +3103,7 @@
         "choisi": "d2",
         "fait": true,
         "collectionProposable": true,
+        "collectionne": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
@@ -3058,6 +3133,7 @@
         "choisi": "d7",
         "fait": true,
         "collectionProposable": true,
+        "collectionne": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
@@ -3087,6 +3163,7 @@
         "choisi": "d4",
         "fait": true,
         "collectionProposable": true,
+        "collectionne": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
@@ -3175,6 +3252,7 @@
         "choisi": "d5",
         "fait": true,
         "collectionProposable": true,
+        "collectionne": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
@@ -3204,6 +3282,7 @@
         "choisi": "d6",
         "fait": true,
         "collectionProposable": true,
+        "collectionne": true,
         "nonReussi": false,
         "note": "",
         "defiCopie": {
