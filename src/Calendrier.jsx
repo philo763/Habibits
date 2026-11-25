@@ -104,6 +104,8 @@ export default function Calendrier({
       const patch = {
         fait: true,
         collectionProposable: true,
+        // Explicite : la carte n'entre dans la collection qu'avec « Ajouter ma carte » (défi du moment compris)
+        collectionne: false,
         nonReussi: false,
         note: "",
         defiCopie: { ...defiChoisi },
@@ -452,7 +454,7 @@ export default function Calendrier({
               <p>Cette carte est dans ta collection.</p>
               <button className="btn" onClick={onAllerCollection}>Voir ma collection</button>
             </section>
-          ) : jour.defiDuMomentIdLorsValidation !== jour.choisi && !lectureSeule && (
+          ) : !lectureSeule && (
             <section className="apres-carte-section">
               <button className="btn" onClick={() => maj(selection, { collectionne: true })}>
                 Ajouter ma carte à la collection

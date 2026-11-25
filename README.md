@@ -9,7 +9,7 @@ Les données restent **sur le téléphone**, dans le navigateur : pas de compte,
 - **Calendrier** mensuel : une case de taille fixe par jour ; un jour réussi affiche la difficulté de son défi (barres) dans la couleur de son objectif. Des portes relient deux jours réussis voisins, en ligne comme en colonne, à l'intérieur du mois.
 - **Coups de poker** : les jours réussis qui se suivent forment des mains (paire, brelan, suite…), en ligne dans la semaine et en colonne d'une semaine à l'autre, et rapportent des objets.
 - **Tirage quotidien** en un clic, pour aujourd’hui ou demain : une carte facile, une moyenne et une difficile, puis choix d'un défi.
-- **Collection** : après avoir validé un défi, on peut ajouter sa carte à sa collection, y compris pour une validation passée en ouvrant cette journée dans le calendrier. Chaque validation apparaît séparément avec sa date ; les cartes utilisent les informations actuelles du défi tant qu’il existe et conservent leur copie si le défi est supprimé. Les filtres par difficulté et les tris récent/ancien reprennent ceux de « Mes défis ».
+- **Collection** : une collection de cartes à compléter, 2 cartes par ligne, rangées par numéro de carte. Chaque défi a un numéro fixe (#1, #2…). Une carte pas encore obtenue n'affiche que son numéro ; une carte obtenue est affichée en couleur, avec son nombre d'exemplaires sous la case s'il y en a plusieurs. Un clic sur une carte obtenue la montre en entier avec les dates où elle a été gagnée (de la plus récente à la plus ancienne, ⭐ pour un défi du moment). Une carte n'est obtenue que si on clique sur « Ajouter ma carte à la collection » après la validation, défi du moment compris (y compris pour une validation passée, depuis le calendrier). La carte d'un défi supprimé reste dans la collection, avec une texture de carte bloquée 🔒. Filtres par difficulté.
 - **Mon Bibit** : une créature SVG en couches à personnaliser avec une couleur, un style de corps (les yeux pour le catalogue actuel) et un accessoire. Les sections Couleurs, Corps, Accessoires et Habibits sont partagées avec Le Shop ; Habibits affiche « À venir ».
 - **Le Shop** : accessible depuis Mon Bibit, avec trois couleurs à 5 pommes chacune, deux styles d’yeux à 10 pommes chacun dans la catégorie Corps et deux accessoires à 15 pommes chacun. Les habits, les yeux spirales et le nœud ne sont plus proposés. Les achats sont définitifs, restent disponibles pour toujours et ne s’équipent pas automatiquement ; les personnalisations précédemment achetées restent conservées. Le solde disponible est nommé « Mes popommes ».
 - **Notes à moi-même** : après un défi non réussi, une note facultative peut être enregistrée et retrouvée avec la carte du défi.
@@ -18,7 +18,7 @@ Les données restent **sur le téléphone**, dans le navigateur : pas de compte,
 - **Validation** : le défi du jour se valide depuis sa case (bouton « Valider le défi »).
 - **Gestion des objectifs et des défis** : objectifs indépendants avec couleur, renommage et suppression sécurisée ; défis modifiables avec difficulté et date de création.
 - **Défi du moment** : depuis « Mes défis », un défi peut être épinglé à chaque tirage ; il remplace la carte aléatoire de sa difficulté et permet de régler un objectif hebdomadaire.
-- **Récompenses** : une validation rapporte 💩 1 (facile), 💩 3 (moyen) ou 💩 5 (difficile) ; un défi non réussi rapporte un cœur bandé ❤️‍🩹. Chaque gain doit être confirmé dans une petite fenêtre. Chaque caca ou cœur bandé gagné rapporte aussi une pomme 🍎. Le calendrier et la Collection affichent les cacas et cœurs gagnés ; le solde de pommes après achats apparaît uniquement dans Le Shop sous le nom « Mes popommes ». Le défi du moment a une section dédiée dans la collection et un objectif hebdomadaire de 1 à 7 validations qui, s’il est atteint, double ses gains de la semaine sous forme de bonus.
+- **Récompenses** : une validation rapporte 💩 1 (facile), 💩 3 (moyen) ou 💩 5 (difficile) ; un défi non réussi rapporte un cœur bandé ❤️‍🩹. Chaque gain doit être confirmé dans une petite fenêtre. Chaque caca ou cœur bandé gagné rapporte aussi une pomme 🍎. Le calendrier et la Collection affichent les cacas et cœurs gagnés ; le solde de pommes après achats apparaît uniquement dans Le Shop sous le nom « Mes popommes ». Le défi du moment a un objectif hebdomadaire de 1 à 7 validations qui, s’il est atteint, double ses gains de la semaine sous forme de bonus.
 - **Tri et filtres** dans « Mes défis » : par date de création, par objectifs et par difficultés, avec sélection multiple.
 - **À propos** : présentation de l'approche de Habibits et de sa raison d'être.
 - **Stockage local** : défis, jours et réglage du rappel sont conservés dans le navigateur.
@@ -43,7 +43,7 @@ Les données restent **sur le téléphone**, dans le navigateur : pas de compte,
 - Si un niveau n'est pas représenté, un message conseille de créer un défi de cette difficulté et donne accès à « Mes défis ». Il est aussi possible de continuer : chaque carte manquante est alors tirée au hasard parmi les défis encore disponibles, sans modifier sa difficulté enregistrée.
 - Trois défis distincts au minimum sont nécessaires. On choisit une seule carte par jour ; une confirmation est demandée avant chaque choix et validation. Un défi déjà choisi peut être validé ou marqué comme non réussi, y compris pour un jour passé.
 - Il est impossible de tirer un défi pour un jour passé. Si un tirage existe déjà, on peut modifier le choix parmi les cartes tirées après avoir confirmé l’avertissement « Attention, c’est de la triche 😉 ». Une fois le défi validé ou marqué comme non réussi, le choix ne peut plus être modifié.
-- Après validation, ajouter la carte à la collection est facultatif. Chaque occurrence est affichée séparément avec sa date de validation. Les cartes affichent les données actuelles du défi, sont triées par date de validation (récent/ancien) et peuvent être filtrées par difficulté. Les défis du moment réussis apparaissent dans leur section dédiée.
+- Après validation, ajouter la carte à la collection est facultatif, y compris pour le défi du moment (ça ne change pas le décompte hebdomadaire du défi du moment). Chaque ajout compte comme un exemplaire de la carte. Les cartes affichent les données actuelles du défi et peuvent être filtrées par difficulté. Les défis du moment validés avant cette règle étaient ajoutés automatiquement : ils restent dans la collection.
 - Une validation passée peut également être ajoutée à la collection depuis le calendrier tant qu’elle n’y figure pas déjà. En cas de défi non réussi, l’utilisateur peut enregistrer une note facultative. Les cartes de collection et les notes conservent une copie du défi pour rester visibles même si le défi original est supprimé.
 - À la première ouverture de cette version, si des tirages ou défis choisis existent après demain, l’application explique leur suppression et attend une confirmation. L’utilisateur peut faire une capture d’écran avant de confirmer.
 
@@ -69,7 +69,7 @@ src/
   Regles.jsx            Page des règles du jeu
   objets.js             Coups de poker (mains en ligne et en colonne) et objets
   recompenses.js        Calcul des cacas et des bonus hebdomadaires
-  Collection.jsx        Collection des cartes de défis validés
+  Collection.jsx        Collection de cartes à compléter (grille, détail d'une carte)
   MonBibit.jsx          Personnalisation de la créature
   ShopBibit.jsx         Boutique des personnalisations
   BibitIllustration.jsx Illustration SVG en couches du Bibit
@@ -78,6 +78,7 @@ src/
   Parametres.jsx        Sous-pages Rappel et Mes données
   Restauration.jsx      Choix et restauration d'une sauvegarde JSON
   Bandeaux.jsx          Indicateurs et messages de sauvegarde
+  cartesCollection.js   Numéros de cartes, migration et cartes obtenues de la collection
   objectifs.js          Palette des objectifs et migration des données de défis
   data/bibitBoutique.js Catalogue, catégories et sauvegarde des personnalisations
   storage.js            Lecture et écriture des défis, des jours et du rappel
@@ -100,7 +101,7 @@ package.json            Dépendances et commandes npm
 Les données principales sont enregistrées localement dans le navigateur, sous les clés `habibits.objectifs`, `habibits.defis`, `habibits.jours`, `habibits.rappel` et `habibits.gestion-defis` :
 
 - `objectifs` : liste indépendante `{ id, nom, couleur }`, permettant notamment les objectifs sans défi.
-- `defis` : liste de défis `{ id, titre, description, image, objectifId, difficulte, dateCreation }`
+- `defis` : liste de défis `{ id, numero, titre, description, image, objectifId, difficulte, dateCreation }`. `numero` est le numéro de carte de la collection : fixe, attribué à la création et jamais réutilisé, même après suppression (il est aussi gardé dans les copies du défi). Les défis sans numéro (anciennes données ou sauvegardes) sont numérotés au chargement par date de création, défis supprimés compris (`src/cartesCollection.js`).
 - `jours` : un objet indexé par date, `"2026-10-16": { propositions: [ids], choisi: id, fait: false }`. Les nouvelles validations enregistrent `collectionProposable`, `collectionne`, `defiCopie` et `objectifCopie` ; les échecs enregistrent `nonReussi`, `note` et une copie du défi et de son objectif. Si le choix validé est modifié après confirmation, une carte déjà ajoutée à la collection est conservée dans `collectionHistorique`. Les anciens jours validés restent hors de la collection.
 - `rappel` : `{ heure, minute }` (20 h 00 par défaut)
 - `gestion-defis` : `{ defiDuMomentId, defiDuMomentActif, frequencesHebdo }`, configuration du défi garanti dans les tirages et de son objectif hebdomadaire. Cette configuration est incluse dans les sauvegardes et restaurations.
@@ -133,7 +134,7 @@ npm run lint
 
 Deux sauvegardes fictives, à la racine du dépôt, se restaurent depuis **Paramètres** :
 
-- `sauvegarde-test-calendrier.json` : calendrier rempli du 1er août au 23 novembre 2026, pour tester l'affichage, les récompenses et les objets. 11 défis sur trois objectifs, 90 jours réussis des trois difficultés (avec portes horizontales et verticales), 16 jours ratés avec et sans note, deux étoiles « défi du moment », 79 des 88 autres défis réussis ajoutés à la collection, des objets utilisés (Lotus le 14/09, Chameau le 07/10, Fusée le 21/10, Boule disco le 26/08). Les récompenses sont calculées par l'appli : 283 cacas, 16 cœurs, 304 popommes et un sac bien rempli (dont 103 boules disco, 14 chameaux et 16 baguettes magiques avec les mains en colonne).
+- `sauvegarde-test-calendrier.json` : calendrier rempli du 1er août au 23 novembre 2026, pour tester l'affichage, les récompenses et les objets. 13 défis sur trois objectifs, plus un défi supprimé (#11, carte bloquée dans la collection), 90 jours réussis des trois difficultés (avec portes horizontales et verticales), 16 jours ratés avec et sans note, deux étoiles « défi du moment », 81 des 90 cartes gagnées ajoutées à la collection (dont les 2 défis du moment) et 3 défis récents jamais gagnés (#12 à #14, cartes manquantes), des objets utilisés (Lotus le 14/09, Chameau le 07/10, Fusée le 21/10, Boule disco le 26/08). Les récompenses sont calculées par l'appli : 283 cacas, 16 cœurs, 304 popommes et un sac bien rempli (dont 103 boules disco, 14 chameaux et 16 baguettes magiques avec les mains en colonne).
 - `sauvegarde-test-tirage.json` : 8 défis, un jour réussi (10/11), un tirage sans choix (15/11) et un tirage avec défi choisi non validé (18/11), pour tester les tirages.
 
 Les dates sont fixes (2026) : plus tard, navigue jusqu'aux mois concernés dans le calendrier pour les voir.

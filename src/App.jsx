@@ -22,6 +22,7 @@ import Parametres from "./Parametres";
 import Accueil from "./Accueil";
 import Regles from "./Regles";
 import Collection from "./Collection";
+import { normaliserCollection, prochainNumero } from "./cartesCollection";
 import DefiDuMoment from "./DefiDuMoment";
 import Notes from "./Notes";
 import ObjetsSac from "./ObjetsSac";
@@ -140,8 +141,13 @@ export default function App() {
   useEffect(() => {
     async function initialiser() {
       try {
-        const donnees = await chargerDonneesDefis();
-        const joursCharges = await chargerJours();
+        const donneesBrutes = await chargerDonneesDefis();
+        const joursBruts = await chargerJours();
+        // Numéros de cartes et défis du moment déjà dans la collection (anciennes données)
+        const { defis: defisNumerotes, jours: joursCharges } = normaliserCollection(donneesBrutes.defis, joursBruts);
+        if (defisNumerotes !== donneesBrutes.defis) await sauvegarderDefis(defisNumerotes);
+        if (joursCharges !== joursBruts) await sauvegarderJours(joursCharges);
+        const donnees = { ...donneesBrutes, defis: defisNumerotes };
         const gestionDefisChargee = await chargerGestionDefis();
         const bibitCharge = await chargerBibit();
         setDefis(donnees.defis);
@@ -310,6 +316,7 @@ export default function App() {
     if (!titre.trim() || !objectifs.some((objectif) => objectif.id === objectifId) || !DIFFICULTES.includes(difficulte)) return;
     const nouveau = {
       id: crypto.randomUUID(),
+      numero: prochainNumero(defis, jours),
       titre: titre.trim(),
       description: description.trim(),
       image: null,
