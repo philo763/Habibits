@@ -13,7 +13,7 @@ Appli React + Vite (PWA) ; les données sont dans le localStorage (préfixe `hab
 
 À la racine du dépôt (détail dans la section « Sauvegardes de test » du README) :
 
-- `sauvegarde-test-calendrier.json` : 1er août → 23 novembre 2026 très rempli (difficultés, objectifs variés, portes, étoiles, jours ratés avec et sans note, 90 % des cartes gagnées dans la collection, objets gagnés et utilisés, titres longs ; 283 cacas, 16 cœurs, 304 popommes). À utiliser par défaut pour vérifier un changement.
+- `sauvegarde-test-calendrier.json` : 1er août → 23 novembre 2026 très rempli (difficultés, objectifs variés, portes, étoiles, jours ratés avec et sans note, 90 % des cartes gagnées dans la collection, cartes manquantes et carte d'un défi supprimé, objets gagnés et utilisés, titres longs ; 283 cacas, 16 cœurs, 304 popommes). À utiliser par défaut pour vérifier un changement.
 - `sauvegarde-test-tirage.json` : cas de tirage (tirage sans choix, défi choisi non validé).
 
 Pour les charger dans la preview (`npm run dev`), sans passer par le sélecteur de fichier, exécuter dans la page :

@@ -21,6 +21,7 @@ import {
 } from "./storage";
 import { cleDate } from "./dates";
 import { normaliserDonneesDefis } from "./objectifs";
+import { normaliserCollection } from "./cartesCollection";
 import { normaliserBibit } from "./data/bibitBoutique";
 
 const APP = "habibits";
@@ -178,7 +179,10 @@ function verifierSauvegarde(texte) {
   if (!defisOk || !objectifsOk || !joursOk || !rappelOk || !gestionDefisOk) {
     return { ok: false, erreur: "Le contenu du fichier est incomplet ou abîmé. Essaie une autre sauvegarde." };
   }
-  const donneesNormalisees = normaliserDonneesDefis(d.defis, d.objectifs);
+  const donneesDefis = normaliserDonneesDefis(d.defis, d.objectifs);
+  // Numéros de cartes et défis du moment déjà dans la collection (anciennes sauvegardes)
+  const collection = normaliserCollection(donneesDefis.defis, d.jours);
+  const donneesNormalisees = { ...donneesDefis, defis: collection.defis, jours: collection.jours };
   return {
     ok: true,
     sauvegarde: {
